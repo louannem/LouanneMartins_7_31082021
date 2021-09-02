@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <title>Les petits plats - Rechercher</title>
+</head>
+<body class="container">
+    <header class="container">
+        <img src="./assets/logo.svg" alt="Logo Les Petits Plats">
+        <h1>Les petits plats</h1>
+    </header>
+
+    <main>
+        <section>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control search__input" placeholder="Rechercher un ingrédient, appareil, ustensiles ou une recette" aria-label="Rechercher un ingrédient, appareil, ustensiles ou une recette" aria-describedby="button-addon2">
+                <button class="btn btn-outline-secondary search__button" type="button" id="button-addon2">
+                    <img src="./assets/search.svg" alt="">
+                </button>
+            </div>
+
+            <section>
+                <div class="btn-group">
+                    <button class="btn btn-secondary btn-lg dropdown-toggle blue" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Ingérdients
+                    </button>
+                    <div class="dropdown-menu">
+                      ...
+                    </div>
+                  </div>
+
+                  <div class="btn-group">
+                    <button class="btn btn-secondary btn-lg dropdown-toggle green" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Appareils
+                    </button>
+                    <div class="dropdown-menu">
+                      ...
+                    </div>
+                  </div>
+
+                  <div class="btn-group">
+                    <button class="btn btn-secondary btn-lg dropdown-toggle red" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Ustensiles
+                    </button>
+                    <div class="dropdown-menu">
+                      ...
+                    </div>
+                  </div>
+            </section>
+        </section>
+    </main>
+
+    <footer></footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+    
+</body>
+</html>
