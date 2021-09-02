@@ -193,6 +193,55 @@ module.hot.accept(reloadCSS);
 "use strict";
 
 require("./css/style.css");
+
+var inputIngredient = document.getElementById('ingredient-input');
+var inputAppareil = document.getElementById('appareils-input');
+var inputUsentiles = document.getElementById('ustensiles-input');
+
+var searchIngredient = function searchIngredient() {
+  var searchWrapper = document.getElementById('ingredients-search');
+  var listWrapper = document.getElementById('ingredients-list');
+
+  if (searchWrapper.classList.contains('show')) {
+    searchWrapper.style.width = "170px";
+    listWrapper.style.width = "170px";
+  } else {
+    searchWrapper.style.width = "500px";
+    listWrapper.style.width = "500px";
+  }
+};
+
+inputIngredient.addEventListener('click', searchIngredient);
+
+var searchAppareils = function searchAppareils() {
+  var searchWrapper = document.getElementById('appareils-search');
+  var listWrapper = document.getElementById('appareils-list');
+
+  if (searchWrapper.classList.contains('show')) {
+    searchWrapper.style.width = "170px";
+    listWrapper.style.width = "170px";
+  } else {
+    searchWrapper.style.width = "500px";
+    listWrapper.style.width = "500px";
+  }
+};
+
+inputAppareil.addEventListener('click', searchAppareils);
+
+var searchUstensiles = function searchUstensiles() {
+  var searchWrapper = document.getElementById('ustensiles-search');
+  var listWrapper = document.getElementById('ustensiles-list');
+
+  if (searchWrapper.classList.contains('show')) {
+    searchWrapper.style.width = "170px";
+    listWrapper.style.width = "170px";
+  } else {
+    searchWrapper.style.width = "500px";
+    listWrapper.style.width = "500px";
+  }
+};
+
+inputUsentiles.addEventListener('click', searchUstensiles);
 },{"./css/style.css":"css/style.css"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';

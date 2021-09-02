@@ -61,6 +61,7 @@ h1 {
 .dropdown-toggle input::focus-visible {outline:0px!important; box-shadow: none !important;}
 .search__input:focus { background-color: #E7E7E7;}
 
+.changeSize { width: 400px;}
 
 .search__button {
     width: 69px;
