@@ -1,0 +1,23 @@
+{
+  "name": "louannemartins_7_31082021",
+  "version": "1.0.0",
+  "description": "Visualiser le projet à l'adresse suivante :\r https://louannem.github.io/LouanneMartins_7_31082021/src/search.html",
+  "main": "app.js",
+  "scripts": {
+    "dev": "parcel src/search.html",
+    "prod": "parcel build src/search.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/louannem/LouanneMartins_7_31082021.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/louannem/LouanneMartins_7_31082021/issues"
+  },
+  "homepage": "https://github.com/louannem/LouanneMartins_7_31082021#readme",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.5"
+  }
+}

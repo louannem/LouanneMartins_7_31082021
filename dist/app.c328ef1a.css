@@ -12,6 +12,7 @@
 .red { background-color: var(--red);}
 
 /*Reset Bootstraps styles*/
+.form-control:focus { outline: 0px; border: none; box-shadow: none;}
 .dropdown-toggle { border: none; padding: 1em;}
 .red:hover, .red:focus, .red:active, .show > .red { background-color: var(--red)!important; box-shadow: none;}
 .green:hover, .green:focus, .green:active, .show > .green { background-color: var(--green)!important; box-shadow: none;}
@@ -24,6 +25,10 @@
 .dropdown-toggle, .dropdown-menu { width: 170px;}
 
 body { padding: 0 1em; box-sizing: border-box;}
+
+textarea:focus, input:focus{
+    outline: none;
+}
 
 ul { list-style: none; padding-left: 0;}
 
@@ -50,7 +55,12 @@ h1 {
     background-color: #E7E7E7;
     border: none;
 }
+
+.dropdown-toggle input { width: 85%; background-color: transparent; border: none; color: #ffff}
+.dropdown-toggle input::placeholder { color: #ffff; opacity: 1;}
+.dropdown-toggle input::focus-visible {outline:0px!important; box-shadow: none !important;}
 .search__input:focus { background-color: #E7E7E7;}
+
 
 .search__button {
     width: 69px;
@@ -97,3 +107,5 @@ article .recipe__image { height: 170px; width: 100%; background-color: #C7BEBE; 
 .recipe__meta { display: flex; font-family: Lato; font-size: 12px; margin-top: 20px;}
 .recipe__meta > div { width: 50%;}
 .recipe__meta p { line-height: 12px;}
+
+/*# sourceMappingURL=/app.c328ef1a.css.map */
