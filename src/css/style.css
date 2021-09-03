@@ -87,6 +87,7 @@ article {
     width: 380px;
     background-color: #E7E7E7;
     border-radius: 5px;
+    margin: 20px 0px
 }
 
 article .recipe__image { height: 170px; width: 100%; background-color: #C7BEBE; border-radius: 5px 5px 0px 0px;}
@@ -102,9 +103,17 @@ article .recipe__image { height: 170px; width: 100%; background-color: #C7BEBE; 
     margin: 0;
 }
 
-.recipe__time { display: flex; align-items: center;}
+.recipe__time { display: flex; align-items: center; min-width: 70px;}
 .recipe__time img { margin : 0px 5px}
 
 .recipe__meta { display: flex; font-family: Lato; font-size: 12px; margin-top: 20px;}
 .recipe__meta > div { width: 50%;}
-.recipe__meta p { line-height: 12px;}
+.recipe__meta p { 
+    max-height: 100%; 
+    line-height: 12px; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 9;
+    -webkit-box-orient: vertical; }
