@@ -1711,7 +1711,55 @@ var recipes = [{
   "ustensils": ["rouleau à patisserie", "fouet"]
 }];
 exports.recipes = recipes;
-},{}],"app.js":[function(require,module,exports) {
+},{}],"utiles/dropdownLists.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = ingredientsList;
+
+var _recipes = require("../data/recipes");
+
+function ingredientsList() {
+  var ingredientArray = [];
+  var ustensilesArray = [];
+  var appareilsArray = [];
+
+  for (var i = 0; i < _recipes.recipes.length; i++) {
+    for (var j = 0; j < _recipes.recipes[i].ingredients.length; j++) {
+      ingredientArray.push(_recipes.recipes[i].ingredients[j].ingredient);
+    }
+
+    for (var k = 0; k < _recipes.recipes[i].ustensils.length; k++) {
+      ustensilesArray.push(_recipes.recipes[i].ustensils[k]);
+    }
+
+    for (var l = 0; l < _recipes.recipes[i].appliance.length; l++) {
+      appareilsArray.push(_recipes.recipes[i].appliance[l]);
+    }
+  }
+
+  var ingredientDuplicate = ingredientArray.filter(function (elem, index, self) {
+    return index === self.indexOf(elem);
+  });
+  var ustensilesDuplicate = ustensilesArray.filter(function (elem, index, self) {
+    return index === self.indexOf(elem);
+  });
+  var appareilsDuplicate = ustensilesArray.filter(function (elem, index, self) {
+    return index === self.indexOf(elem);
+  });
+  var ingredientsBlock = document.getElementById('ingredients-list');
+  var ustensilesBlock = document.getElementById('ustensiles-list');
+  var appareilsBlock = document.getElementById('appareils-list');
+
+  for (var _i = 0; _i <= 30; _i++) {
+    ingredientsBlock.innerText += ingredientDuplicate[_i];
+    ustensilesBlock.innerText += ustensilesDuplicate[_i];
+    appareilsBlock.innerText += appareilsDuplicate[_i];
+  }
+}
+},{"../data/recipes":"data/recipes.js"}],"app.js":[function(require,module,exports) {
 "use strict";
 
 var _Ingredients = require("./components/Ingredients");
@@ -1722,26 +1770,24 @@ require("./css/style.css");
 
 var _recipes = require("./data/recipes");
 
-//console.log(recipesData)
+var _dropdownLists = _interopRequireDefault(require("./utiles/dropdownLists"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 for (var i = 0; i < _recipes.recipes.length; i++) {
   var recipesList = new _Recipes.Recipes(_recipes.recipes[i]);
   document.getElementById('search-results').innerHTML += recipesList.diplayRecipe();
 
   for (var j = 0; j < _recipes.recipes[i].ingredients.length; j++) {
-    // console.log(recipes[i].ingredients[j])
     var ingredientsBlock = document.getElementById(_recipes.recipes[i].id);
-    var ingredientsList = new _Ingredients.Ingredients(_recipes.recipes[i].ingredients[j]);
-    console.log(ingredientsList);
-    ingredientsBlock.innerHTML += ingredientsList.displayIngredient();
 
-    if (!_recipes.recipes[i].ingredients[j].unit) {
-      console.log(' unit absent');
-    } else if (!_recipes.recipes[i].ingredients[j].quantity) {
-      console.log('quantity absent');
-    }
+    var _ingredientsList = new _Ingredients.Ingredients(_recipes.recipes[i].ingredients[j]);
+
+    ingredientsBlock.innerHTML += _ingredientsList.displayIngredient();
   }
 }
 
+(0, _dropdownLists.default)();
 var inputIngredient = document.getElementById('ingredient-input');
 var inputAppareil = document.getElementById('appareils-input');
 var inputUsentiles = document.getElementById('ustensiles-input');
@@ -1790,7 +1836,7 @@ var searchUstensiles = function searchUstensiles() {
 };
 
 inputUsentiles.addEventListener('click', searchUstensiles);
-},{"./components/Ingredients":"components/Ingredients.js","./components/Recipes":"components/Recipes.js","./css/style.css":"css/style.css","./data/recipes":"data/recipes.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./components/Ingredients":"components/Ingredients.js","./components/Recipes":"components/Recipes.js","./css/style.css":"css/style.css","./data/recipes":"data/recipes.js","./utiles/dropdownLists":"utiles/dropdownLists.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
