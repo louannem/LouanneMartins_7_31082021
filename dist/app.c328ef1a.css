@@ -58,6 +58,7 @@ h1 {
 
 .dropdown-toggle input { width: 85%; background-color: transparent; border: none; color: #ffff}
 .dropdown-toggle input::placeholder { color: #ffff; opacity: 1;}
+.onclick::placeholder {opacity: 0.5!important;}
 .dropdown-toggle input::focus-visible {outline:0px!important; box-shadow: none !important;}
 .search__input:focus { background-color: #E7E7E7;}
 
@@ -83,14 +84,14 @@ h1 {
 }
 
 article {
-    height: 365px;
-    width: 380px;
+    height: 385px;
+    width: 400px;
     background-color: #E7E7E7;
     border-radius: 5px;
     margin: 20px 0px
 }
 
-article .recipe__image { height: 170px; width: 100%; background-color: #C7BEBE; border-radius: 5px 5px 0px 0px;}
+article .recipe__image { height: 160px; width: 100%; background-color: #C7BEBE; border-radius: 5px 5px 0px 0px;}
 
 .recipe__info { padding: 1em; box-sizing: border-box;}
 
