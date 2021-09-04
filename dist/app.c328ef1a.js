@@ -253,7 +253,7 @@ var Recipes = /*#__PURE__*/function () {
   _createClass(Recipes, [{
     key: "diplayRecipe",
     value: function diplayRecipe() {
-      return "\n        <article class=\"recipe__card\">\n                <div class=\"recipe__image\">\n                    <img src=\"\" alt=\"\">\n                </div>\n\n                <div class=\"recipe__info\">\n                    <div class=\"recipe__title\">\n                        <h2>".concat(this.name, "</h2>\n                        <div class=\"recipe__time\">\n                            <img src=\"./src/assets/clock.svg\" alt=\"\">\n                            <span>").concat(this.time, " min.</span>\n                        </div>\n                    </div>\n\n                    <div class=\"recipe__meta\">\n                        <div class=\"ingredients\">\n                           <ul id=\"").concat(this.id, "\">\n                           </ul>\n                        </div>\n\n                        <div class=\"instructions\">\n                            <p>").concat(this.description, "</p>\n                        </div>\n                    </div>\n                </div>\n            </article>\n        ");
+      return "\n        <article class=\"recipe__card\">\n                <div class=\"recipe__image\">\n                    <img src=\"\" alt=\"\">\n                </div>\n\n                <div class=\"recipe__info\">\n                    <div class=\"recipe__title\">\n                        <h2>".concat(this.name, "</h2>\n                        <div class=\"recipe__time\">\n                            <img src=\"../dist/clock.bdc9bc77.svg\" alt=\"\">\n                            <span>").concat(this.time, " min.</span>\n                        </div>\n                    </div>\n\n                    <div class=\"recipe__meta\">\n                        <div class=\"ingredients\">\n                           <ul id=\"").concat(this.id, "\">\n                           </ul>\n                        </div>\n\n                        <div class=\"instructions\">\n                            <p>").concat(this.description, "</p>\n                        </div>\n                    </div>\n                </div>\n            </article>\n        ");
     }
   }]);
 
@@ -1815,7 +1815,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58787" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49962" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
