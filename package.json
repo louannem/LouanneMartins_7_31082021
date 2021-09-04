@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "dev": "parcel src/search.html",
-    "prod": "parcel build src/search.html"
+    "prod": "parcel build index.html --public-url ./"
   },
   "repository": {
     "type": "git",
