@@ -1,6 +1,5 @@
 import { Ingredients } from '../src/components/Ingredients'
 import { Recipes } from '../src/components/Recipes'
-import '../src/css/style.css'
 import {recipes} from '../src/data/recipes'
 import ingredientsList from '../src/utiles/dropdownLists';
 import listExpand from './components/listExpand';
