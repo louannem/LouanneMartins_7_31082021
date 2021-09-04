@@ -19,5 +19,8 @@
   "homepage": "https://github.com/louannem/LouanneMartins_7_31082021#readme",
   "devDependencies": {
     "parcel-bundler": "^1.12.5"
+  },
+  "dependencies": {
+    "src": "^1.1.2"
   }
 }

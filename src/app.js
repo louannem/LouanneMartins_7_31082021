@@ -1,7 +1,7 @@
-import { Ingredients } from '../src/components/Ingredients'
-import { Recipes } from '../src/components/Recipes'
+import { Ingredients } from './components/Ingredients'
+import { Recipes } from './components/Recipes'
 import {recipes} from '../src/data/recipes'
-import ingredientsList from '../src/utiles/dropdownLists';
+import ingredientsList from './utiles/dropdownLists';
 import listExpand from './components/listExpand';
 
 

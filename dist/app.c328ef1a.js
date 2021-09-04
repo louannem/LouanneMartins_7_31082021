@@ -1760,13 +1760,13 @@ function listExpand() {
 },{}],"app.js":[function(require,module,exports) {
 "use strict";
 
-var _Ingredients = require("../src/components/Ingredients");
+var _Ingredients = require("./components/Ingredients");
 
-var _Recipes = require("../src/components/Recipes");
+var _Recipes = require("./components/Recipes");
 
 var _recipes = require("../src/data/recipes");
 
-var _dropdownLists = _interopRequireDefault(require("../src/utiles/dropdownLists"));
+var _dropdownLists = _interopRequireDefault(require("./utiles/dropdownLists"));
 
 var _listExpand = _interopRequireDefault(require("./components/listExpand"));
 
@@ -1787,7 +1787,7 @@ for (var i = 0; i < _recipes.recipes.length; i++) {
 
 (0, _dropdownLists.default)();
 (0, _listExpand.default)();
-},{"../src/components/Ingredients":"components/Ingredients.js","../src/components/Recipes":"components/Recipes.js","../src/data/recipes":"data/recipes.js","../src/utiles/dropdownLists":"utiles/dropdownLists.js","./components/listExpand":"components/listExpand.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./components/Ingredients":"components/Ingredients.js","./components/Recipes":"components/Recipes.js","../src/data/recipes":"data/recipes.js","./utiles/dropdownLists":"utiles/dropdownLists.js","./components/listExpand":"components/listExpand.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
