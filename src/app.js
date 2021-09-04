@@ -1,11 +1,8 @@
-import { Ingredients } from './components/Ingredients'
-import { NoUnit } from './components/Ingredients' 
-import { NoQuantity } from './components/Ingredients'
-import { NoUnitAndQuantity } from './components/Ingredients';
-import { Recipes } from './components/Recipes'
-import './css/style.css'
-import {recipes} from './data/recipes'
-import ingredientsList from './utiles/dropdownLists';
+import { Ingredients } from '../src/components/Ingredients'
+import { Recipes } from '../src/components/Recipes'
+import '../src/css/style.css'
+import {recipes} from '../src/data/recipes'
+import ingredientsList from '../src/utiles/dropdownLists';
 import listExpand from './components/listExpand';
 
 

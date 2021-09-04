@@ -1832,15 +1832,15 @@ function listExpand() {
 },{}],"app.js":[function(require,module,exports) {
 "use strict";
 
-var _Ingredients = require("./components/Ingredients");
+var _Ingredients = require("../src/components/Ingredients");
 
-var _Recipes = require("./components/Recipes");
+var _Recipes = require("../src/components/Recipes");
 
-require("./css/style.css");
+require("../src/css/style.css");
 
-var _recipes = require("./data/recipes");
+var _recipes = require("../src/data/recipes");
 
-var _dropdownLists = _interopRequireDefault(require("./utiles/dropdownLists"));
+var _dropdownLists = _interopRequireDefault(require("../src/utiles/dropdownLists"));
 
 var _listExpand = _interopRequireDefault(require("./components/listExpand"));
 
@@ -1861,7 +1861,7 @@ for (var i = 0; i < _recipes.recipes.length; i++) {
 
 (0, _dropdownLists.default)();
 (0, _listExpand.default)();
-},{"./components/Ingredients":"components/Ingredients.js","./components/Recipes":"components/Recipes.js","./css/style.css":"css/style.css","./data/recipes":"data/recipes.js","./utiles/dropdownLists":"utiles/dropdownLists.js","./components/listExpand":"components/listExpand.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"../src/components/Ingredients":"components/Ingredients.js","../src/components/Recipes":"components/Recipes.js","../src/css/style.css":"css/style.css","../src/data/recipes":"data/recipes.js","../src/utiles/dropdownLists":"utiles/dropdownLists.js","./components/listExpand":"components/listExpand.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -1889,7 +1889,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53030" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58466" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
