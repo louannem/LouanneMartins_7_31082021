@@ -857,7 +857,7 @@ var recipes = [{
   }],
   "time": 30,
   "description": "Cuisiner la viande hachée dans une poelle à frire. Dans une autre faire cuire les oignons découpés en fins dés avec un peu de beurre. Ajouter du vin rouge. Mélanger les oigons avec la viande hachée. Faire cuire les pates le temps indiqué sur le paquet. Ajouter le coulis de tomates à la viande hachée. Une fois que les pates sont cuites, ajouter la crème fraiche à la viande hachée. Serivir.",
-  "appliance": "Casserolle.",
+  "appliance": "Casserole",
   "ustensils": ["Cuillère en bois", "louche", "couteau"]
 }, {
   "id": 22,
@@ -1027,7 +1027,7 @@ var recipes = [{
   }],
   "time": 15,
   "description": "Faire fondre l'oseille avec du beurre demi sel, ajouter un litre d'eau. Ajouter les vermicelles. Laisser cuire. une foit prêt, sortir du feu et après 5 minutes ajouter le jaune d'oeuf et la crême fraîche",
-  "appliance": "Casserolle",
+  "appliance": "Casserole",
   "ustensils": ["couteau", "cuillère en bois"]
 }, {
   "id": 28,
@@ -1394,7 +1394,7 @@ var recipes = [{
   }],
   "time": 20,
   "description": "Séparer les blancs d'oeufs. Faire fondre le chocolat au bain marie. Ajouter les jaunes et le sucre au chocolat hors du feu. Battre les blancs en neige. Ajouter les blancs au mélange de chocolat. Mélangez délicatement avec une spatule. Servir dans un plat ou dans des verres. Mettre au frais",
-  "appliance": "Casserolle",
+  "appliance": "Casserole",
   "ustensils": ["fouet", "spatule", "verres"]
 }, {
   "id": 42,
@@ -1472,7 +1472,7 @@ var recipes = [{
   }],
   "time": 15,
   "description": "Mélanger la farine et le beurre fondu en ajoutant le lait peu à peu. Ajouter du sucre après la cuisson. Bien mélanger. Ajouter le chocolat en morceaux et laisser chauffer 8 minutes en mélangeant avec une cuillère en bois. Mettre dans des verres",
-  "appliance": "Casserolle",
+  "appliance": "Casserole",
   "ustensils": ["cuillère en bois"]
 }, {
   "id": 45,
@@ -1496,7 +1496,7 @@ var recipes = [{
   }],
   "time": 30,
   "description": "Faire bouillir le lait ( on peut y ajouter de l'essence de vanille. Battre les oeufs et le sucre, ajouter la farine puis finalement ajouter le lait chaud. Remettre à feu doux pour faire épaissir en remuant pendant 5 à 10 minutes.",
-  "appliance": "Casserolle",
+  "appliance": "Casserole",
   "ustensils": ["fouet", "saladier"]
 }, {
   "id": 46,
@@ -1664,9 +1664,10 @@ function ingredientsList() {
     }
 
     for (var l = 0; l < _recipes.recipes[i].appliance.length; l++) {
-      appareilsArray.push(_recipes.recipes[i].appliance[l]);
+      appareilsArray.push(_recipes.recipes[i].appliance);
     }
-  }
+  } //Gets rid of duplicates
+
 
   var ingredientDuplicate = ingredientArray.filter(function (elem, index, self) {
     return index === self.indexOf(elem);
@@ -1674,7 +1675,7 @@ function ingredientsList() {
   var ustensilesDuplicate = ustensilesArray.filter(function (elem, index, self) {
     return index === self.indexOf(elem);
   });
-  var appareilsDuplicate = ustensilesArray.filter(function (elem, index, self) {
+  var appareilsDuplicate = appareilsArray.filter(function (elem, index, self) {
     return index === self.indexOf(elem);
   });
   var ingredientsBlock = document.getElementById('ingredients-list');
@@ -1682,9 +1683,18 @@ function ingredientsList() {
   var appareilsBlock = document.getElementById('appareils-list');
 
   for (var _i = 0; _i <= 30; _i++) {
-    ingredientsBlock.innerText += ingredientDuplicate[_i];
-    ustensilesBlock.innerText += ustensilesDuplicate[_i];
-    appareilsBlock.innerText += appareilsDuplicate[_i];
+    var ingredientsWrapper = document.createElement('span');
+    var ustensilesWrapper = document.createElement('span');
+    ingredientsBlock.appendChild(ingredientsWrapper);
+    ustensilesBlock.appendChild(ustensilesWrapper);
+    ingredientsWrapper.innerText += ingredientDuplicate[_i];
+    ustensilesWrapper.innerText += ustensilesDuplicate[_i];
+  }
+
+  for (var _i2 = 0; _i2 <= 10; _i2++) {
+    var appareilsWrapper = document.createElement('span');
+    appareilsBlock.appendChild(appareilsWrapper);
+    appareilsWrapper.innerText += appareilsDuplicate[_i2];
   }
 }
 },{"../data/recipes":"data/recipes.js"}],"components/listExpand.js":[function(require,module,exports) {
@@ -1697,8 +1707,12 @@ exports.default = listExpand;
 
 function listExpand() {
   var inputIngredient = document.getElementById('ingredient-input');
+  var boxIngredients = document.getElementById('ingredients-expand');
   var inputAppareil = document.getElementById('appareils-input');
+  var boxAppareil = document.getElementById('appareils-expand');
   var inputUsentiles = document.getElementById('ustensiles-input');
+  var parentNode = document.getElementById('ustensiles-search');
+  var boxUstensiles = parentNode.getElementsByTagName('div')[0];
 
   var searchIngredient = function searchIngredient() {
     var searchWrapper = document.getElementById('ingredients-search');
@@ -1709,15 +1723,18 @@ function listExpand() {
       listWrapper.style.width = "170px";
       inputIngredient.setAttribute('placeholder', 'Ingrédient');
       inputIngredient.classList.remove('onclick');
+      listWrapper.classList.remove('grid-list');
     } else {
       searchWrapper.style.width = "500px";
       listWrapper.style.width = "500px";
       inputIngredient.setAttribute('placeholder', 'Rechercher un ingrédient');
       inputIngredient.classList.add('onclick');
+      listWrapper.classList.add('grid-list');
     }
   };
 
   inputIngredient.addEventListener('click', searchIngredient);
+  boxIngredients.addEventListener('click', searchIngredient);
 
   var searchAppareils = function searchAppareils() {
     var searchWrapper = document.getElementById('appareils-search');
@@ -1728,15 +1745,18 @@ function listExpand() {
       listWrapper.style.width = "170px";
       inputAppareil.setAttribute('placeholder', 'Appareils');
       inputAppareil.classList.remove('onclick');
+      listWrapper.classList.remove('grid-list-appareils');
     } else {
       searchWrapper.style.width = "500px";
       listWrapper.style.width = "500px";
       inputAppareil.setAttribute('placeholder', 'Rechercher un appareil');
       inputAppareil.classList.add('onclick');
+      listWrapper.classList.add('grid-list-appareils');
     }
   };
 
   inputAppareil.addEventListener('click', searchAppareils);
+  boxAppareil.addEventListener('click', searchAppareils);
 
   var searchUstensiles = function searchUstensiles() {
     var searchWrapper = document.getElementById('ustensiles-search');
@@ -1747,15 +1767,18 @@ function listExpand() {
       listWrapper.style.width = "170px";
       inputUsentiles.setAttribute('placeholder', 'Ustensiles');
       inputUsentiles.classList.remove('onclick');
+      listWrapper.classList.remove('grid-list');
     } else {
       searchWrapper.style.width = "500px";
       listWrapper.style.width = "500px";
       inputUsentiles.setAttribute('placeholder', 'Rechercher un ustensile');
       inputUsentiles.classList.add('onclick');
+      listWrapper.classList.add('grid-list');
     }
   };
 
   inputUsentiles.addEventListener('click', searchUstensiles);
+  boxUstensiles.addEventListener('click', searchUstensiles);
 }
 },{}],"app.js":[function(require,module,exports) {
 "use strict";
@@ -1771,6 +1794,9 @@ var _dropdownLists = _interopRequireDefault(require("./utiles/dropdownLists"));
 var _listExpand = _interopRequireDefault(require("./components/listExpand"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var listParent = document.getElementsByClassName('dropdown-toggle');
+var gridList = listParent.firstChild;
 
 for (var i = 0; i < _recipes.recipes.length; i++) {
   var recipesList = new _Recipes.Recipes(_recipes.recipes[i]);
@@ -1815,7 +1841,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60585" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58539" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

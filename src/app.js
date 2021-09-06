@@ -4,6 +4,9 @@ import {recipes} from '../src/data/recipes'
 import ingredientsList from './utiles/dropdownLists';
 import listExpand from './components/listExpand';
 
+let listParent = document.getElementsByClassName('dropdown-toggle');
+let gridList = listParent.firstChild;
+
 
 for(let i = 0; i<recipes.length; i++) {
     let recipesList = new Recipes(recipes[i])
@@ -14,6 +17,7 @@ for(let i = 0; i<recipes.length; i++) {
 
         let ingredientsList = new Ingredients(recipes[i].ingredients[j]);
         ingredientsBlock.innerHTML += ingredientsList.displayIngredient();
+
     }
 }
 

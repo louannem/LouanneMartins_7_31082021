@@ -74,6 +74,24 @@ h1 {
 .search__button svg { height: 32px; }
 .btn-outline-secondary:hover { background-color: #E7E7E7; color: #000000;}
 
+.grid-list {
+    display: grid!important;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(10, 35px);
+    padding: 1em;
+    box-sizing: border-box;
+}
+
+.grid-list span { line-height: 1em;}
+
+.grid-list-appareils {
+    display: grid!important;
+    grid-template-columns: 100%;
+    grid-template-rows: repeat(10, 30px);
+    padding: 1em;
+    box-sizing: border-box;   
+}
+
 
 #search-results { 
     display: grid;
