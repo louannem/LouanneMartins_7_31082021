@@ -1712,73 +1712,72 @@ function listExpand() {
   var boxAppareil = document.getElementById('appareils-expand');
   var inputUsentiles = document.getElementById('ustensiles-input');
   var parentNode = document.getElementById('ustensiles-search');
-  var boxUstensiles = parentNode.getElementsByTagName('div')[0];
+  var boxUstensiles = parentNode.getElementsByTagName('div')[0]; //Fonctions à réutiliser
+
+  var addingClass = function addingClass(paraStyle1, paraStyle2, size, paraClass1, paraClass2, classe) {
+    paraStyle1.style.width = size;
+    paraStyle2.style.width = size;
+    paraClass1.classList.add('onclick');
+    paraClass2.classList.add(classe);
+  };
+
+  var removingClass = function removingClass(paraStyle1, paraStyle2, size, paraClass1, paraClass2, classe) {
+    paraStyle1.style.width = size;
+    paraStyle2.style.width = size;
+    paraClass1.classList.remove('onclick');
+    paraClass2.classList.remove(classe);
+  };
+
+  var lanceFonction = function lanceFonction(para1, para2, fonction) {
+    para1.addEventListener('click', fonction);
+    para2.addEventListener('click', fonction);
+  }; //Fonctions pour les dropdowns
+
 
   var searchIngredient = function searchIngredient() {
     var searchWrapper = document.getElementById('ingredients-search');
     var listWrapper = document.getElementById('ingredients-list');
 
     if (searchWrapper.classList.contains('show')) {
-      searchWrapper.style.width = "170px";
-      listWrapper.style.width = "170px";
+      removingClass(searchWrapper, listWrapper, "170px", inputIngredient, listWrapper, "grid-list");
       inputIngredient.setAttribute('placeholder', 'Ingrédient');
-      inputIngredient.classList.remove('onclick');
-      listWrapper.classList.remove('grid-list');
     } else {
-      searchWrapper.style.width = "500px";
-      listWrapper.style.width = "500px";
+      addingClass(searchWrapper, listWrapper, "500px", inputIngredient, listWrapper, "grid-list");
       inputIngredient.setAttribute('placeholder', 'Rechercher un ingrédient');
-      inputIngredient.classList.add('onclick');
-      listWrapper.classList.add('grid-list');
     }
   };
 
-  inputIngredient.addEventListener('click', searchIngredient);
-  boxIngredients.addEventListener('click', searchIngredient);
+  lanceFonction(inputIngredient, boxIngredients, searchIngredient);
 
   var searchAppareils = function searchAppareils() {
     var searchWrapper = document.getElementById('appareils-search');
     var listWrapper = document.getElementById('appareils-list');
 
     if (searchWrapper.classList.contains('show')) {
-      searchWrapper.style.width = "170px";
-      listWrapper.style.width = "170px";
+      removingClass(searchWrapper, listWrapper, "170px", inputAppareil, listWrapper, "grid-list-appareils");
       inputAppareil.setAttribute('placeholder', 'Appareils');
-      inputAppareil.classList.remove('onclick');
-      listWrapper.classList.remove('grid-list-appareils');
     } else {
-      searchWrapper.style.width = "500px";
-      listWrapper.style.width = "500px";
       inputAppareil.setAttribute('placeholder', 'Rechercher un appareil');
-      inputAppareil.classList.add('onclick');
-      listWrapper.classList.add('grid-list-appareils');
+      addingClass(searchWrapper, listWrapper, "500px", inputAppareil, listWrapper, "grid-list-appareils");
     }
   };
 
-  inputAppareil.addEventListener('click', searchAppareils);
-  boxAppareil.addEventListener('click', searchAppareils);
+  lanceFonction(inputAppareil, boxAppareil, searchAppareils);
 
   var searchUstensiles = function searchUstensiles() {
     var searchWrapper = document.getElementById('ustensiles-search');
     var listWrapper = document.getElementById('ustensiles-list');
 
     if (searchWrapper.classList.contains('show')) {
-      searchWrapper.style.width = "170px";
-      listWrapper.style.width = "170px";
+      removingClass(searchWrapper, listWrapper, "170px", inputUsentiles, listWrapper, "grid-list");
       inputUsentiles.setAttribute('placeholder', 'Ustensiles');
-      inputUsentiles.classList.remove('onclick');
-      listWrapper.classList.remove('grid-list');
     } else {
-      searchWrapper.style.width = "500px";
-      listWrapper.style.width = "500px";
+      addingClass(searchWrapper, listWrapper, "500px", inputUsentiles, listWrapper, "grid-list");
       inputUsentiles.setAttribute('placeholder', 'Rechercher un ustensile');
-      inputUsentiles.classList.add('onclick');
-      listWrapper.classList.add('grid-list');
     }
   };
 
-  inputUsentiles.addEventListener('click', searchUstensiles);
-  boxUstensiles.addEventListener('click', searchUstensiles);
+  lanceFonction(inputUsentiles, boxUstensiles, searchUstensiles);
 }
 },{}],"app.js":[function(require,module,exports) {
 "use strict";
@@ -1841,7 +1840,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58539" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63810" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
