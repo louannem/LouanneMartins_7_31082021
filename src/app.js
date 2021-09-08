@@ -3,6 +3,8 @@ import { Recipes } from './components/Recipes'
 import {recipes} from '../src/data/recipes'
 import ingredientsList from './utiles/dropdownLists';
 import listExpand from './components/listExpand';
+import searchFunction from './utiles/search';
+import globalSearch from './utiles/search'
 
 let listParent = document.getElementsByClassName('dropdown-toggle');
 let gridList = listParent.firstChild;
@@ -23,4 +25,5 @@ for(let i = 0; i<recipes.length; i++) {
 
 ingredientsList();
 listExpand();
+globalSearch();
 

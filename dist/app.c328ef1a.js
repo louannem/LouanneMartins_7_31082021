@@ -253,7 +253,7 @@ var Recipes = /*#__PURE__*/function () {
   _createClass(Recipes, [{
     key: "diplayRecipe",
     value: function diplayRecipe() {
-      return "\n        <article class=\"recipe__card\">\n                <div class=\"recipe__image\">\n                    <img src=\"\" alt=\"\">\n                </div>\n\n                <div class=\"recipe__info\">\n                    <div class=\"recipe__title\">\n                        <h2>".concat(this.name, "</h2>\n                        <div class=\"recipe__time\">\n                            <img src=\"../dist/clock.bdc9bc77.svg\" alt=\"\">\n                            <span>").concat(this.time, " min.</span>\n                        </div>\n                    </div>\n\n                    <div class=\"recipe__meta\">\n                        <div class=\"ingredients\">\n                           <ul id=\"").concat(this.id, "\">\n                           </ul>\n                        </div>\n\n                        <div class=\"instructions\">\n                            <p>").concat(this.description, "</p>\n                        </div>\n                    </div>\n                </div>\n            </article>\n        ");
+      return "\n        <article class=\"recipe__card\" id=\"recipe-".concat(this.id, "\">\n                <div class=\"recipe__image\">\n                    <img src=\"\" alt=\"\">\n                </div>\n\n                <div class=\"recipe__info\">\n                    <div class=\"recipe__title\">\n                        <h2>").concat(this.name, "</h2>\n                        <div class=\"recipe__time\">\n                            <img src=\"../dist/clock.bdc9bc77.svg\" alt=\"\">\n                            <span>").concat(this.time, " min.</span>\n                        </div>\n                    </div>\n\n                    <div class=\"recipe__meta\">\n                        <div class=\"ingredients\">\n                           <ul id=\"").concat(this.id, "\">\n                           </ul>\n                        </div>\n\n                        <div class=\"instructions\">\n                            <p>").concat(this.description, "</p>\n                        </div>\n                    </div>\n                </div>\n            </article>\n        ");
     }
   }]);
 
@@ -1779,7 +1779,41 @@ function listExpand() {
 
   callFonction(inputUsentiles, boxUstensiles, searchUstensiles);
 }
-},{}],"app.js":[function(require,module,exports) {
+},{}],"utiles/search.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = searchFunction;
+
+var _recipes = require("../data/recipes");
+
+var _Recipes = require("../components/Recipes");
+
+//Search algo with for loop
+function searchFunction() {
+  var input = document.getElementById('search-input');
+
+  var globalSearch = function globalSearch(searchItem) {
+    searchItem = input.value;
+
+    for (var i = 0; i < _recipes.recipes.length; i++) {
+      var recipesID = document.getElementById("recipe-" + _recipes.recipes[i].id);
+
+      if (_recipes.recipes[i].name.includes(searchItem) || _recipes.recipes[i].appliance.includes(searchItem)) {
+        var newList = new _Recipes.Recipes(_recipes.recipes[i]);
+        console.log("Trouvé : " + newList);
+        recipesID.style.display = ""; //console.log(newList.diplayRecipe())
+      } else {
+        recipesID.style.display = "none";
+      }
+    }
+  };
+
+  input.addEventListener('input', globalSearch);
+}
+},{"../data/recipes":"data/recipes.js","../components/Recipes":"components/Recipes.js"}],"app.js":[function(require,module,exports) {
 "use strict";
 
 var _Ingredients = require("./components/Ingredients");
@@ -1791,6 +1825,8 @@ var _recipes = require("../src/data/recipes");
 var _dropdownLists = _interopRequireDefault(require("./utiles/dropdownLists"));
 
 var _listExpand = _interopRequireDefault(require("./components/listExpand"));
+
+var _search = _interopRequireDefault(require("./utiles/search"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1812,7 +1848,8 @@ for (var i = 0; i < _recipes.recipes.length; i++) {
 
 (0, _dropdownLists.default)();
 (0, _listExpand.default)();
-},{"./components/Ingredients":"components/Ingredients.js","./components/Recipes":"components/Recipes.js","../src/data/recipes":"data/recipes.js","./utiles/dropdownLists":"utiles/dropdownLists.js","./components/listExpand":"components/listExpand.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+(0, _search.default)();
+},{"./components/Ingredients":"components/Ingredients.js","./components/Recipes":"components/Recipes.js","../src/data/recipes":"data/recipes.js","./utiles/dropdownLists":"utiles/dropdownLists.js","./components/listExpand":"components/listExpand.js","./utiles/search":"utiles/search.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -1840,7 +1877,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61107" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62511" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -8,7 +8,7 @@ export class Recipes {
 
     diplayRecipe() {
         return `
-        <article class="recipe__card">
+        <article class="recipe__card" id="recipe-${this.id}">
                 <div class="recipe__image">
                     <img src="" alt="">
                 </div>
