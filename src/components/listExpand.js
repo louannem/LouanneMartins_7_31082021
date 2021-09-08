@@ -22,9 +22,9 @@ export default function listExpand() {
         paraClass2.classList.remove(classe);
     }
 
-    let lanceFonction = (para1,para2, fonction) => {
-        para1.addEventListener('click', fonction);
-        para2.addEventListener('click', fonction);
+    let callFonction = (paraEvent1,paraEvent2, fonction) => {
+        paraEvent1.addEventListener('click', fonction);
+        paraEvent2.addEventListener('click', fonction);
     }
 
 
@@ -42,7 +42,7 @@ export default function listExpand() {
             inputIngredient.setAttribute('placeholder', 'Rechercher un ingrédient');
         }
     }
-    lanceFonction(inputIngredient,boxIngredients,searchIngredient)
+    callFonction(inputIngredient,boxIngredients,searchIngredient)
 
 
     var searchAppareils = () => {
@@ -56,7 +56,7 @@ export default function listExpand() {
             addingClass(searchWrapper, listWrapper, "500px",inputAppareil,listWrapper, "grid-list-appareils");
         }
     }
-    lanceFonction(inputAppareil,boxAppareil,searchAppareils)
+    callFonction(inputAppareil,boxAppareil,searchAppareils)
 
 
 
@@ -72,5 +72,5 @@ export default function listExpand() {
             inputUsentiles.setAttribute('placeholder', 'Rechercher un ustensile');
         }
     }
-    lanceFonction(inputUsentiles, boxUstensiles, searchUstensiles);
+    callFonction(inputUsentiles, boxUstensiles, searchUstensiles);
 }
