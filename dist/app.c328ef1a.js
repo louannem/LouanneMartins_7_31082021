@@ -1791,29 +1791,98 @@ var _recipes = require("../data/recipes");
 
 var _Recipes = require("../components/Recipes");
 
+var _dropdownLists = _interopRequireDefault(require("./dropdownLists"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 //Search algo with for loop
 function searchFunction() {
   var input = document.getElementById('search-input');
+  var ingredientInput = document.getElementById('ingredient-input');
+  var appareilsInput = document.getElementById('appareils-input');
+  var ustensilesInput = document.getElementById('ustensiles-input');
 
   var globalSearch = function globalSearch(searchItem) {
     searchItem = input.value;
 
     for (var i = 0; i < _recipes.recipes.length; i++) {
-      var recipesID = document.getElementById("recipe-" + _recipes.recipes[i].id);
+      var recipesID = document.getElementById("recipe-" + _recipes.recipes[i].id); //Lance la recherche àà partir de 3 caractères ou affiche toutes les recettes si < 3
 
-      if (_recipes.recipes[i].name.includes(searchItem) || _recipes.recipes[i].appliance.includes(searchItem)) {
-        var newList = new _Recipes.Recipes(_recipes.recipes[i]);
-        console.log("Trouvé : " + newList);
-        recipesID.style.display = ""; //console.log(newList.diplayRecipe())
+      if (searchItem.length >= 3) {
+        //La recherche comprend le nom de la recette, les appareils et la description
+        if (_recipes.recipes[i].name.includes(searchItem) || _recipes.recipes[i].appliance.includes(searchItem) || _recipes.recipes[i].description.includes(searchItem)) {
+          var newList = new _Recipes.Recipes(_recipes.recipes[i]);
+          console.log("Trouvé : " + newList);
+          recipesID.style.display = "";
+        } else {
+          recipesID.style.display = "none";
+        }
       } else {
-        recipesID.style.display = "none";
+        recipesID.style.display = "";
       }
     }
   };
 
   input.addEventListener('input', globalSearch);
+
+  var ingredientsSearch = function ingredientsSearch() {
+    var searchIngredient, ingredientList, ElementSpan, text;
+    searchIngredient = ingredientInput.value;
+    ingredientList = document.getElementById('ingredients-list');
+    ElementSpan = ingredientList.getElementsByTagName('span');
+
+    for (var i = 0; i < ElementSpan.length; i++) {
+      text = ElementSpan[i].innerText || ElementSpan[i].textContent;
+
+      if (text.indexOf(searchIngredient) > -1) {
+        ElementSpan[i].style.display = "";
+      } else {
+        ElementSpan[i].style.display = "none";
+      }
+    }
+  };
+
+  ingredientInput.addEventListener('input', ingredientsSearch);
+
+  var appareilsSearch = function appareilsSearch() {
+    var searchInput, appareilsList, ElementSpan, text;
+    searchInput = appareilsInput.value;
+    appareilsList = document.getElementById('appareils-list');
+    ElementSpan = appareilsList.getElementsByTagName('span');
+
+    for (var i = 0; i < ElementSpan.length; i++) {
+      text = ElementSpan[i].innerText || ElementSpan[i].textContent;
+
+      if (text.indexOf(searchInput) > -1) {
+        ElementSpan[i].style.display = "";
+      } else {
+        ElementSpan[i].style.display = "none";
+      }
+    }
+  };
+
+  appareilsInput.addEventListener('input', appareilsSearch);
+
+  var ustensilesSearch = function ustensilesSearch() {
+    var searchInput, ustensilesList, ElementSpan, text;
+    searchInput = ustensilesInput.value;
+    ustensilesList = document.getElementById('ustensiles-list');
+    ElementSpan = ustensilesList.getElementsByTagName('span');
+
+    for (var i = 0; i < ElementSpan.length; i++) {
+      text = ElementSpan[i].innerText || ElementSpan[i].textContent;
+
+      if (text.indexOf(searchInput) > -1) {
+        ElementSpan[i].style.display = "";
+      } else {
+        ElementSpan[i].style.display = "none";
+      }
+    }
+  };
+
+  ustensilesInput.addEventListener('input', ustensilesSearch);
 }
-},{"../data/recipes":"data/recipes.js","../components/Recipes":"components/Recipes.js"}],"app.js":[function(require,module,exports) {
+},{"../data/recipes":"data/recipes.js","../components/Recipes":"components/Recipes.js","./dropdownLists":"utiles/dropdownLists.js"}],"app.js":[function(require,module,exports) {
 "use strict";
 
 var _Ingredients = require("./components/Ingredients");
@@ -1877,7 +1946,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62511" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49238" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
