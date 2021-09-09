@@ -59,7 +59,7 @@ h1 {
 .dropdown-toggle input { width: 85%; background-color: transparent; border: none; color: #ffff}
 .dropdown-toggle input::placeholder { color: #ffff; opacity: 1;}
 .onclick::placeholder {opacity: 0.5!important;}
-.dropdown-toggle input::focus-visible {outline:0px!important; box-shadow: none !important;}
+.dropdown-toggle input:focus-visible {outline:0px!important; box-shadow: none !important;}
 .search__input:focus { background-color: #E7E7E7;}
 
 .changeSize { width: 400px;}
@@ -100,6 +100,8 @@ h1 {
     justify-content: space-between;
     margin: 30px 0px;
 }
+
+#no-result {  display: none; }
 
 article {
     height: 385px;

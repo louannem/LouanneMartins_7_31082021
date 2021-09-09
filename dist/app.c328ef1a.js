@@ -1810,11 +1810,7 @@ function searchFunction() {
 
       if (searchItem.length >= 3) {
         //La recherche comprend le nom de la recette, les appareils et la description
-        if (_recipes.recipes[i].name.includes(searchItem) || _recipes.recipes[i].appliance.includes(searchItem) || _recipes.recipes[i].description.includes(searchItem)) {
-          var newList = new _Recipes.Recipes(_recipes.recipes[i]);
-          console.log("Trouvé : " + newList);
-          recipesID.style.display = "";
-        } else {
+        if (_recipes.recipes[i].name.includes(searchItem) || _recipes.recipes[i].appliance.includes(searchItem) || _recipes.recipes[i].description.includes(searchItem)) {} else {
           recipesID.style.display = "none";
         }
       } else {
@@ -1840,6 +1836,21 @@ function searchFunction() {
         ElementSpan[i].style.display = "none";
       }
     }
+
+    for (var j = 0; j < _recipes.recipes.length; j++) {
+      var recipesID = document.getElementById("recipe-" + _recipes.recipes[j].id);
+
+      for (var k = 0; k < _recipes.recipes[j].ingredients.length; k++) {
+        console.log(_recipes.recipes[j].ingredients[k]);
+
+        if (_recipes.recipes[j].ingredients[k].ingredient.includes(searchIngredient)) {
+          recipesID.style.display = "";
+          console.log(searchIngredient + " " + _recipes.recipes[j].ingredients[k]);
+        } else {
+          recipesID.style.display = "none";
+        }
+      }
+    }
   };
 
   ingredientInput.addEventListener('input', ingredientsSearch);
@@ -1859,6 +1870,16 @@ function searchFunction() {
         ElementSpan[i].style.display = "none";
       }
     }
+
+    for (var j = 0; j < _recipes.recipes.length; j++) {
+      var recipesID = document.getElementById("recipe-" + _recipes.recipes[j].id);
+
+      if (_recipes.recipes[j].appliance.includes(searchInput)) {
+        recipesID.style.display = "";
+      } else {
+        recipesID.style.display = "none";
+      }
+    }
   };
 
   appareilsInput.addEventListener('input', appareilsSearch);
@@ -1876,6 +1897,19 @@ function searchFunction() {
         ElementSpan[i].style.display = "";
       } else {
         ElementSpan[i].style.display = "none";
+      }
+    }
+
+    for (var j = 0; j < _recipes.recipes.length; j++) {
+      var recipesID = document.getElementById("recipe-" + _recipes.recipes[j].id);
+
+      for (var k = 0; k < _recipes.recipes[j].ustensils.length; k++) {
+        if (_recipes.recipes[j].ustensils[k].includes(searchInput)) {
+          console.log(_recipes.recipes[j].ustensils[k]);
+          recipesID.style.display = "";
+        } else {
+          recipesID.style.display = "none";
+        }
       }
     }
   };
