@@ -315,7 +315,7 @@ var recipes = [{
     "ingredient": "Citron Vert",
     "quantity": 5
   }, {
-    "ingredient": "Lait de Coco",
+    "ingredient": "Lait de coco",
     "quantity": 100,
     "unit": "ml"
   }],
@@ -1801,6 +1801,7 @@ function searchFunction() {
   var ingredientInput = document.getElementById('ingredient-input');
   var appareilsInput = document.getElementById('appareils-input');
   var ustensilesInput = document.getElementById('ustensiles-input');
+  var resultsArray = [];
 
   var globalSearch = function globalSearch(searchItem) {
     searchItem = input.value;
@@ -1837,20 +1838,18 @@ function searchFunction() {
       }
     }
 
+    var ingredientsArray = [];
+
     for (var j = 0; j < _recipes.recipes.length; j++) {
-      var recipesID = document.getElementById("recipe-" + _recipes.recipes[j].id);
-
       for (var k = 0; k < _recipes.recipes[j].ingredients.length; k++) {
-        console.log(_recipes.recipes[j].ingredients[k]);
-
         if (_recipes.recipes[j].ingredients[k].ingredient.includes(searchIngredient)) {
-          recipesID.style.display = "";
-          console.log(searchIngredient + " " + _recipes.recipes[j].ingredients[k]);
-        } else {
-          recipesID.style.display = "none";
-        }
+          var filteredRecipe = new _Recipes.Recipes(_recipes.recipes[j]);
+          ingredientsArray.push(filteredRecipe);
+        } else {}
       }
     }
+
+    console.log("Ingrédients : ", ingredientsArray);
   };
 
   ingredientInput.addEventListener('input', ingredientsSearch);
@@ -1871,15 +1870,16 @@ function searchFunction() {
       }
     }
 
-    for (var j = 0; j < _recipes.recipes.length; j++) {
-      var recipesID = document.getElementById("recipe-" + _recipes.recipes[j].id);
+    var appareilsArray = [];
 
+    for (var j = 0; j < _recipes.recipes.length; j++) {
       if (_recipes.recipes[j].appliance.includes(searchInput)) {
-        recipesID.style.display = "";
-      } else {
-        recipesID.style.display = "none";
-      }
+        var filteredRecipe = new _Recipes.Recipes(_recipes.recipes[j]);
+        appareilsArray.push(filteredRecipe);
+      } else {}
     }
+
+    console.log("Appareils : ", appareilsArray);
   };
 
   appareilsInput.addEventListener('input', appareilsSearch);
@@ -1900,18 +1900,18 @@ function searchFunction() {
       }
     }
 
-    for (var j = 0; j < _recipes.recipes.length; j++) {
-      var recipesID = document.getElementById("recipe-" + _recipes.recipes[j].id);
+    var ustensilesArray = [];
 
+    for (var j = 0; j < _recipes.recipes.length; j++) {
       for (var k = 0; k < _recipes.recipes[j].ustensils.length; k++) {
         if (_recipes.recipes[j].ustensils[k].includes(searchInput)) {
-          console.log(_recipes.recipes[j].ustensils[k]);
-          recipesID.style.display = "";
-        } else {
-          recipesID.style.display = "none";
-        }
+          var filteredRecipe = new _Recipes.Recipes(_recipes.recipes[j]);
+          ustensilesArray.push(filteredRecipe);
+        } else {}
       }
     }
+
+    console.log("Ustensiles : ", ustensilesArray);
   };
 
   ustensilesInput.addEventListener('input', ustensilesSearch);
@@ -1980,7 +1980,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49238" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57529" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

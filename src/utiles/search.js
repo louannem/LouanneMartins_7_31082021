@@ -9,6 +9,8 @@ export default function searchFunction(){
     let ingredientInput = document.getElementById('ingredient-input');
     let appareilsInput = document.getElementById('appareils-input');
     let ustensilesInput = document.getElementById('ustensiles-input');
+
+    let resultsArray = [];
     
     let globalSearch = (searchItem) => {
         searchItem = input.value;
@@ -44,17 +46,19 @@ export default function searchFunction(){
             } else { ElementSpan[i].style.display = "none"}
         }
 
-        for(let j = 0; j < recipes.length; j++) {
-            let recipesID = document.getElementById("recipe-"+ recipes[j].id);
- 
+        let ingredientsArray = [];
+        for(let j = 0; j < recipes.length; j++) { 
             for(let k = 0; k < recipes[j].ingredients.length; k++) {
-                console.log(recipes[j].ingredients[k])
                 if(recipes[j].ingredients[k].ingredient.includes(searchIngredient) ) {
-                    recipesID.style.display = "";
-                    console.log(searchIngredient + " " + recipes[j].ingredients[k])
-                } else {  recipesID.style.display = "none";   }
+                    let filteredRecipe = new Recipes(recipes[j]);
+                    ingredientsArray.push(filteredRecipe);
+                    
+                } else {  
+                                       
+                 }
             }
         }
+        console.log("Ingrédients : ", ingredientsArray);
     }
     ingredientInput.addEventListener('input', ingredientsSearch);
 
@@ -75,13 +79,15 @@ export default function searchFunction(){
         }
 
 
+        let appareilsArray = []
         for(let j = 0; j < recipes.length; j++) {
-            let recipesID = document.getElementById("recipe-"+ recipes[j].id);
-
+            
             if(recipes[j].appliance.includes(searchInput) ) {
-                recipesID.style.display = ""; 
-            } else {  recipesID.style.display = "none";  }
+                let filteredRecipe = new Recipes(recipes[j]);
+                appareilsArray.push(filteredRecipe);
+            } else {   }
         }
+        console.log("Appareils : ", appareilsArray)
     }
     appareilsInput.addEventListener('input', appareilsSearch);
     
@@ -101,16 +107,18 @@ export default function searchFunction(){
         }
 
 
+        let ustensilesArray = [];
         for(let j = 0; j < recipes.length; j++) {
-            let recipesID = document.getElementById("recipe-"+ recipes[j].id);
-
+           
             for(let k = 0; k < recipes[j].ustensils.length; k++) {
                 if(recipes[j].ustensils[k].includes(searchInput) ) {
-                    console.log(recipes[j].ustensils[k])
-                    recipesID.style.display = ""; 
-                } else {  recipesID.style.display = "none";  }
+                    let filteredRecipe = new Recipes(recipes[j]);
+                    ustensilesArray.push(filteredRecipe);
+                    
+                } else {   }
             }
         }
+        console.log("Ustensiles : ", ustensilesArray);
     }
     ustensilesInput.addEventListener('input', ustensilesSearch);
 
