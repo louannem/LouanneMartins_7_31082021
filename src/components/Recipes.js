@@ -1,9 +1,12 @@
-export class Recipes {
+export class Recipe {
     constructor(object) {
         this.name = object.name;
         this.time = object.time;
         this.description = object.description;
         this.id = object.id;
+        this.ingredients = object.ingredients;
+        this.appliance = object.appliance;
+        this.ustensils = object.ustensils;
     }
 
     diplayRecipe() {

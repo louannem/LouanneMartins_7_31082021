@@ -1,4 +1,4 @@
-class Ingredients {
+class Ingredient {
     constructor(object) {
         if(object.ingredient && !object.unit && !object.quantity) {
             return new NoUnitAndQuantity(object)
@@ -69,4 +69,4 @@ class NoUnitAndQuantity {
     }
 }
 
-export { Ingredients, NoQuantity, NoUnit, UnitAndQuantity, NoUnitAndQuantity}
+export { Ingredient, NoQuantity, NoUnit, UnitAndQuantity, NoUnitAndQuantity}

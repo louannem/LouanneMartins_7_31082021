@@ -1,14 +1,26 @@
 import { recipes } from "../data/recipes";
+import { Ingredient } from "../components/Ingredients";
+
 
 export default function ingredientsList() {
     let ingredientArray = [];
     let ustensilesArray = [];
     let appareilsArray = [];
+
     for(let i = 0; i<recipes.length; i++) {
+        for(let j = 0; j < recipes[i].ingredients.length; j ++) {
+            let ingredientsBlock = document.getElementById(recipes[i].id);
+
+            let ingredientsList = new Ingredient(recipes[i].ingredients[j]);
+            ingredientsBlock.innerHTML += ingredientsList.displayIngredient();
+        }
+
+
         for(let j = 0; j < recipes[i].ingredients.length; j ++) {   ingredientArray.push(recipes[i].ingredients[j].ingredient); }
         for(let k = 0; k < recipes[i].ustensils.length; k++) {  ustensilesArray.push(recipes[i].ustensils[k]);  }
-        for(let l = 0; l < recipes[i].appliance.length; l++)  {appareilsArray.push(recipes[i].appliance);} 
+        appareilsArray.push(recipes[i].appliance); 
     }
+
 
 
     //Gets rid of duplicates
@@ -21,7 +33,8 @@ export default function ingredientsList() {
     let appareilsBlock = document.getElementById('appareils-list');
 
 
-    for(let i = 0; i <= 30; i++) {
+    let maxUstensiles = 30;
+    for(let i = 0; i <= maxUstensiles; i++) {
         let ingredientsWrapper = document.createElement('span');
         let ustensilesWrapper = document.createElement('span');
 
@@ -37,5 +50,5 @@ export default function ingredientsList() {
         appareilsBlock.appendChild(appareilsWrapper);
         appareilsWrapper.innerText += appareilsDuplicate[i];
     }
-
+        
 } 
