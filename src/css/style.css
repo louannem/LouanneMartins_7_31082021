@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+
+:root {
+    --blue : #3282F7;
+    --green : #68D9A4;
+    --red: #ED6454;
+}
+
+.blue { background-color: var(--blue);}
+.green { background-color: var(--green);}
+.red { background-color: var(--red);}
+
+/*Reset Bootstraps styles*/
+.form-control:focus { outline: 0px; border: none; box-shadow: none;}
+.dropdown-toggle { border: none; padding: 1em;}
+.red:hover, .red:focus, .red:active, .show > .red { background-color: var(--red)!important; box-shadow: none;}
+.green:hover, .green:focus, .green:active, .show > .green { background-color: var(--green)!important; box-shadow: none;}
+.blue:hover, .blue:focus, .blue:active, .show > .blue { background-color: var(--blue)!important; box-shadow: none;}
+
+.show > .btn-secondary.dropdown-toggle:focus {
+    box-shadow: none;
+}
+.dropdown-menu { border: none; color: #ffff; transform: translate3d(0px, 65px, 0px)!important; border-radius: 0px 0px 5px 5px;}
+.dropdown-toggle, .dropdown-menu { width: 170px;}
+
+body { padding: 0 1em; box-sizing: border-box;}
+
+textarea:focus, input:focus{
+    outline: none;
+}
+
+ul { list-style: none; padding-left: 0;}
+
+header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 50px 0px;
+}
+
+h1 {
+    font-family: DM Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 36px;
+    line-height: 47px;
+    text-align: center;
+    color: #D04F4F;
+}
+
+.search__input {
+    height: 69px;
+    background-color: #E7E7E7;
+    border: none;
+}
+
+.dropdown-toggle input { width: 85%; background-color: transparent; border: none; color: #ffff}
+.dropdown-toggle input::placeholder { color: #ffff; opacity: 1;}
+.onclick::placeholder {opacity: 0.5!important;}
+.dropdown-toggle input:focus-visible {outline:0px!important; box-shadow: none !important;}
+.search__input:focus { background-color: #E7E7E7;}
+
+.changeSize { width: 400px;}
+
+.search__button {
+    width: 69px;
+    background-color: #E7E7E7;
+    border: none;
+    padding: 0;
+}
+
+.search__button svg { height: 32px; }
+.btn-outline-secondary:hover { background-color: #E7E7E7; color: #000000;}
+
+.grid-list {
+    display: grid!important;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(10, 35px);
+    padding: 1em;
+    box-sizing: border-box;
+}
+
+.grid-list span { line-height: 1em; cursor: pointer;}
+
+#added-tags { min-height: 0px; display: flex; align-items: center; margin-bottom: 1rem;}
+.added-tag { margin: 10px 10px; cursor: pointer; border-radius: 5px; padding: 10px; height: 45px; min-width: 107px; color: white; text-align: center; }
+
+.ingredient-tag { background-color: #3282F7;}
+.ustentil-tag { background-color: #ED6454; }
+.appliance-tag { background-color: #68D9A4;}
+
+.grid-list-appareils {
+    display: grid!important;
+    grid-template-columns: 100%;
+    grid-template-rows: repeat(10, 30px);
+    padding: 1em;
+    box-sizing: border-box;   
+}
+
+
+#search-results { 
+    display: grid;
+    grid-template-columns: repeat(3, 380px);
+    grid-template-rows: auto;
+    justify-content: space-between;
+    margin: 30px 0px;
+}
+
+#no-result {  display: none; }
+
+article {
+    height: 385px;
+    width: 400px;
+    background-color: #E7E7E7;
+    border-radius: 5px;
+    margin: 20px 0px
+}
+
+article .recipe__image { height: 160px; width: 100%; background-color: #C7BEBE; border-radius: 5px 5px 0px 0px;}
+
+.recipe__info { padding: 1em; box-sizing: border-box;}
+
+.recipe__title { display: flex; justify-content: space-between; align-items: center;}
+.recipe__title h2, .recipe__title span { 
+    font-family: Lato;
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: 400;
+    margin: 0;
+}
+
+.recipe__time { display: flex; align-items: center; min-width: 70px;}
+.recipe__time img { margin : 0px 5px}
+
+.recipe__meta { display: flex; font-family: Lato; font-size: 12px; margin-top: 20px;}
+.recipe__meta > div { width: 50%;}
+.recipe__meta p { 
+    max-height: 100%; 
+    line-height: 12px; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 9;
+    -webkit-box-orient: vertical; }
