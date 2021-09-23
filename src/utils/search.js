@@ -3,11 +3,12 @@ import { Recipe } from "../components/Recipe";
 import ingredientsList from "./dropdownLists";
 import { Ingredient } from "../components/Ingredient";
 
-export let filteredObjt;
+export let resultsArray = [];
 export default function searchFunction() {
 
     let recipesList = [];
     let recipesArray = [];
+    
     let displayDefault = () => {
 
         for(let i = 0; i < recipes.length; i++) {
@@ -25,15 +26,18 @@ export default function searchFunction() {
     for(let i = 0; i < recipes.length; i ++) { recipesSearch.push(recipes[i])}
         input.addEventListener ('keyup', () => {
             const searchInput = input.value.toLowerCase();
-            filteredObjt = recipesSearch.filter(recipe => {
+            const filteredObjt = recipesSearch.filter(recipe => {
                 return(
                     recipe.name.toLowerCase().includes(searchInput) ||
                     recipe.description.toLowerCase().includes(searchInput) 
                 )
             });
 
+            for(let recipes of filteredObjt) { resultsArray.push(recipes)}
+            
             for(let i = 0; i < recipes.length; i++) {
                 for(let j = 0; j< filteredObjt.length; j++) {
+                    //resultsArray.push(filteredObjt[i]);
                     if(recipes[i].id == filteredObjt[j].id) { 
                         displayRecipes(filteredObjt);
 
@@ -45,13 +49,14 @@ export default function searchFunction() {
                                 ingredientsBlock.innerHTML += ingredientsList.displayIngredient();
                             }
                         } 
-                    }  else  { document.getElementById("recipe-"+recipes[i].id).style.display=""; }
+                    }  else  { /*document.getElementById("recipe-"+recipes[i].id).style.display="";*/ }
                 }
-            }            
+            }  
+
+            return resultsArray          
         });
-    
 
-
+        
 
 
     const displayRecipes = (recipes) => {
