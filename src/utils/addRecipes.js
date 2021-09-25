@@ -1,4 +1,5 @@
 import { Ingredient } from "../components/Ingredient";
+import filterFunction from "./filters";
 
 export default function addRecipes (recipes){
     const displayRecipes = () => {
@@ -34,7 +35,7 @@ export default function addRecipes (recipes){
             document.getElementById('search-results').innerHTML = htmlString;
     };
 
-    displayRecipes(recipes)
+    displayRecipes(recipes);
 
 
     const addIngredients = () => {
@@ -47,7 +48,42 @@ export default function addRecipes (recipes){
             }
         } 
     }
+    addIngredients(recipes);
 
-    addIngredients(recipes)
+    const updateDropdowns = () => {
+        let ingrList = [] ;
+        let appList = [];
+        let ustList = [];
+
+        //Récupère les listes mises à jour
+        for(let i = 0; i < recipes.length; i++) { 
+            appList.push(recipes[i].appliance)
+            for(let j = 0; j < recipes[i].ingredients.length; j++) { ingrList.push(recipes[i].ingredients[j].ingredient);}
+            for(let k = 0; k < recipes[i].ustensils.length; k++) { ustList.push(recipes[i].ustensils[k]) }
+        }
+        let removeDupl = (list) => {
+            return list.filter(function(elem, index, self) {   return index === self.indexOf(elem); })
+        }
+        let ingrDupl = removeDupl(ingrList); let appDupl = removeDupl(appList); let ustDupl = removeDupl(ustList);
+
+        //Supprime les anciennes listes
+        let oldLst = document.querySelectorAll('.dropdown-menu  span');
+        for(let list of oldLst) { list.style.display = "none"} 
+
+        //Réinjecte les listes
+        let newList = (list, parentId) => {
+            for(let elem of list) { 
+                let parentBlock = document.getElementById(parentId);
+                let spanWrapper = document.createElement('span');
+                parentBlock.appendChild(spanWrapper);
+                spanWrapper.innerText += elem
+            }
+        }
+        newList(ingrDupl, 'ingredients-list') ; newList(appDupl, 'appareils-list', newList(ustDupl, 'ustensiles-list'));
+        //Ré-applique la fonction de filtre
+        filterFunction();
+    
+    }
+    updateDropdowns(recipes)
 
 }

@@ -8,13 +8,13 @@ export default function ingredientsList() {
     let appareilsArray = [];
 
     for(let i = 0; i<recipes.length; i++) {
+        //Affiche les ingradients de chaque recette
         for(let j = 0; j < recipes[i].ingredients.length; j ++) {
             let ingredientsBlock = document.getElementById(recipes[i].id);
 
             let ingredientsList = new Ingredient(recipes[i].ingredients[j]);
             ingredientsBlock.innerHTML += ingredientsList.displayIngredient();
         }
-
 
         for(let j = 0; j < recipes[i].ingredients.length; j ++) {   ingredientArray.push(recipes[i].ingredients[j].ingredient); }
         for(let k = 0; k < recipes[i].ustensils.length; k++) {  ustensilesArray.push(recipes[i].ustensils[k]);  }
@@ -24,9 +24,12 @@ export default function ingredientsList() {
 
 
     //Gets rid of duplicates
-    let ingredientDuplicate = ingredientArray.filter(function(elem, index, self) {   return index === self.indexOf(elem); })
-    let ustensilesDuplicate = ustensilesArray.filter(function(elem, index, self) {   return index === self.indexOf(elem); });
-    let appareilsDuplicate = appareilsArray.filter(function(elem, index, self) {   return index === self.indexOf(elem); });
+    let removeDupl = (objectsArray) => {
+       return objectsArray.filter(function(elem, index, self) {   return index === self.indexOf(elem); })
+    }
+    let ingredientDuplicate = removeDupl(ingredientArray);
+    let ustensilesDuplicate = removeDupl(ustensilesArray);
+    let appareilsDuplicate = removeDupl(appareilsArray);
 
     let ingredientsBlock = document.getElementById('ingredients-list');
     let ustensilesBlock = document.getElementById('ustensiles-list');
