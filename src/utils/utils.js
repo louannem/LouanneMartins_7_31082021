@@ -1,4 +1,3 @@
-import { Recipe } from "../components/Recipe";
 
  export default function clearPage(newRecipes) {
      let recipeRemove = () => {

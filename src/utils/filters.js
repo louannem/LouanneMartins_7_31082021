@@ -3,18 +3,15 @@ import {resultsArray} from "../utils/search";
 import clearPage from "../utils/utils";
 import addRecipes from "../utils/addRecipes";
 import addIngredients from "../utils/addRecipes";
-import updateDropdowns from "../utils/addRecipes"
+import updateDropdowns from "../utils/addRecipes";
+import removeTag from "../utils/removeTag"
 
 
 
-let filtersArray = [];
+export let ingredientsOnly2 = [], tagList, filtersArray = [];
 
-
-export default function filterFunction () {
-
-    
+export default function filterFunction () {    
     let tags = document.querySelectorAll('.dropdown-menu span');
-    let addedTags = document.querySelectorAll('.added-tag');
     let ingredientsArray = [];
     let appareilsArray = [];
     let ustensilsArray = [];
@@ -25,8 +22,7 @@ export default function filterFunction () {
         for(let k = 0; k < recipes[j].appliance.length; k++) { appareilsArray.push(recipes[j].appliance) }
         for(let k = 0; k < recipes[j].ustensils.length; k++) { ustensilsArray.push(recipes[j].ustensils[k]) }        
     }
-
-
+    
    
     for(let i = 0; i < tags.length; i++) {
         let addTag = () => {
@@ -39,12 +35,15 @@ export default function filterFunction () {
             const filteredRecipe = resultsArray.filter(function(elem, index, self) {   return index === self.indexOf(elem); })
 
 
+
             //Adds the new tag 
             let newTag = document.createElement('span');
             newTag.classList.add('added-tag');
             newTag.innerText = tags[i].innerText;
             document.getElementById('added-tags').appendChild(newTag);
-            addedTags = document.querySelectorAll('.added-tag');
+            let addedTags = document.querySelectorAll('.added-tag');
+            tagList = document.getElementsByClassName('added-tag');
+       
 
             
 
@@ -83,52 +82,65 @@ export default function filterFunction () {
              //Filtre les résultats selon les nouvelles listes de filtres
              //Départ avant l'ajout d'un tag : toutes les listes de filtres sont vides
 
+///////////////////Filtre avec liste unique////////////////////////////////////////////////////////////
+             if(filtersArray.length > 0) {
+                const filterAll = filteredRecipe.filter((recipe) => {
+                    return (recipe.ingredients.some((ingredients) => {
+                        return filtersArray.every((tag) => {
+                            return tag == ingredients.ingredient
+                        })
+                    }) ||
+                    recipe.ustensils.some((ustensils) => {
+                        return filtersArray.every((tag) => {
+                            return tag == ustensils
+                        })
+                    }) ||
+                    filtersArray.every((tag) => {
+                        return tag == recipe.appliance
+                    })
+                    )
+                })
+                clearPage(filterAll); addRecipes(filterAll); addIngredients(filterAll); updateDropdowns(filterAll); ifEmpty(filterAll);
+               }
+             
+
+///////////////////////Filtres avec listes séparées/////////////////////////////////////////////////////////////
+
                //Cas 1 : si appareils et ustensils sont vide, on teste les ingrédients
-               if(appliancesFilters.length == 0 && ustensilsFilters.length == 0) {
+            /*   if(appliancesFilters.length == 0 && ustensilsFilters.length == 0) {
                 let ingredientsOnly = filteredRecipe.filter((recipe) => {
                     return recipe.ingredients.some((ingredients) => {
                          return filtersArray.every((tag) => {
+                             if(tag == ingredients.ingredient) { ingredientsOnly2.push(recipe)}
                              return tag == ingredients.ingredient
                          })
                      })            
-                });         
-                clearPage(ingredientsOnly);
-                addRecipes(ingredientsOnly);
-                addIngredients(ingredientsOnly);
-                updateDropdowns(ingredientsOnly);
-                ifEmpty(ingredientsOnly)
+                });        
+                clearPage(ingredientsOnly); addRecipes(ingredientsOnly); addIngredients(ingredientsOnly); updateDropdowns(ingredientsOnly); ifEmpty(ingredientsOnly)
                } 
 
                //Cas 2 : si ingrédients et appareils sont vides, on teste les ustensiles
                else if(ingredientsFilters.length == 0 && appliancesFilters.length ==0) {
                 let ustensilsOnly = filteredRecipe.filter((recipe) => {
-                    return recipe.ustensils.every((ustensils) => {
+                    return recipe.ustensils.some((ustensils) => {
                          return filtersArray.some((tag) => {
                              return tag == ustensils
                          })
                      })
                 
                 });  
-               
-                clearPage(ustensilsOnly);        
-                addRecipes(ustensilsOnly);
-                addIngredients(ustensilsOnly);
-                ifEmpty(ustensilsOnly);
+                clearPage(ustensilsOnly);   addRecipes(ustensilsOnly); addIngredients(ustensilsOnly); updateDropdowns(ustensilsOnly) ;ifEmpty(ustensilsOnly);
                } 
 
 
                //Cas 3 : si ingrédients et ustensils sont vides, on teste les appareils
                else if(ingredientsFilters.length == 0 && ustensilsFilters.length == 0) {
-                const appliancesOnly = filteredRecipe.every((recipe) => {
-                    return filtersArray.some((tag) => {
+                const appliancesOnly = filteredRecipe.filter((recipe) => {
+                    return filtersArray.every((tag) => {
                       return tag === recipe.appliance 
                     });
                   });
-                 
-                 clearPage(appliancesOnly);
-                 addRecipes(appliancesOnly);
-                 addIngredients(appliancesOnly);
-                 ifEmpty(appliancesOnly);
+                clearPage(appliancesOnly); addRecipes(appliancesOnly); addIngredients(appliancesOnly);  //ifEmpty(appliancesOnly);
                }
 
                //Cas 4 : si ingrédients est vide, on teste les appareils et ustensils
@@ -145,11 +157,7 @@ export default function filterFunction () {
                         })
                     )
                 });
-                console.log("Appareils et ustensils : ", appAndUst) ;
-                clearPage(appAndUst);
-                addRecipes(appAndUst);
-                addIngredients(appAndUst);
-                ifEmpty(appAndUst);
+                clearPage(appAndUst); addRecipes(appAndUst); addIngredients(appAndUst); updateDropdowns(appAndUst); ifEmpty(appAndUst);
                }
             
 
@@ -169,11 +177,8 @@ export default function filterFunction () {
                         })
                     )
                 });
-                console.log("Ustensils et ingrédients : ", ustpAndIngr) ;
-                clearPage(ustpAndIngr);
-                addRecipes(ustpAndIngr);
-                addIngredients(ustpAndIngr);
-                ifEmpty(ustpAndIngr);
+
+                clearPage(ustpAndIngr); addRecipes(ustpAndIngr); addIngredients(ustpAndIngr); updateDropdowns(ustpAndIngr); ifEmpty(ustpAndIngr);
                }
                
 
@@ -192,10 +197,7 @@ export default function filterFunction () {
                        )
                    })
 
-                    clearPage(ingrAndApp);
-                    addRecipes(ingrAndApp);
-                    addIngredients(ingrAndApp);
-                    ifEmpty(ingrAndApp);
+                    clearPage(ingrAndApp); addRecipes(ingrAndApp); addIngredients(ingrAndApp); updateDropdowns(ingrAndApp); ifEmpty(ingrAndApp);
                }
 
 
@@ -217,21 +219,12 @@ export default function filterFunction () {
                     })
                     )
                 })
-                console.log("Recettes filtrées : ", filterAll) 
-                clearPage(filterAll);
-                addRecipes(filterAll);
-                addIngredients(filterAll);
-                ifEmpty(filterAll);
-               }               
-
-        }
-        tags[i].addEventListener('click', addTag);
+                clearPage(filterAll); addRecipes(filterAll); addIngredients(filterAll); updateDropdowns(filterAll); ifEmpty(filterAll);
+               }    */
+                    
+               removeTag(tagList);
+            }
+            tags[i].addEventListener('click', addTag);
     }
 
-
-    let removeTag = () => {
-        let addedTags = document.querySelectorAll('#added-tags .added-tag');
-        console.log(addedTags)
-    }
-    for(let i = 0; i < addedTags.length; i++) { addedTags[i].addEventListener('click', removeTag)}
 }

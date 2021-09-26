@@ -1987,8 +1987,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = clearPage;
 
-var _Recipe = require("../components/Recipe");
-
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -2016,7 +2014,7 @@ function clearPage(newRecipes) {
 
   recipeRemove();
 }
-},{"../components/Recipe":"components/Recipe.js"}],"utils/addRecipes.js":[function(require,module,exports) {
+},{}],"utils/addRecipes.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2131,13 +2129,94 @@ function addRecipes(recipes) {
 
   updateDropdowns(recipes);
 }
-},{"../components/Ingredient":"components/Ingredient.js","./filters":"utils/filters.js"}],"utils/filters.js":[function(require,module,exports) {
+},{"../components/Ingredient":"components/Ingredient.js","./filters":"utils/filters.js"}],"utils/removeTag.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = removeTag;
+
+var _recipes = require("../data/recipes");
+
+var _filters = require("./filters");
+
+var _addRecipes = _interopRequireDefault(require("../utils/addRecipes"));
+
+var _utils = _interopRequireDefault(require("./utils"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//Importation des listes générées par les filtres
+function removeTag(listName) {
+  var _loop = function _loop(i) {
+    //Supprime les tags
+    listName[i].addEventListener('click', function () {
+      //Trouver l'élément dans la liste de filtres
+      for (var j = 0; j < _filters.filtersArray.length; j++) {
+        //Identifie le filtre dans la liste de filtre et le supprime
+        if (listName[i].innerHTML == _filters.filtersArray[j]) {
+          _filters.filtersArray.splice(j, 1);
+        } //Si la liste = 0, on re-met toutes les recettes à partir de l'input
+
+
+        if (_filters.filtersArray.length == 0) {
+          (function () {
+            (0, _utils.default)();
+            var recipesSearch = [];
+
+            for (var _i = 0; _i < _recipes.recipes.length; _i++) {
+              recipesSearch.push(_recipes.recipes[_i]);
+            }
+
+            var search = document.getElementById('search-input').value.toLowerCase();
+            var filteredObjt = recipesSearch.filter(function (recipe) {
+              return recipe.name.toLowerCase().includes(search) || recipe.description.toLowerCase().includes(search);
+            });
+            (0, _addRecipes.default)(filteredObjt);
+            (0, _addRecipes.default)(filteredObjt);
+          })();
+        } else {
+          //Sinon on re-filtre avec la liste   
+          var filterAll = filteredRecipe.filter(function (recipe) {
+            return recipe.ingredients.some(function (ingredients) {
+              return _filters.filtersArray.every(function (tag) {
+                return tag == ingredients.ingredient;
+              });
+            }) || recipe.ustensils.some(function (ustensils) {
+              return _filters.filtersArray.every(function (tag) {
+                return tag == ustensils;
+              });
+            }) || _filters.filtersArray.every(function (tag) {
+              return tag == recipe.appliance;
+            });
+          });
+          (0, _utils.default)(filterAll);
+          (0, _addRecipes.default)(filterAll);
+          (0, _addRecipes.default)(filterAll);
+          updateDropdowns(filterAll);
+          ifEmpty(filterAll);
+        }
+      } //Supprime le tag cliqué
+
+
+      listName[i].remove();
+    });
+  };
+
+  //Récupère la liste de tags
+  for (var i = 0; i < listName.length; i++) {
+    _loop(i);
+  }
+}
+},{"../data/recipes":"data/recipes.js","./filters":"utils/filters.js","../utils/addRecipes":"utils/addRecipes.js","./utils":"utils/utils.js"}],"utils/filters.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = filterFunction;
+exports.filtersArray = exports.tagList = exports.ingredientsOnly2 = void 0;
 
 var _recipes = require("../data/recipes");
 
@@ -2147,6 +2226,8 @@ var _utils = _interopRequireDefault(require("../utils/utils"));
 
 var _addRecipes = _interopRequireDefault(require("../utils/addRecipes"));
 
+var _removeTag = _interopRequireDefault(require("../utils/removeTag"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
@@ -2155,11 +2236,15 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-var filtersArray = [];
+var ingredientsOnly2 = [],
+    tagList,
+    filtersArray = [];
+exports.filtersArray = filtersArray;
+exports.tagList = tagList;
+exports.ingredientsOnly2 = ingredientsOnly2;
 
 function filterFunction() {
   var tags = document.querySelectorAll('.dropdown-menu span');
-  var addedTags = document.querySelectorAll('.added-tag');
   var ingredientsArray = [];
   var appareilsArray = [];
   var ustensilsArray = []; //Crée les listes comparatives pour ajouter les filtres séparemment
@@ -2194,23 +2279,24 @@ function filterFunction() {
       newTag.classList.add('added-tag');
       newTag.innerText = tags[i].innerText;
       document.getElementById('added-tags').appendChild(newTag);
-      addedTags = document.querySelectorAll('.added-tag'); //Ajout des classes personnalisées
+      var addedTags = document.querySelectorAll('.added-tag');
+      exports.tagList = tagList = document.getElementsByClassName('added-tag'); //Ajout des classes personnalisées
 
-      for (var _i2 = 0; _i2 < _recipes.recipes.length; _i2++) {
-        for (var _j = 0; _j < _recipes.recipes[_i2].ingredients.length; _j++) {
-          if (_recipes.recipes[_i2].ingredients[_j].ingredient == newTag.textContent) {
+      for (var _i = 0; _i < _recipes.recipes.length; _i++) {
+        for (var _j = 0; _j < _recipes.recipes[_i].ingredients.length; _j++) {
+          if (_recipes.recipes[_i].ingredients[_j].ingredient == newTag.textContent) {
             newTag.classList.add('ingredient-tag');
           }
         }
 
-        for (var _k3 = 0; _k3 < _recipes.recipes[_i2].ustensils.length; _k3++) {
-          if (_recipes.recipes[_i2].ustensils[_k3] == newTag.textContent) {
+        for (var _k3 = 0; _k3 < _recipes.recipes[_i].ustensils.length; _k3++) {
+          if (_recipes.recipes[_i].ustensils[_k3] == newTag.textContent) {
             newTag.classList.add('ustentil-tag');
           }
         }
 
-        for (var l = 0; l < _recipes.recipes[_i2].appliance.length; l++) {
-          if (_recipes.recipes[_i2].appliance == newTag.textContent) {
+        for (var l = 0; l < _recipes.recipes[_i].appliance.length; l++) {
+          if (_recipes.recipes[_i].appliance == newTag.textContent) {
             newTag.classList.add('appliance-tag');
           }
         }
@@ -2257,116 +2343,138 @@ function filterFunction() {
         }
       }; //Filtre les résultats selon les nouvelles listes de filtres
       //Départ avant l'ajout d'un tag : toutes les listes de filtres sont vides
-      //Cas 1 : si appareils et ustensils sont vide, on teste les ingrédients
+      ///////////////////Filtre avec liste unique////////////////////////////////////////////////////////////
 
 
-      if (appliancesFilters.length == 0 && ustensilsFilters.length == 0) {
-        var ingredientsOnly = filteredRecipe.filter(function (recipe) {
+      if (filtersArray.length > 0) {
+        var filterAll = filteredRecipe.filter(function (recipe) {
           return recipe.ingredients.some(function (ingredients) {
             return filtersArray.every(function (tag) {
               return tag == ingredients.ingredient;
             });
-          });
-        });
-        (0, _utils.default)(ingredientsOnly);
-        (0, _addRecipes.default)(ingredientsOnly);
-        (0, _addRecipes.default)(ingredientsOnly);
-        (0, _addRecipes.default)(ingredientsOnly);
-        ifEmpty(ingredientsOnly);
-      } //Cas 2 : si ingrédients et appareils sont vides, on teste les ustensiles
-      else if (ingredientsFilters.length == 0 && appliancesFilters.length == 0) {
-        var ustensilsOnly = filteredRecipe.filter(function (recipe) {
-          return recipe.ustensils.every(function (ustensils) {
-            return filtersArray.some(function (tag) {
-              return tag == ustensils;
-            });
-          });
-        });
-        (0, _utils.default)(ustensilsOnly);
-        (0, _addRecipes.default)(ustensilsOnly);
-        (0, _addRecipes.default)(ustensilsOnly);
-        ifEmpty(ustensilsOnly);
-      } //Cas 3 : si ingrédients et ustensils sont vides, on teste les appareils
-      else if (ingredientsFilters.length == 0 && ustensilsFilters.length == 0) {
-        var appliancesOnly = filteredRecipe.every(function (recipe) {
-          return filtersArray.some(function (tag) {
-            return tag === recipe.appliance;
-          });
-        });
-        (0, _utils.default)(appliancesOnly);
-        (0, _addRecipes.default)(appliancesOnly);
-        (0, _addRecipes.default)(appliancesOnly);
-        ifEmpty(appliancesOnly);
-      } //Cas 4 : si ingrédients est vide, on teste les appareils et ustensils
-      else if (ingredientsFilters.length == 0) {
-        var appAndUst = filteredRecipe.filter(function (recipe) {
-          return recipe.ustensils.some(function (ustensils) {
-            return filtersArray.some(function (tag) {
-              return ustensils == tag;
-            });
-          }) && filtersArray.some(function (tag) {
-            return recipe.appliance == tag;
-          });
-        });
-        console.log("Appareils et ustensils : ", appAndUst);
-        (0, _utils.default)(appAndUst);
-        (0, _addRecipes.default)(appAndUst);
-        (0, _addRecipes.default)(appAndUst);
-        ifEmpty(appAndUst);
-      } //Cas 5 : si appareils est vide, on teste les ingrédients et les ustensils
-      else if (appliancesFilters.length == 0) {
-        var ustpAndIngr = filteredRecipe.filter(function (recipe) {
-          return recipe.ingredients.some(function (ingredients) {
-            return filtersArray.some(function (tag) {
-              return ingredients.ingredient == tag;
-            });
-          }) && recipe.ustensils.some(function (ustensils) {
-            return filtersArray.some(function (tag) {
-              return ustensils == tag;
-            });
-          });
-        });
-        console.log("Ustensils et ingrédients : ", ustpAndIngr);
-        (0, _utils.default)(ustpAndIngr);
-        (0, _addRecipes.default)(ustpAndIngr);
-        (0, _addRecipes.default)(ustpAndIngr);
-        ifEmpty(ustpAndIngr);
-      } //Cas 6 : si ustensils est vide, on teste les ingrédients et les appareils
-      else if (ustensilsFilters.length == 0) {
-        var ingrAndApp = filteredRecipe.filter(function (recipe) {
-          return recipe.ingredients.some(function (ingredients) {
-            return filtersArray.some(function (tag) {
-              return ingredients.ingredient.includes(tag);
-            });
-          }) && filtersArray.some(function (tag) {
-            return tag == recipe.appliance;
-          });
-        });
-        (0, _utils.default)(ingrAndApp);
-        (0, _addRecipes.default)(ingrAndApp);
-        (0, _addRecipes.default)(ingrAndApp);
-        ifEmpty(ingrAndApp);
-      } //Cas 7 : aucune liste n'est vide
-      else if (ingredientsFilters.length > 0 && appliancesFilters > 0 && ustensilsFilters > 0) {
-        var filterAll = filteredRecipe.filter(function (recipe) {
-          return recipe.ingredients.some(function (ingredients) {
-            return filtersArray.some(function (tag) {
-              return tag == ingredients.ingredient;
-            });
           }) || recipe.ustensils.some(function (ustensils) {
-            return filtersArray.some(function (tag) {
+            return filtersArray.every(function (tag) {
               return tag == ustensils;
             });
-          }) || filtersArray.some(function (tag) {
+          }) || filtersArray.every(function (tag) {
             return tag == recipe.appliance;
           });
         });
-        console.log("Recettes filtrées : ", filterAll);
         (0, _utils.default)(filterAll);
         (0, _addRecipes.default)(filterAll);
         (0, _addRecipes.default)(filterAll);
+        (0, _addRecipes.default)(filterAll);
         ifEmpty(filterAll);
-      }
+      } ///////////////////////Filtres avec listes séparées/////////////////////////////////////////////////////////////
+      //Cas 1 : si appareils et ustensils sont vide, on teste les ingrédients
+
+      /*   if(appliancesFilters.length == 0 && ustensilsFilters.length == 0) {
+          let ingredientsOnly = filteredRecipe.filter((recipe) => {
+              return recipe.ingredients.some((ingredients) => {
+                   return filtersArray.every((tag) => {
+                       if(tag == ingredients.ingredient) { ingredientsOnly2.push(recipe)}
+                       return tag == ingredients.ingredient
+                   })
+               })            
+          });        
+          clearPage(ingredientsOnly); addRecipes(ingredientsOnly); addIngredients(ingredientsOnly); updateDropdowns(ingredientsOnly); ifEmpty(ingredientsOnly)
+         } 
+           //Cas 2 : si ingrédients et appareils sont vides, on teste les ustensiles
+         else if(ingredientsFilters.length == 0 && appliancesFilters.length ==0) {
+          let ustensilsOnly = filteredRecipe.filter((recipe) => {
+              return recipe.ustensils.some((ustensils) => {
+                   return filtersArray.some((tag) => {
+                       return tag == ustensils
+                   })
+               })
+          
+          });  
+          clearPage(ustensilsOnly);   addRecipes(ustensilsOnly); addIngredients(ustensilsOnly); updateDropdowns(ustensilsOnly) ;ifEmpty(ustensilsOnly);
+         } 
+             //Cas 3 : si ingrédients et ustensils sont vides, on teste les appareils
+         else if(ingredientsFilters.length == 0 && ustensilsFilters.length == 0) {
+          const appliancesOnly = filteredRecipe.filter((recipe) => {
+              return filtersArray.every((tag) => {
+                return tag === recipe.appliance 
+              });
+            });
+          clearPage(appliancesOnly); addRecipes(appliancesOnly); addIngredients(appliancesOnly);  //ifEmpty(appliancesOnly);
+         }
+           //Cas 4 : si ingrédients est vide, on teste les appareils et ustensils
+         else if(ingredientsFilters.length == 0) {
+          const appAndUst = filteredRecipe.filter((recipe) => {
+              return(
+                  recipe.ustensils.some(ustensils => {
+                      return filtersArray.some(tag => {
+                          return ustensils == tag
+                      })
+                  }) &&
+                  filtersArray.some(tag => {
+                      return recipe.appliance == tag
+                  })
+              )
+          });
+          clearPage(appAndUst); addRecipes(appAndUst); addIngredients(appAndUst); updateDropdowns(appAndUst); ifEmpty(appAndUst);
+         }
+      
+           //Cas 5 : si appareils est vide, on teste les ingrédients et les ustensils
+         else if (appliancesFilters.length == 0) {
+          const ustpAndIngr = filteredRecipe.filter((recipe) => {
+              return(
+                  recipe.ingredients.some(ingredients => {
+                      return filtersArray.some(tag => {
+                          return ingredients.ingredient == tag
+                      })
+                  }) &&
+                  recipe.ustensils.some(ustensils => {
+                      return filtersArray.some(tag => {
+                          return ustensils == tag
+                      })
+                  })
+              )
+          });
+            clearPage(ustpAndIngr); addRecipes(ustpAndIngr); addIngredients(ustpAndIngr); updateDropdowns(ustpAndIngr); ifEmpty(ustpAndIngr);
+         }
+         
+           //Cas 6 : si ustensils est vide, on teste les ingrédients et les appareils
+         else if(ustensilsFilters.length == 0) {
+             const ingrAndApp = filteredRecipe.filter((recipe) => {
+                 return(
+                  recipe.ingredients.some(ingredients => {
+                      return filtersArray.some(tag => {
+                          return ingredients.ingredient.includes(tag)
+                      })
+                  }) &&
+                  filtersArray.some((tag) => {
+                      return tag == recipe.appliance
+                  })
+                 )
+             })
+                clearPage(ingrAndApp); addRecipes(ingrAndApp); addIngredients(ingrAndApp); updateDropdowns(ingrAndApp); ifEmpty(ingrAndApp);
+         }
+             //Cas 7 : aucune liste n'est vide
+         else if (ingredientsFilters.length > 0 && appliancesFilters > 0 && ustensilsFilters > 0) {
+          const filterAll = filteredRecipe.filter((recipe) => {
+              return (recipe.ingredients.some((ingredients) => {
+                  return filtersArray.some((tag) => {
+                      return tag == ingredients.ingredient
+                  })
+              }) ||
+              recipe.ustensils.some((ustensils) => {
+                  return filtersArray.some((tag) => {
+                      return tag == ustensils
+                  })
+              }) ||
+              filtersArray.some((tag) => {
+                  return tag == recipe.appliance
+              })
+              )
+          })
+          clearPage(filterAll); addRecipes(filterAll); addIngredients(filterAll); updateDropdowns(filterAll); ifEmpty(filterAll);
+         }    */
+
+
+      (0, _removeTag.default)(tagList);
     };
 
     tags[i].addEventListener('click', addTag);
@@ -2375,17 +2483,8 @@ function filterFunction() {
   for (var i = 0; i < tags.length; i++) {
     _loop(i);
   }
-
-  var removeTag = function removeTag() {
-    var addedTags = document.querySelectorAll('#added-tags .added-tag');
-    console.log(addedTags);
-  };
-
-  for (var _i = 0; _i < addedTags.length; _i++) {
-    addedTags[_i].addEventListener('click', removeTag);
-  }
 }
-},{"../data/recipes":"data/recipes.js","../utils/search":"utils/search.js","../utils/utils":"utils/utils.js","../utils/addRecipes":"utils/addRecipes.js"}],"app.js":[function(require,module,exports) {
+},{"../data/recipes":"data/recipes.js","../utils/search":"utils/search.js","../utils/utils":"utils/utils.js","../utils/addRecipes":"utils/addRecipes.js","../utils/removeTag":"utils/removeTag.js"}],"app.js":[function(require,module,exports) {
 "use strict";
 
 var _dropdownLists = _interopRequireDefault(require("./utils/dropdownLists"));
@@ -2396,6 +2495,8 @@ var _search = _interopRequireDefault(require("./utils/search"));
 
 var _filters = _interopRequireDefault(require("./utils/filters"));
 
+var _removeTag = _interopRequireDefault(require("./utils/removeTag"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var init = function init() {
@@ -2403,10 +2504,11 @@ var init = function init() {
   (0, _dropdownLists.default)();
   (0, _listExpand.default)();
   (0, _filters.default)();
+  (0, _removeTag.default)();
 };
 
 init();
-},{"./utils/dropdownLists":"utils/dropdownLists.js","./components/listExpand":"components/listExpand.js","./utils/search":"utils/search.js","./utils/filters":"utils/filters.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./utils/dropdownLists":"utils/dropdownLists.js","./components/listExpand":"components/listExpand.js","./utils/search":"utils/search.js","./utils/filters":"utils/filters.js","./utils/removeTag":"utils/removeTag.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -2434,7 +2536,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61589" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65452" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
