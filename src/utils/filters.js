@@ -4,7 +4,8 @@ import clearPage from "../utils/utils";
 import addRecipes from "../utils/addRecipes";
 import addIngredients from "../utils/addRecipes";
 import updateDropdowns from "../utils/addRecipes";
-import removeTag from "../utils/removeTag"
+import removeTag from "../utils/removeTag";
+
 
 
 
@@ -34,7 +35,7 @@ export default function filterFunction () {
             //Filtre les doublons des résultats de recherche
             const filteredRecipe = resultsArray.filter(function(elem, index, self) {   return index === self.indexOf(elem); })
 
-
+       
 
             //Adds the new tag 
             let newTag = document.createElement('span');
@@ -43,9 +44,11 @@ export default function filterFunction () {
             document.getElementById('added-tags').appendChild(newTag);
             let addedTags = document.querySelectorAll('.added-tag');
             tagList = document.getElementsByClassName('added-tag');
-       
-
-            
+            //Adds icon
+            let deleteIcon = document.createElement('img');
+            for(let tag of addedTags) { tag.appendChild(deleteIcon)};
+            const iconPath = require('../assets/delete_icon.png');
+            deleteIcon.setAttribute('src', iconPath);
 
             //Ajout des classes personnalisées
             for(let i = 0; i < recipes.length; i++) {

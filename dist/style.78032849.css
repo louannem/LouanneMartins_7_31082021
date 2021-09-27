@@ -85,7 +85,8 @@ h1 {
 .grid-list span { line-height: 1em; cursor: pointer;}
 
 #added-tags { min-height: 0px; display: flex; align-items: center; margin-bottom: 1rem;}
-.added-tag { margin: 10px 10px; cursor: pointer; border-radius: 5px; padding: 10px; height: 45px; min-width: 107px; color: white; text-align: center; }
+.added-tag { margin: 10px 10px; cursor: pointer; border-radius: 5px; padding: 10px; height: 45px; min-width: 107px; color: white; text-align: center; display: flex; align-items: center; justify-content: space-between;}
+.added-tag img { margin-right: 5px}
 
 .ingredient-tag { background-color: #3282F7;}
 .ustentil-tag { background-color: #ED6454; }

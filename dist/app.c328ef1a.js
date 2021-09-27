@@ -2155,7 +2155,7 @@ function removeTag(listName) {
       //Trouver l'élément dans la liste de filtres
       for (var j = 0; j < _filters.filtersArray.length; j++) {
         //Identifie le filtre dans la liste de filtre et le supprime
-        if (listName[i].innerHTML == _filters.filtersArray[j]) {
+        if (listName[i].innerText == _filters.filtersArray[j]) {
           _filters.filtersArray.splice(j, 1);
         } //Si la liste = 0, on re-met toutes les recettes à partir de l'input
 
@@ -2177,25 +2177,7 @@ function removeTag(listName) {
             (0, _addRecipes.default)(filteredObjt);
           })();
         } else {
-          //Sinon on re-filtre avec la liste   
-          var filterAll = filteredRecipe.filter(function (recipe) {
-            return recipe.ingredients.some(function (ingredients) {
-              return _filters.filtersArray.every(function (tag) {
-                return tag == ingredients.ingredient;
-              });
-            }) || recipe.ustensils.some(function (ustensils) {
-              return _filters.filtersArray.every(function (tag) {
-                return tag == ustensils;
-              });
-            }) || _filters.filtersArray.every(function (tag) {
-              return tag == recipe.appliance;
-            });
-          });
-          (0, _utils.default)(filterAll);
-          (0, _addRecipes.default)(filterAll);
-          (0, _addRecipes.default)(filterAll);
-          updateDropdowns(filterAll);
-          ifEmpty(filterAll);
+          console.log(_filters.tagList); //Sinon on re-filtre avec la liste   
         }
       } //Supprime le tag cliqué
 
@@ -2209,7 +2191,9 @@ function removeTag(listName) {
     _loop(i);
   }
 }
-},{"../data/recipes":"data/recipes.js","./filters":"utils/filters.js","../utils/addRecipes":"utils/addRecipes.js","./utils":"utils/utils.js"}],"utils/filters.js":[function(require,module,exports) {
+},{"../data/recipes":"data/recipes.js","./filters":"utils/filters.js","../utils/addRecipes":"utils/addRecipes.js","./utils":"utils/utils.js"}],"assets/delete_icon.png":[function(require,module,exports) {
+module.exports = "/delete_icon.04ec1ce2.png";
+},{}],"utils/filters.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2280,7 +2264,29 @@ function filterFunction() {
       newTag.innerText = tags[i].innerText;
       document.getElementById('added-tags').appendChild(newTag);
       var addedTags = document.querySelectorAll('.added-tag');
-      exports.tagList = tagList = document.getElementsByClassName('added-tag'); //Ajout des classes personnalisées
+      exports.tagList = tagList = document.getElementsByClassName('added-tag'); //Adds icon
+
+      var deleteIcon = document.createElement('img');
+
+      var _iterator = _createForOfIteratorHelper(addedTags),
+          _step;
+
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var tag = _step.value;
+          tag.appendChild(deleteIcon);
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+
+      ;
+
+      var iconPath = require('../assets/delete_icon.png');
+
+      deleteIcon.setAttribute('src', iconPath); //Ajout des classes personnalisées
 
       for (var _i = 0; _i < _recipes.recipes.length; _i++) {
         for (var _j = 0; _j < _recipes.recipes[_i].ingredients.length; _j++) {
@@ -2303,13 +2309,13 @@ function filterFunction() {
       } //Ajout des tags dans chaque liste de filtre
 
 
-      var _iterator = _createForOfIteratorHelper(addedTags),
-          _step;
+      var _iterator2 = _createForOfIteratorHelper(addedTags),
+          _step2;
 
       try {
-        for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var tag = _step.value;
-          var tagName = tag.innerText;
+        for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+          var _tag = _step2.value;
+          var tagName = _tag.innerText;
 
           if (!ingredientsFilters.includes(tagName) && ingredientsArray.includes(tagName)) {
             ingredientsFilters.push(tagName);
@@ -2327,9 +2333,9 @@ function filterFunction() {
           }
         }
       } catch (err) {
-        _iterator.e(err);
+        _iterator2.e(err);
       } finally {
-        _iterator.f();
+        _iterator2.f();
       }
 
       var ifEmpty = function ifEmpty(arrayName) {
@@ -2484,7 +2490,7 @@ function filterFunction() {
     _loop(i);
   }
 }
-},{"../data/recipes":"data/recipes.js","../utils/search":"utils/search.js","../utils/utils":"utils/utils.js","../utils/addRecipes":"utils/addRecipes.js","../utils/removeTag":"utils/removeTag.js"}],"app.js":[function(require,module,exports) {
+},{"../data/recipes":"data/recipes.js","../utils/search":"utils/search.js","../utils/utils":"utils/utils.js","../utils/addRecipes":"utils/addRecipes.js","../utils/removeTag":"utils/removeTag.js","../assets/delete_icon.png":"assets/delete_icon.png"}],"app.js":[function(require,module,exports) {
 "use strict";
 
 var _dropdownLists = _interopRequireDefault(require("./utils/dropdownLists"));
@@ -2536,7 +2542,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65452" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62250" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
