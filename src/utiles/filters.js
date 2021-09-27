@@ -4,22 +4,24 @@ import {resultsArray} from "../utiles/search";
 import clearPage from "../utiles/clearSearch";
 import addRecipes from "../utiles/addRecipes";
 import addIngredients from "../utiles/addRecipes";
-import updateDropdowns from "../utiles/addRecipes"
+import updateDropdowns from "../utiles/addRecipes";
+import removeTag from "../utiles/removeTags";
 
 
 
 let tagArray = [];
 let applianceArray = [];
 let ustensilesArray = [];
-let filtersArray = [];
+export let filtersArray = [], tagList;
+
 
 export default function filtersFunction () {    
-    let tags = document.querySelectorAll('span');
+    let tags = document.querySelectorAll('.dropdown-menu span');
     let addedTags = document.querySelectorAll('.added-tag');
     let ingredientsArray = [];
     let appareilsArray = [];
     let ustensilsArray = [];
-
+ 
     //Crée les listes comparatives
     for(let j = 0; j < recipes.length; j++) {
         for(let k = 0; k < recipes[j].ingredients.length; k++) { ingredientsArray.push(recipes[j].ingredients[k].ingredient) }
@@ -38,6 +40,7 @@ export default function filtersFunction () {
             newTag.innerText = tags[i].innerText;
             document.getElementById('added-tags').appendChild(newTag);
             addedTags = document.querySelectorAll('.added-tag');
+            tagList = document.getElementsByClassName('added-tag');
             //Adds icon
             let deleteIcon = document.createElement('img');
             for(let tag of addedTags) { tag.appendChild(deleteIcon)};
@@ -88,14 +91,12 @@ export default function filtersFunction () {
                             else if (!resultsArray[i].ingredients[j].ingredient.includes(elem) &&
                             !resultsArray[i].ustensils[k].includes(elem) &&
                             !resultsArray[i].appliance.includes(elem))  {
-                                console.log("A supprimer : ", resultsArray[i])
+                                //Identifier les recettes en trop
                             }
                         }
                     }
                 }
             });
-
-
 
             //Filtre les doublons
             const uniqueValuesSet = new Set();
@@ -104,7 +105,12 @@ export default function filtersFunction () {
                 uniqueValuesSet.add(recipe.id);
                 return !isPresentInArray;
             })
-            addRecipes(filteredRecipes); addIngredients(filteredRecipes); updateDropdowns(filteredRecipes)      
+
+            //Displays the recipes with ingredients
+            addRecipes(filteredRecipes); addIngredients(filteredRecipes); updateDropdowns(filteredRecipes);
+            
+            //Fonction de suppression + re-filtrage
+            removeTag(tagList)
         }
         tags[i].addEventListener('click', addTag);
     }  
