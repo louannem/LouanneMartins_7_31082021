@@ -1,5 +1,4 @@
 import { recipes } from "../data/recipes";
-import {recipesArray} from "../utiles/search";
 import {resultsArray} from "../utiles/search";
 import clearPage from "../utiles/clearSearch";
 import addRecipes from "../utiles/addRecipes";

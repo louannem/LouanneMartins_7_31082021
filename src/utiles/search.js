@@ -1,6 +1,8 @@
 //Search algo with for loop
 import { recipes } from "../data/recipes"
 import { Recipe } from "../components/Recipes";
+import addRecipes from "./addRecipes";
+import updateDropdowns from "./addRecipes" 
 
 export const recipesArray = [];
 export let resultsArray = [];
@@ -31,8 +33,9 @@ export default function searchFunction(){
                 if(recipeName.includes(searchItem) || recipes[i].appliance.includes(searchItem) || recipes[i].description.includes(searchItem)) {
                     newRecipes = new Recipe(recipes[i]);
                     resultsArray.push(newRecipes);
-                    recipesArray.push(newRecipes)
+                    recipesArray.push(newRecipes);
                     }  else { recipesID.style.display = "none" ; }
+            
 
             } else { recipesID.style.display = ""; }      
         }

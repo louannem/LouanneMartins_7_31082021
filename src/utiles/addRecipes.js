@@ -1,4 +1,3 @@
-import { Recipe } from "../components/Recipes";
 import { Ingredient } from "../components/Ingredients";
 import filtersFunction from "./filters";
 
