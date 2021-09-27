@@ -2,8 +2,11 @@ import { recipes } from "../data/recipes";
 import {recipesArray} from "../utiles/search";
 import {resultsArray} from "../utiles/search";
 import clearPage from "../utiles/clearSearch";
-import { Recipe } from "../components/Recipes";
-import { Ingredient } from "../components/Ingredients";
+import addRecipes from "../utiles/addRecipes";
+import addIngredients from "../utiles/addRecipes";
+import updateDropdowns from "../utiles/addRecipes"
+
+
 
 let tagArray = [];
 let applianceArray = [];
@@ -28,12 +31,18 @@ export default function filtersFunction () {
 
     for(let i = 0; i < tags.length; i++) {
         let addTag = () => {
-            //Adds the new tag 
+
+            //Creates and adds the new tag 
             let newTag = document.createElement('span');
             newTag.classList.add('added-tag');
             newTag.innerText = tags[i].innerText;
             document.getElementById('added-tags').appendChild(newTag);
             addedTags = document.querySelectorAll('.added-tag');
+            //Adds icon
+            let deleteIcon = document.createElement('img');
+            for(let tag of addedTags) { tag.appendChild(deleteIcon)};
+            const iconPath = require('../assets/delete.svg');
+            deleteIcon.setAttribute('src', iconPath);
 
             //Ajout des classes personnalisées
             for(let i = 0; i < recipes.length; i++) {
@@ -60,46 +69,33 @@ export default function filtersFunction () {
                 }
 
                 if(filtersArray.includes(tags[i].innerText)) {tags[i].style.display = "none";} 
-                else if (!filtersArray.includes(tags[i].innerText)) {tags[i].style.display = "inline";}
-               
+                else if (!filtersArray.includes(tags[i].innerText)) {tags[i].style.display = "inline";} 
                 
             }
 
             clearPage();
+
             //Compare les ingredients pour chaque recette            
             let recipesDisplay = [];           
 
             filtersArray.forEach((elem) => {
                 for(let i = 0; i < resultsArray.length; i++) {
                     for(let j = 0; j < resultsArray[i].ingredients.length; j++) {
-                        if(elem == resultsArray[i].ingredients[j].ingredient) {
-                            //Clear page and print new recipes
-                            recipesDisplay.push(resultsArray[i]);
-                            let ingredientsBlock = document.getElementById(recipes[i].id);
-
-                            let ingredientsList = new Ingredient(recipes[i].ingredients[j]);
-                            ingredientsBlock.innerHTML += ingredientsList.displayIngredient();
-                        } 
-
-                    }
-
-                    for(let k = 0; k < resultsArray[i].ustensils.length; k++) {
-                        if(elem  == resultsArray[i].ustensils[k]) {
-                            //Clear page and print new recipes
-                            recipesDisplay.push(resultsArray[i]);
+                        for(let k = 0; k < resultsArray[i].ustensils.length; k++) {
+                            if(resultsArray[i].ingredients[j].ingredient.includes(elem) ||
+                            resultsArray[i].ustensils[k].includes(elem) ||
+                            resultsArray[i].appliance.includes(elem)) {  recipesDisplay.push(resultsArray[i])  }
+                            else if (!resultsArray[i].ingredients[j].ingredient.includes(elem) &&
+                            !resultsArray[i].ustensils[k].includes(elem) &&
+                            !resultsArray[i].appliance.includes(elem))  {
+                                console.log("A supprimer : ", resultsArray[i])
+                            }
                         }
                     }
-
-
-                    for(let l = 0; l < resultsArray[i].appliance.length; l++) {
-                        if(elem  == resultsArray[i].appliance) {
-                            //Clear page and print new recipes
-                            recipesDisplay.push(resultsArray[i]);
-                        }
-                    }
-
                 }
             });
+
+
 
             //Filtre les doublons
             const uniqueValuesSet = new Set();
@@ -108,66 +104,9 @@ export default function filtersFunction () {
                 uniqueValuesSet.add(recipe.id);
                 return !isPresentInArray;
             })
-
-            let updatedIngredients;
-            let newIngrList = [];
-            let newUstList = [];
-            let newApplList = [];
-            for(let i = 0; i < filteredRecipes.length; i++) {
-                document.getElementById('search-results').innerHTML += filteredRecipes[i].diplayRecipe();
-                
-                for(let j = 0; j < filteredRecipes[i].ingredients.length; j++) {
-                    updatedIngredients = filteredRecipes[i].ingredients;  
-                    newIngrList.push(filteredRecipes[i].ingredients[j].ingredient);
-                }      
-
-                for(let k = 0; k < filteredRecipes[i].ustensils.length; k++) {
-                    newUstList.push(filteredRecipes[i].ustensils[k]); 
-                }
-
-                for(let l = 0; l < filteredRecipes[i].appliance.length; l++) {
-                    newApplList.push(filteredRecipes[i].appliance); 
-                }
-                
-                //Filtre les doublons
-                let ingredientDuplicate = newIngrList.filter(function(elem, index, self) {   return index === self.indexOf(elem); })
-                let ustensilsDuplicate = newUstList.filter(function(elem, index, self) {   return index === self.indexOf(elem); })
-                let applianceDuplicate = newApplList.filter(function(elem, index, self) {   return index === self.indexOf(elem); })
-                
-                let ingredientsBlock = document.getElementById('ingredients-list');
-                let ustensilesBlock = document.getElementById('ustensiles-list');
-                let appareilsBlock = document.getElementById('appareils-list');
-
-                //Actualise dropdown list
-                for(let i = 0; i < ingredientDuplicate.length; i++) {
-                    let ingredientsWrapper = document.createElement('span');
-                    ingredientsBlock.appendChild(ingredientsWrapper);
-                    ingredientsWrapper.innerText += ingredientDuplicate[i];
-                }
-
-                for(let i = 0; i < ustensilsDuplicate.length; i++) {
-                    let ustensilsWrapper = document.createElement('span');
-                    ustensilesBlock.appendChild(ustensilsWrapper);
-                    ustensilsWrapper.innerText += ustensilsDuplicate[i];
-                }
-
-                for(let i = 0; i< applianceDuplicate.length; i++) {
-                    let applianceWrapper = document.createElement('span');
-                    appareilsBlock.appendChild(applianceWrapper);
-                    applianceWrapper.innerText += ustensilsDuplicate[i];
-                }
-            }
-
-
+            addRecipes(filteredRecipes); addIngredients(filteredRecipes); updateDropdowns(filteredRecipes)      
         }
         tags[i].addEventListener('click', addTag);
-    }
-
-    for(let i = 0; i < addedTags.length; i++) {
-        let removeTag = () => {
-        console.log("remove");        
-        }
-        addedTags[i].addEventListener('click', removeTag)
-    }   
+    }  
 
 }
