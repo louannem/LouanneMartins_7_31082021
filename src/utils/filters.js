@@ -1,6 +1,6 @@
 import { recipes } from "../data/recipes";
 import {resultsArray} from "../utils/search";
-import clearPage from "../utils/utils";
+import clearPage from "../utils/clearPage";
 import addRecipes from "../utils/addRecipes";
 import addIngredients from "../utils/addRecipes";
 import updateDropdowns from "../utils/addRecipes";

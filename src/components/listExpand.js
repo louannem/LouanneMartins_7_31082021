@@ -42,10 +42,10 @@ export default function listExpand() {
             inputIngredient.setAttribute('placeholder', 'Rechercher un ingrédient');
         }
     }
-    callFonction(inputIngredient,boxIngredients,searchIngredient)
+   callFonction(inputIngredient,boxIngredients,searchIngredient)
 
 
-    var searchAppareils = () => {
+    let searchAppareils = () => {
         let searchWrapper = document.getElementById('appareils-search');
         let listWrapper = document.getElementById('appareils-list');
         if(searchWrapper.classList.contains('show')) {
@@ -73,4 +73,21 @@ export default function listExpand() {
         }
     }
     callFonction(inputUsentiles, boxUstensiles, searchUstensiles);
+
+    //Closes the others dropdowns if another one is open
+    let dropdownElem = document.querySelectorAll('.dropdown-toggle');
+    dropdownElem.forEach(element => {
+        element.addEventListener('click', function(){
+            let appareilExp = boxAppareil.getAttribute('aria-expanded'), ustExp = boxUstensiles.getAttribute('aria-expanded'), ingrExp = boxIngredients.getAttribute('aria-expanded')
+            
+            //Si l'élément ouvert est en true et le nouvel élément cliqué es encore sur false
+            //On cache la liste et on agrandi/réduit les dropdown
+            if(appareilExp == "true" && element.getAttribute('aria-expanded') == "false") { boxAppareil.nextElementSibling.classList.remove('show'); searchAppareils()}
+            else if (ingrExp == "true" && element.getAttribute('aria-expanded') == "false") { boxIngredients.nextElementSibling.classList.remove('show'); searchIngredient();}
+            else if (ustExp == "true" && element.getAttribute('aria-expanded') == "false") { boxUstensiles.nextElementSibling.classList.remove('show'); searchUstensiles();}
+
+
+           
+        } )
+    });  
 }

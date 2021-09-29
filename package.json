@@ -4,8 +4,8 @@
     "description": "Visualiser le projet à l'adresse suivante :\r https://louannem.github.io/LouanneMartins_7_31082021/src/search.html",
     "main": "app.js",
     "scripts": {
-      "dev": "parcel src/search.html",
-      "prod": "parcel build src/search.html --public-url=./"
+      "dev": "parcel src/index.html",
+      "prod": "parcel build src/index.html --public-url=./"
     },
     "repository": {
       "type": "git",

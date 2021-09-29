@@ -3,7 +3,7 @@ import { recipes } from "../data/recipes";
 import { filtersArray, tagList } from "./filters";
 import addRecipes from "../utils/addRecipes";
 import addIngredients from "../utils/addRecipes";
-import clearPage from "./utils";
+import clearPage from "../utils/clearPage"
 
 
 export default function removeTag(listName) {

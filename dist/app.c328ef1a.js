@@ -1752,7 +1752,28 @@ function listExpand() {
     }
   };
 
-  callFonction(inputUsentiles, boxUstensiles, searchUstensiles);
+  callFonction(inputUsentiles, boxUstensiles, searchUstensiles); //Closes the others dropdowns if another one is open
+
+  var dropdownElem = document.querySelectorAll('.dropdown-toggle');
+  dropdownElem.forEach(function (element) {
+    element.addEventListener('click', function () {
+      var appareilExp = boxAppareil.getAttribute('aria-expanded'),
+          ustExp = boxUstensiles.getAttribute('aria-expanded'),
+          ingrExp = boxIngredients.getAttribute('aria-expanded'); //Si l'élément ouvert est en true et le nouvel élément cliqué es encore sur false
+      //On cache la liste et on agrandi/réduit les dropdown
+
+      if (appareilExp == "true" && element.getAttribute('aria-expanded') == "false") {
+        boxAppareil.nextElementSibling.classList.remove('show');
+        searchAppareils();
+      } else if (ingrExp == "true" && element.getAttribute('aria-expanded') == "false") {
+        boxIngredients.nextElementSibling.classList.remove('show');
+        searchIngredient();
+      } else if (ustExp == "true" && element.getAttribute('aria-expanded') == "false") {
+        boxUstensiles.nextElementSibling.classList.remove('show');
+        searchUstensiles();
+      }
+    });
+  });
 }
 },{}],"components/Recipe.js":[function(require,module,exports) {
 "use strict";
@@ -1979,7 +2000,7 @@ function searchFunction() {
 
   ustensilesInput.addEventListener('input', ustensilesSearch);
 }
-},{"../data/recipes":"data/recipes.js","../components/Recipe":"components/Recipe.js","./dropdownLists":"utils/dropdownLists.js","../components/Ingredient":"components/Ingredient.js"}],"utils/utils.js":[function(require,module,exports) {
+},{"../data/recipes":"data/recipes.js","../components/Recipe":"components/Recipe.js","./dropdownLists":"utils/dropdownLists.js","../components/Ingredient":"components/Ingredient.js"}],"utils/clearPage.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1993,26 +2014,22 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function clearPage(newRecipes) {
-  var recipeRemove = function recipeRemove() {
-    var toRemove = document.querySelectorAll('article');
+function clearPage() {
+  var toRemove = document.querySelectorAll('article');
 
-    var _iterator = _createForOfIteratorHelper(toRemove),
-        _step;
+  var _iterator = _createForOfIteratorHelper(toRemove),
+      _step;
 
-    try {
-      for (_iterator.s(); !(_step = _iterator.n()).done;) {
-        var article = _step.value;
-        article.remove();
-      }
-    } catch (err) {
-      _iterator.e(err);
-    } finally {
-      _iterator.f();
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var article = _step.value;
+      article.remove();
     }
-  };
-
-  recipeRemove();
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
 }
 },{}],"utils/addRecipes.js":[function(require,module,exports) {
 "use strict";
@@ -2042,7 +2059,7 @@ function addRecipes(recipes) {
     document.getElementById('search-results').innerHTML = htmlString;
   };
 
-  displayRecipes(recipes);
+  displayRecipes();
 
   var addIngredients = function addIngredients() {
     //Display the ingredients for each recipes found
@@ -2056,7 +2073,7 @@ function addRecipes(recipes) {
     }
   };
 
-  addIngredients(recipes);
+  addIngredients();
 
   var updateDropdowns = function updateDropdowns() {
     var ingrList = [];
@@ -2127,7 +2144,7 @@ function addRecipes(recipes) {
     (0, _filters.default)();
   };
 
-  updateDropdowns(recipes);
+  updateDropdowns();
 }
 },{"../components/Ingredient":"components/Ingredient.js","./filters":"utils/filters.js"}],"utils/removeTag.js":[function(require,module,exports) {
 "use strict";
@@ -2143,7 +2160,7 @@ var _filters = require("./filters");
 
 var _addRecipes = _interopRequireDefault(require("../utils/addRecipes"));
 
-var _utils = _interopRequireDefault(require("./utils"));
+var _clearPage = _interopRequireDefault(require("../utils/clearPage"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2162,7 +2179,7 @@ function removeTag(listName) {
 
         if (_filters.filtersArray.length == 0) {
           (function () {
-            (0, _utils.default)();
+            (0, _clearPage.default)();
             var recipesSearch = [];
 
             for (var _i = 0; _i < _recipes.recipes.length; _i++) {
@@ -2191,7 +2208,7 @@ function removeTag(listName) {
     _loop(i);
   }
 }
-},{"../data/recipes":"data/recipes.js","./filters":"utils/filters.js","../utils/addRecipes":"utils/addRecipes.js","./utils":"utils/utils.js"}],"assets/delete_icon.png":[function(require,module,exports) {
+},{"../data/recipes":"data/recipes.js","./filters":"utils/filters.js","../utils/addRecipes":"utils/addRecipes.js","../utils/clearPage":"utils/clearPage.js"}],"assets/delete_icon.png":[function(require,module,exports) {
 module.exports = "/delete_icon.04ec1ce2.png";
 },{}],"utils/filters.js":[function(require,module,exports) {
 "use strict";
@@ -2206,7 +2223,7 @@ var _recipes = require("../data/recipes");
 
 var _search = require("../utils/search");
 
-var _utils = _interopRequireDefault(require("../utils/utils"));
+var _clearPage = _interopRequireDefault(require("../utils/clearPage"));
 
 var _addRecipes = _interopRequireDefault(require("../utils/addRecipes"));
 
@@ -2366,7 +2383,7 @@ function filterFunction() {
             return tag == recipe.appliance;
           });
         });
-        (0, _utils.default)(filterAll);
+        (0, _clearPage.default)(filterAll);
         (0, _addRecipes.default)(filterAll);
         (0, _addRecipes.default)(filterAll);
         (0, _addRecipes.default)(filterAll);
@@ -2490,7 +2507,7 @@ function filterFunction() {
     _loop(i);
   }
 }
-},{"../data/recipes":"data/recipes.js","../utils/search":"utils/search.js","../utils/utils":"utils/utils.js","../utils/addRecipes":"utils/addRecipes.js","../utils/removeTag":"utils/removeTag.js","../assets/delete_icon.png":"assets/delete_icon.png"}],"app.js":[function(require,module,exports) {
+},{"../data/recipes":"data/recipes.js","../utils/search":"utils/search.js","../utils/clearPage":"utils/clearPage.js","../utils/addRecipes":"utils/addRecipes.js","../utils/removeTag":"utils/removeTag.js","../assets/delete_icon.png":"assets/delete_icon.png"}],"app.js":[function(require,module,exports) {
 "use strict";
 
 var _dropdownLists = _interopRequireDefault(require("./utils/dropdownLists"));
@@ -2542,7 +2559,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62250" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58359" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

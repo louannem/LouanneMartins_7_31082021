@@ -24,9 +24,8 @@ export default function ingredientsList() {
 
 
     //Gets rid of duplicates
-    let removeDupl = (objectsArray) => {
-       return objectsArray.filter(function(elem, index, self) {   return index === self.indexOf(elem); })
-    }
+    let removeDupl = (objectsArray) => {       return objectsArray.filter(function(elem, index, self) {   return index === self.indexOf(elem); })}
+    
     let ingredientDuplicate = removeDupl(ingredientArray);
     let ustensilesDuplicate = removeDupl(ustensilesArray);
     let appareilsDuplicate = removeDupl(appareilsArray);

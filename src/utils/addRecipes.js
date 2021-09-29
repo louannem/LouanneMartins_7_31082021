@@ -35,7 +35,7 @@ export default function addRecipes (recipes){
             document.getElementById('search-results').innerHTML = htmlString;
     };
 
-    displayRecipes(recipes);
+    displayRecipes();
 
 
     const addIngredients = () => {
@@ -48,7 +48,7 @@ export default function addRecipes (recipes){
             }
         } 
     }
-    addIngredients(recipes);
+    addIngredients();
 
     const updateDropdowns = () => {
         let ingrList = [] ;
@@ -84,6 +84,6 @@ export default function addRecipes (recipes){
         filterFunction();
     
     }
-    updateDropdowns(recipes)
+    updateDropdowns()
 
 }
