@@ -1,9 +1,12 @@
 //Importation des listes générées par les filtres
 import { recipes } from "../data/recipes";
 import { filtersArray, tagList } from "./filters";
+import { resultsArray } from "./search";
 import addRecipes from "../utils/addRecipes";
 import addIngredients from "../utils/addRecipes";
+import updateDropdowns from "../utils/addRecipes";
 import clearPage from "../utils/clearPage"
+
 
 
 export default function removeTag(listName) {
@@ -12,7 +15,6 @@ export default function removeTag(listName) {
         for(let i = 0; i<listName.length; i++) { 
             //Supprime les tags
             listName[i].addEventListener('click', function(){
-
                 //Trouver l'élément dans la liste de filtres
                 for(let j = 0; j < filtersArray.length; j++) {
                     //Identifie le filtre dans la liste de filtre et le supprime
@@ -33,14 +35,31 @@ export default function removeTag(listName) {
                         addRecipes(filteredObjt); addIngredients(filteredObjt);
                     } else {
                         console.log(tagList)
-                    //Sinon on re-filtre avec la liste   
+                    //Sinon on re-filtre avec la liste 
+                    const filterAll = resultsArray.filter((recipe) => {
+                        return (recipe.ingredients.some((ingredients) => {
+                            return filtersArray.every((tag) => {
+                                return tag == ingredients.ingredient
+                            })
+                        }) ||
+                        recipe.ustensils.some((ustensils) => {
+                            return filtersArray.every((tag) => {
+                                return tag == ustensils
+                            })
+                        }) ||
+                        filtersArray.every((tag) => {
+                            return tag == recipe.appliance
+                        })
+                        )
+                    })
+                    clearPage(filterAll); addRecipes(filterAll); addIngredients(filterAll); updateDropdowns(filterAll); 
+
                     
                     }
                 }
                 //Supprime le tag cliqué
                 listName[i].remove();
-            })
+                
+            });
         }
-    
-        
-}
+    }
