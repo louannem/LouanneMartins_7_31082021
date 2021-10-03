@@ -32,27 +32,26 @@ export default function searchFunction() {
         const searchInput = input.value.toLowerCase();
         
         if(searchInput.length > 2) {
-            resultsArray = recipes.filter(recipe => {
-                return(
-                    recipe.name.toLowerCase().includes(searchInput) ||
-                    recipe.description.toLowerCase().includes(searchInput) 
-                )
-            });
+            let recipeName = recipes[i].name.toLowerCase();
+            //La recherche comprend le nom de la recette, les appareils et la description
+            if(recipeName.includes(searchItem) || recipes[i].appliance.includes(searchItem) || recipes[i].description.includes(searchItem)) {
+                newRecipes = new Recipe(recipes[i]);
+                resultsArray.push(newRecipes);
+            } 
             if(resultsArray.length > 0) {
                 //Afficher les recettes ici
                 clearPage(); 
                 for(let recipe of resultsArray) { 
                     document.getElementById('no-result').style.display = "none";
-                    let newRecipe = new Recipe(recipe);
-                    document.getElementById('search-results').innerHTML += newRecipe.diplayRecipe();
-                    addIngredients(resultsArray); updateDropdowns(resultsArray)
+                    //let newRecipe = new Recipe(recipe);
+                    document.getElementById('search-results').innerHTML += resultsArray.diplayRecipe();
+                    //addIngredients(resultsArray); updateDropdowns(resultsArray)
                 }
             } else if (resultsArray.length == 0){
                 //Afficher qu'aucune recette n'a été trouvée
                 clearPage();
                 document.getElementById('no-result').style.display = "inline";
                 document.getElementById('no-result').innerText = "Aucune recette n'a été trouvée."
-
             }
             //Si l'utilisateur supprime les caractères, on remet toute les recettes
         } else if (searchInput.length < 3) {
@@ -61,9 +60,9 @@ export default function searchFunction() {
                 document.getElementById('search-results').innerHTML += recipesList.diplayRecipe();
     
                 //Ajoute les ingrédients
-                addIngredients(recipes)
+                //addIngredients(recipes)
                 //Ajoute les dropdowns
-                updateDropdowns(recipes);
+                //updateDropdowns(recipes);
             }
         }
     }

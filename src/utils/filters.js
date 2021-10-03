@@ -77,45 +77,39 @@ export default function filterFunction () {
 
 ///////////////////Filtre avec liste unique////////////////////////////////////////////////////////////
                 //Cas 1 : l'utilisateur a utilisé la barre de recherche
+
+                let filterAll = []; 
+
                 if(filtersArray.length > 0 && resultsArray.length > 0) {
-                    const filterAll = resultsArray.filter((recipe) => {
-                        return (recipe.ingredients.some((ingredients) => {
-                            return filtersArray.every((tag) => {
-                                return tag == ingredients.ingredient
-                            })
-                        }) ||
-                        recipe.ustensils.some((ustensils) => {
-                            return filtersArray.every((tag) => {
-                                return tag == ustensils
-                            })
-                        }) ||
-                        filtersArray.every((tag) => {
-                            return tag == recipe.appliance
-                        })
-                        )
-                    })
+                    for(let i = 0; i < resultsArray.length; i++){
+                        for(let j = 0; j < resultsArray.ingredients.length; j++) {
+                            for(let k = 0; k < resultsArray.ustensils.length; k++) {
+                                if(resultsArray[i].ingredients[j].ingredient.includes(elem) ||
+                                resultsArray[i].ustensils[k].includes(elem) ||
+                                resultsArray[i].appliance.includes(elem)) {
+                                    filterAll.push(resultsArray[i])
+                                }
+                            }
+                        }
+                    }
+
                     clearPage(filterAll); addRecipes(filterAll); addIngredients(filterAll); updateDropdowns(filterAll); ifEmpty(filterAll);
                 
                     //Cas 2 : l'utilisateur choisit d'abord un filtre
-                } else if (filtersArray.length > 0 && resultsArray.length == 0) {
-                    const filterAll = recipes.filter((recipe) => {
-                        return (recipe.ingredients.some((ingredients) => {
-                            return filtersArray.every((tag) => {
-                                return tag == ingredients.ingredient
-                            })
-                        }) ||
-                        recipe.ustensils.some((ustensils) => {
-                            return filtersArray.every((tag) => {
-                                return tag == ustensils
-                            })
-                        }) ||
-                        filtersArray.every((tag) => {
-                            return tag == recipe.appliance
-                        })
-                        )
-                    })
+                } else if (filtersArray.length > 0 && recipes.length == 0) {
+                    for(let i = 0; i < recipes.length; i++){
+                        for(let j = 0; j < recipes.ingredients.length; j++) {
+                            for(let k = 0; k < recipes.ustensils.length; k++) {
+                                if(recipes[i].ingredients[j].ingredient.includes(elem) ||
+                                recipes[i].ustensils[k].includes(elem) ||
+                                recipes[i].appliance.includes(elem)) {
+                                    filterAll.push(recipes[i])
+                                }
+                            }
+                        }
                     clearPage(filterAll); addRecipes(filterAll); addIngredients(filterAll); updateDropdowns(filterAll); ifEmpty(filterAll);
                 }
+            }
             removeTag(tagList);
         }
         tags[i].addEventListener('click', addTags)

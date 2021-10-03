@@ -1950,9 +1950,13 @@ function searchFunction() {
     var searchInput = input.value.toLowerCase();
 
     if (searchInput.length > 2) {
-      exports.resultsArray = resultsArray = _recipes.recipes.filter(function (recipe) {
-        return recipe.name.toLowerCase().includes(searchInput) || recipe.description.toLowerCase().includes(searchInput);
-      });
+      var recipeName = _recipes.recipes[i].name.toLowerCase(); //La recherche comprend le nom de la recette, les appareils et la description
+
+
+      if (recipeName.includes(searchItem) || _recipes.recipes[i].appliance.includes(searchItem) || _recipes.recipes[i].description.includes(searchItem)) {
+        newRecipes = new _Recipe.Recipe(_recipes.recipes[i]);
+        resultsArray.push(newRecipes);
+      }
 
       if (resultsArray.length > 0) {
         //Afficher les recettes ici
@@ -1964,11 +1968,9 @@ function searchFunction() {
         try {
           for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
             var _recipe = _step2.value;
-            document.getElementById('no-result').style.display = "none";
-            var newRecipe = new _Recipe.Recipe(_recipe);
-            document.getElementById('search-results').innerHTML += newRecipe.diplayRecipe();
-            (0, _addRecipes.default)(resultsArray);
-            (0, _addRecipes.default)(resultsArray);
+            document.getElementById('no-result').style.display = "none"; //let newRecipe = new Recipe(recipe);
+
+            document.getElementById('search-results').innerHTML += resultsArray.diplayRecipe(); //addIngredients(resultsArray); updateDropdowns(resultsArray)
           }
         } catch (err) {
           _iterator2.e(err);
@@ -1993,10 +1995,9 @@ function searchFunction() {
           var _recipesList = new _Recipe.Recipe(_recipe2);
 
           document.getElementById('search-results').innerHTML += _recipesList.diplayRecipe(); //Ajoute les ingrédients
-
-          (0, _addRecipes.default)(_recipes.recipes); //Ajoute les dropdowns
-
-          (0, _addRecipes.default)(_recipes.recipes);
+          //addIngredients(recipes)
+          //Ajoute les dropdowns
+          //updateDropdowns(recipes);
         }
       } catch (err) {
         _iterator3.e(err);
@@ -2014,23 +2015,23 @@ function searchFunction() {
     listName = document.getElementById(listID);
     ElementSpan = document.getElementsByTagName('.dropdownspan');
 
-    for (var i = 0; i < ElementSpan.length; i++) {
-      text = ElementSpan[i].innerText.toLowerCase() || ElementSpan[i].textContent.toLowerCase();
+    for (var _i = 0; _i < ElementSpan.length; _i++) {
+      text = ElementSpan[_i].innerText.toLowerCase() || ElementSpan[_i].textContent.toLowerCase();
 
       if (text.indexOf(searchInput) > -1) {
-        ElementSpan[i].style.display = "";
+        ElementSpan[_i].style.display = "";
       } else {
-        ElementSpan[i].style.display = "none";
+        ElementSpan[_i].style.display = "none";
       }
     }
   }; //Filter results arrays
 
 
   var arrayFilter = function arrayFilter(arrayName) {
-    for (var i = 0; i < arrayName.length; i++) {
+    for (var _i2 = 0; _i2 < arrayName.length; _i2++) {
       for (var j = 0; j < arrayName.length; j++) {
-        if (arrayName[i].name == arrayName[j].name && i != j) {
-          arrayName.splice(i, i + 1);
+        if (arrayName[_i2].name == arrayName[j].name && _i2 != j) {
+          arrayName.splice(_i2, _i2 + 1);
         }
       }
     }
@@ -2093,42 +2094,34 @@ function removeTag(listName) {
 
 
         if (_filters.filtersArray.length == 0) {
-          (function () {
-            (0, _clearPage.default)();
-            var recipesSearch = [];
+          (0, _clearPage.default)();
+          var recipesSearch = [];
+          var search = document.getElementById('search-input').value.toLowerCase();
 
-            for (var _i = 0; _i < _recipes.recipes.length; _i++) {
-              recipesSearch.push(_recipes.recipes[_i]);
+          if (recipeName.includes(search) || _recipes.recipes[i].appliance.includes(search) || _recipes.recipes[i].description.includes(search)) {
+            _search.resultsArray.push(recipesSearch);
+          }
+
+          (0, _addRecipes.default)(recipesSearch);
+          (0, _addRecipes.default)(recipesSearch);
+        } else {
+          //Sinon on re-filtre avec la liste 
+          var filterAll = [];
+
+          for (var _i = 0; _i < _recipes.recipes.length; _i++) {
+            for (var _j = 0; _j < _recipes.recipes.ingredients.length; _j++) {
+              for (var k = 0; k < _recipes.recipes.ustensils.length; k++) {
+                if (_recipes.recipes[_i].ingredients[_j].ingredient.includes(elem) || _recipes.recipes[_i].ustensils[k].includes(elem) || _recipes.recipes[_i].appliance.includes(elem)) {
+                  filterAll.push(_recipes.recipes[_i]);
+                }
+              }
             }
 
-            var search = document.getElementById('search-input').value.toLowerCase();
-            var filteredObjt = recipesSearch.filter(function (recipe) {
-              return recipe.name.toLowerCase().includes(search) || recipe.description.toLowerCase().includes(search);
-            });
-            (0, _addRecipes.default)(filteredObjt);
-            (0, _addRecipes.default)(filteredObjt);
-          })();
-        } else {
-          console.log(_filters.tagList); //Sinon on re-filtre avec la liste 
-
-          var filterAll = _search.resultsArray.filter(function (recipe) {
-            return recipe.ingredients.some(function (ingredients) {
-              return _filters.filtersArray.every(function (tag) {
-                return tag == ingredients.ingredient;
-              });
-            }) || recipe.ustensils.some(function (ustensils) {
-              return _filters.filtersArray.every(function (tag) {
-                return tag == ustensils;
-              });
-            }) || _filters.filtersArray.every(function (tag) {
-              return tag == recipe.appliance;
-            });
-          });
-
-          (0, _clearPage.default)(filterAll);
-          (0, _addRecipes.default)(filterAll);
-          (0, _addRecipes.default)(filterAll);
-          (0, _addRecipes.default)(filterAll);
+            (0, _clearPage.default)(filterAll);
+            (0, _addRecipes.default)(filterAll);
+            (0, _addRecipes.default)(filterAll);
+            (0, _addRecipes.default)(filterAll);
+          }
         }
       } //Supprime le tag cliqué
 
@@ -2293,46 +2286,40 @@ function filterFunction() {
       //Cas 1 : l'utilisateur a utilisé la barre de recherche
 
 
+      var filterAll = [];
+
       if (filtersArray.length > 0 && _search.resultsArray.length > 0) {
-        var filterAll = _search.resultsArray.filter(function (recipe) {
-          return recipe.ingredients.some(function (ingredients) {
-            return filtersArray.every(function (tag) {
-              return tag == ingredients.ingredient;
-            });
-          }) || recipe.ustensils.some(function (ustensils) {
-            return filtersArray.every(function (tag) {
-              return tag == ustensils;
-            });
-          }) || filtersArray.every(function (tag) {
-            return tag == recipe.appliance;
-          });
-        });
+        for (var _i2 = 0; _i2 < _search.resultsArray.length; _i2++) {
+          for (var _j2 = 0; _j2 < _search.resultsArray.ingredients.length; _j2++) {
+            for (var _k4 = 0; _k4 < _search.resultsArray.ustensils.length; _k4++) {
+              if (_search.resultsArray[_i2].ingredients[_j2].ingredient.includes(elem) || _search.resultsArray[_i2].ustensils[_k4].includes(elem) || _search.resultsArray[_i2].appliance.includes(elem)) {
+                filterAll.push(_search.resultsArray[_i2]);
+              }
+            }
+          }
+        }
 
         (0, _clearPage.default)(filterAll);
         (0, _addRecipes.default)(filterAll);
         (0, _addRecipes.default)(filterAll);
         (0, _addRecipes.default)(filterAll);
         ifEmpty(filterAll); //Cas 2 : l'utilisateur choisit d'abord un filtre
-      } else if (filtersArray.length > 0 && _search.resultsArray.length == 0) {
-        var _filterAll = _recipes.recipes.filter(function (recipe) {
-          return recipe.ingredients.some(function (ingredients) {
-            return filtersArray.every(function (tag) {
-              return tag == ingredients.ingredient;
-            });
-          }) || recipe.ustensils.some(function (ustensils) {
-            return filtersArray.every(function (tag) {
-              return tag == ustensils;
-            });
-          }) || filtersArray.every(function (tag) {
-            return tag == recipe.appliance;
-          });
-        });
+      } else if (filtersArray.length > 0 && _recipes.recipes.length == 0) {
+        for (var _i3 = 0; _i3 < _recipes.recipes.length; _i3++) {
+          for (var _j3 = 0; _j3 < _recipes.recipes.ingredients.length; _j3++) {
+            for (var _k5 = 0; _k5 < _recipes.recipes.ustensils.length; _k5++) {
+              if (_recipes.recipes[_i3].ingredients[_j3].ingredient.includes(elem) || _recipes.recipes[_i3].ustensils[_k5].includes(elem) || _recipes.recipes[_i3].appliance.includes(elem)) {
+                filterAll.push(_recipes.recipes[_i3]);
+              }
+            }
+          }
 
-        (0, _clearPage.default)(_filterAll);
-        (0, _addRecipes.default)(_filterAll);
-        (0, _addRecipes.default)(_filterAll);
-        (0, _addRecipes.default)(_filterAll);
-        ifEmpty(_filterAll);
+          (0, _clearPage.default)(filterAll);
+          (0, _addRecipes.default)(filterAll);
+          (0, _addRecipes.default)(filterAll);
+          (0, _addRecipes.default)(filterAll);
+          ifEmpty(filterAll);
+        }
       }
 
       (0, _removeTag.default)(tagList);
@@ -2421,7 +2408,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49647" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65476" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

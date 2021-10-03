@@ -24,42 +24,30 @@ export default function removeTag(listName) {
                     if(filtersArray.length == 0) {
                         clearPage();
                         let recipesSearch = [];
-                        for(let i = 0; i < recipes.length; i ++) { recipesSearch.push(recipes[i])}
                         let search = document.getElementById('search-input').value.toLowerCase();
-                        const filteredObjt = recipesSearch.filter(recipe => {
-                            return(
-                                recipe.name.toLowerCase().includes(search) ||
-                                recipe.description.toLowerCase().includes(search) 
-                            )
-                        });
-                        addRecipes(filteredObjt); addIngredients(filteredObjt);
+                        if(recipeName.includes(search) || recipes[i].appliance.includes(search) || recipes[i].description.includes(search)) {
+                            resultsArray.push(recipesSearch);
+                        } 
+                        addRecipes(recipesSearch); addIngredients(recipesSearch);
                     } else {
-                        console.log(tagList)
                     //Sinon on re-filtre avec la liste 
-                    const filterAll = resultsArray.filter((recipe) => {
-                        return (recipe.ingredients.some((ingredients) => {
-                            return filtersArray.every((tag) => {
-                                return tag == ingredients.ingredient
-                            })
-                        }) ||
-                        recipe.ustensils.some((ustensils) => {
-                            return filtersArray.every((tag) => {
-                                return tag == ustensils
-                            })
-                        }) ||
-                        filtersArray.every((tag) => {
-                            return tag == recipe.appliance
-                        })
-                        )
-                    })
-                    clearPage(filterAll); addRecipes(filterAll); addIngredients(filterAll); updateDropdowns(filterAll); 
-
-                    
+                    let filterAll = [];
+                    for(let i = 0; i < recipes.length; i++){
+                        for(let j = 0; j < recipes.ingredients.length; j++) {
+                            for(let k = 0; k < recipes.ustensils.length; k++) {
+                                if(recipes[i].ingredients[j].ingredient.includes(elem) ||
+                                recipes[i].ustensils[k].includes(elem) ||
+                                recipes[i].appliance.includes(elem)) {
+                                    filterAll.push(recipes[i])
+                                }
+                            }
+                        }
+                        clearPage(filterAll); addRecipes(filterAll); addIngredients(filterAll); updateDropdowns(filterAll); 
+                        }                    
                     }
                 }
                 //Supprime le tag cliqué
-                listName[i].remove();
-                
+                listName[i].remove();   
             });
         }
     }

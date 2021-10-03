@@ -12,4 +12,4 @@ const init = () => {
     filterFunction();
 }
 
-init()
+init();
