@@ -1,17 +1,15 @@
-import { Ingredient } from './components/Ingredients'
-import { Recipe } from './components/Recipes'
-import {recipes} from '../src/data/recipes'
-import ingredientsList from './utiles/dropdownLists';
-import listExpand from './components/listExpand';
-import globalSearch from './utiles/search';
-import filtersFunction from './utiles/filters';
+import listExpand from "./components/listExpand";
+import filterFunction from "./utils/filters";
+import searchFunction from "./utils/search";
+import { recipes } from "./data/recipes";
 
-
+export let recipesArray = [];
+for(let recipe of recipes){recipesArray.push(recipe)}
 
 const init = () => {
-    globalSearch();
-    ingredientsList();
+    searchFunction();
     listExpand();
-    filtersFunction();
+    filterFunction();
 }
+
 init();

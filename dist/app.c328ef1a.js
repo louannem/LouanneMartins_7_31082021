@@ -117,153 +117,109 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"components/Ingredients.js":[function(require,module,exports) {
+})({"components/listExpand.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.NoUnitAndQuantity = exports.UnitAndQuantity = exports.NoUnit = exports.NoQuantity = exports.Ingredient = void 0;
+exports.default = listExpand;
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function listExpand() {
+  var inputIngredient = document.getElementById('ingredient-input');
+  var boxIngredients = document.getElementById('ingredients-expand');
+  var inputAppareil = document.getElementById('appareils-input');
+  var boxAppareil = document.getElementById('appareils-expand');
+  var inputUsentiles = document.getElementById('ustensiles-input');
+  var parentNode = document.getElementById('ustensiles-search');
+  var boxUstensiles = parentNode.getElementsByTagName('div')[0]; //Fonctions à réutiliser
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+  var addingClass = function addingClass(paraStyle1, paraStyle2, size, paraClass1, paraClass2, classe) {
+    paraStyle1.style.width = size;
+    paraStyle2.style.width = size;
+    paraClass1.classList.add('onclick');
+    paraClass2.classList.add(classe);
+  };
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+  var removingClass = function removingClass(paraStyle1, paraStyle2, size, paraClass1, paraClass2, classe) {
+    paraStyle1.style.width = size;
+    paraStyle2.style.width = size;
+    paraClass1.classList.remove('onclick');
+    paraClass2.classList.remove(classe);
+  };
 
-var Ingredient = function Ingredient(object) {
-  _classCallCheck(this, Ingredient);
+  var callFonction = function callFonction(paraEvent1, paraEvent2, fonction) {
+    paraEvent1.addEventListener('click', fonction);
+    paraEvent2.addEventListener('click', fonction);
+  }; //Fonctions pour les dropdowns
 
-  if (object.ingredient && !object.unit && !object.quantity) {
-    return new NoUnitAndQuantity(object);
-  } else if (!object.quantity) {
-    return new NoQuantity(object);
-  } else if (!object.unit) {
-    return new NoUnit(object);
-  } else {
-    return new UnitAndQuantity(object);
-  }
-};
 
-exports.Ingredient = Ingredient;
+  var searchIngredient = function searchIngredient() {
+    var searchWrapper = document.getElementById('ingredients-search');
+    var listWrapper = document.getElementById('ingredients-list');
 
-var UnitAndQuantity = /*#__PURE__*/function () {
-  function UnitAndQuantity(object) {
-    _classCallCheck(this, UnitAndQuantity);
-
-    this.ingredient = object.ingredient;
-    this.unit = object.unit;
-    this.quantity = object.quantity;
-  }
-
-  _createClass(UnitAndQuantity, [{
-    key: "displayIngredient",
-    value: function displayIngredient() {
-      return "\n            <li><span><strong>".concat(this.ingredient, " :</strong></span> <span>").concat(this.quantity, " ").concat(this.unit, "</span></li>\n        ");
+    if (searchWrapper.classList.contains('show')) {
+      removingClass(searchWrapper, listWrapper, "170px", inputIngredient, listWrapper, "grid-list");
+      inputIngredient.setAttribute('placeholder', 'Ingrédient');
+    } else {
+      addingClass(searchWrapper, listWrapper, "500px", inputIngredient, listWrapper, "grid-list");
+      inputIngredient.setAttribute('placeholder', 'Rechercher un ingrédient');
     }
-  }]);
+  };
 
-  return UnitAndQuantity;
-}();
+  callFonction(inputIngredient, boxIngredients, searchIngredient);
 
-exports.UnitAndQuantity = UnitAndQuantity;
+  var searchAppareils = function searchAppareils() {
+    var searchWrapper = document.getElementById('appareils-search');
+    var listWrapper = document.getElementById('appareils-list');
 
-var NoQuantity = /*#__PURE__*/function () {
-  function NoQuantity(object) {
-    _classCallCheck(this, NoQuantity);
-
-    this.ingredient = object.ingredient;
-    this.unit = object.unit;
-  }
-
-  _createClass(NoQuantity, [{
-    key: "displayIngredient",
-    value: function displayIngredient() {
-      return "\n            <li><span><strong>".concat(this.ingredient, " :</strong></span> <span> ").concat(this.unit, "</span></li>\n        ");
+    if (searchWrapper.classList.contains('show')) {
+      removingClass(searchWrapper, listWrapper, "170px", inputAppareil, listWrapper, "grid-list-appareils");
+      inputAppareil.setAttribute('placeholder', 'Appareils');
+    } else {
+      inputAppareil.setAttribute('placeholder', 'Rechercher un appareil');
+      addingClass(searchWrapper, listWrapper, "500px", inputAppareil, listWrapper, "grid-list-appareils");
     }
-  }]);
+  };
 
-  return NoQuantity;
-}();
+  callFonction(inputAppareil, boxAppareil, searchAppareils);
 
-exports.NoQuantity = NoQuantity;
+  var searchUstensiles = function searchUstensiles() {
+    var searchWrapper = document.getElementById('ustensiles-search');
+    var listWrapper = document.getElementById('ustensiles-list');
 
-var NoUnit = /*#__PURE__*/function () {
-  function NoUnit(object) {
-    _classCallCheck(this, NoUnit);
-
-    this.ingredient = object.ingredient;
-    this.quantity = object.quantity;
-  }
-
-  _createClass(NoUnit, [{
-    key: "displayIngredient",
-    value: function displayIngredient() {
-      return "\n            <li><span><strong>".concat(this.ingredient, " :</strong></span> <span> ").concat(this.quantity, "</span></li>\n        ");
+    if (searchWrapper.classList.contains('show')) {
+      removingClass(searchWrapper, listWrapper, "170px", inputUsentiles, listWrapper, "grid-list");
+      inputUsentiles.setAttribute('placeholder', 'Ustensiles');
+    } else {
+      addingClass(searchWrapper, listWrapper, "500px", inputUsentiles, listWrapper, "grid-list");
+      inputUsentiles.setAttribute('placeholder', 'Rechercher un ustensile');
     }
-  }]);
+  };
 
-  return NoUnit;
-}();
+  callFonction(inputUsentiles, boxUstensiles, searchUstensiles); //Closes the others dropdowns if another one is open
 
-exports.NoUnit = NoUnit;
+  var dropdownElem = document.querySelectorAll('.dropdown-toggle');
+  dropdownElem.forEach(function (element) {
+    element.addEventListener('click', function () {
+      var appareilExp = boxAppareil.getAttribute('aria-expanded'),
+          ustExp = boxUstensiles.getAttribute('aria-expanded'),
+          ingrExp = boxIngredients.getAttribute('aria-expanded'); //Si l'élément ouvert est en true et le nouvel élément cliqué es encore sur false
+      //On cache la liste et on agrandi/réduit les dropdown
 
-var NoUnitAndQuantity = /*#__PURE__*/function () {
-  function NoUnitAndQuantity(object) {
-    _classCallCheck(this, NoUnitAndQuantity);
-
-    this.ingredient = object.ingredient;
-  }
-
-  _createClass(NoUnitAndQuantity, [{
-    key: "displayIngredient",
-    value: function displayIngredient() {
-      return "\n            <li><span><strong>".concat(this.ingredient, "</strong></li>\n        ");
-    }
-  }]);
-
-  return NoUnitAndQuantity;
-}();
-
-exports.NoUnitAndQuantity = NoUnitAndQuantity;
-},{}],"components/Recipes.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Recipe = void 0;
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var Recipe = /*#__PURE__*/function () {
-  function Recipe(object) {
-    _classCallCheck(this, Recipe);
-
-    this.name = object.name;
-    this.time = object.time;
-    this.description = object.description;
-    this.id = object.id;
-    this.ingredients = object.ingredients;
-    this.appliance = object.appliance;
-    this.ustensils = object.ustensils;
-  }
-
-  _createClass(Recipe, [{
-    key: "diplayRecipe",
-    value: function diplayRecipe() {
-      return "\n        <article class=\"recipe__card\" id=\"recipe-".concat(this.id, "\">\n                <div class=\"recipe__image\">\n                    <img src=\"\" alt=\"\">\n                </div>\n\n                <div class=\"recipe__info\">\n                    <div class=\"recipe__title\">\n                        <h2>").concat(this.name, "</h2>\n                        <div class=\"recipe__time\">\n                            <img src=\"../dist/clock.bdc9bc77.svg\" alt=\"\">\n                            <span>").concat(this.time, " min.</span>\n                        </div>\n                    </div>\n\n                    <div class=\"recipe__meta\">\n                        <div class=\"ingredients\">\n                           <ul id=\"").concat(this.id, "\">\n                           </ul>\n                        </div>\n\n                        <div class=\"instructions\">\n                            <p>").concat(this.description, "</p>\n                        </div>\n                    </div>\n                </div>\n            </article>\n        ");
-    }
-  }]);
-
-  return Recipe;
-}();
-
-exports.Recipe = Recipe;
+      if (appareilExp == "true" && element.getAttribute('aria-expanded') == "false") {
+        boxAppareil.nextElementSibling.classList.remove('show');
+        searchAppareils();
+      } else if (ingrExp == "true" && element.getAttribute('aria-expanded') == "false") {
+        boxIngredients.nextElementSibling.classList.remove('show');
+        searchIngredient();
+      } else if (ustExp == "true" && element.getAttribute('aria-expanded') == "false") {
+        boxUstensiles.nextElementSibling.classList.remove('show');
+        searchUstensiles();
+      }
+    });
+  });
+}
 },{}],"data/recipes.js":[function(require,module,exports) {
 "use strict";
 
@@ -1642,410 +1598,154 @@ var recipes = [{
   "ustensils": ["rouleau à patisserie", "fouet"]
 }];
 exports.recipes = recipes;
-},{}],"utiles/dropdownLists.js":[function(require,module,exports) {
+},{}],"components/Recipe.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = ingredientsList;
+exports.Recipe = void 0;
 
-var _recipes = require("../data/recipes");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var _Ingredients = require("../components/Ingredients");
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function ingredientsList() {
-  var ingredientArray = [];
-  var ustensilesArray = [];
-  var appareilsArray = [];
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-  for (var i = 0; i < _recipes.recipes.length; i++) {
-    for (var j = 0; j < _recipes.recipes[i].ingredients.length; j++) {
-      var _ingredientsBlock = document.getElementById(_recipes.recipes[i].id);
+var Recipe = /*#__PURE__*/function () {
+  function Recipe(object) {
+    _classCallCheck(this, Recipe);
 
-      var _ingredientsList = new _Ingredients.Ingredient(_recipes.recipes[i].ingredients[j]);
-
-      _ingredientsBlock.innerHTML += _ingredientsList.displayIngredient();
-    }
-
-    for (var _j = 0; _j < _recipes.recipes[i].ingredients.length; _j++) {
-      ingredientArray.push(_recipes.recipes[i].ingredients[_j].ingredient);
-    }
-
-    for (var k = 0; k < _recipes.recipes[i].ustensils.length; k++) {
-      ustensilesArray.push(_recipes.recipes[i].ustensils[k]);
-    }
-
-    appareilsArray.push(_recipes.recipes[i].appliance);
-  } //Gets rid of duplicates
-
-
-  var ingredientDuplicate = ingredientArray.filter(function (elem, index, self) {
-    return index === self.indexOf(elem);
-  });
-  var ustensilesDuplicate = ustensilesArray.filter(function (elem, index, self) {
-    return index === self.indexOf(elem);
-  });
-  var appareilsDuplicate = appareilsArray.filter(function (elem, index, self) {
-    return index === self.indexOf(elem);
-  });
-  var ingredientsBlock = document.getElementById('ingredients-list');
-  var ustensilesBlock = document.getElementById('ustensiles-list');
-  var appareilsBlock = document.getElementById('appareils-list');
-  var maxUstensiles = 30;
-
-  for (var _i = 0; _i <= maxUstensiles; _i++) {
-    var ingredientsWrapper = document.createElement('span');
-    var ustensilesWrapper = document.createElement('span');
-    ingredientsBlock.appendChild(ingredientsWrapper);
-    ustensilesBlock.appendChild(ustensilesWrapper);
-    ingredientsWrapper.innerText += ingredientDuplicate[_i];
-    ustensilesWrapper.innerText += ustensilesDuplicate[_i];
+    this.name = object.name;
+    this.time = object.time;
+    this.description = object.description;
+    this.id = object.id;
+    this.ingredients = object.ingredients;
+    this.appliance = object.appliance;
+    this.ustensils = object.ustensils;
   }
 
-  for (var _i2 = 0; _i2 <= 10; _i2++) {
-    var appareilsWrapper = document.createElement('span');
-    appareilsBlock.appendChild(appareilsWrapper);
-    appareilsWrapper.innerText += appareilsDuplicate[_i2];
-  }
-}
-},{"../data/recipes":"data/recipes.js","../components/Ingredients":"components/Ingredients.js"}],"components/listExpand.js":[function(require,module,exports) {
+  _createClass(Recipe, [{
+    key: "diplayRecipe",
+    value: function diplayRecipe() {
+      return "\n        <article class=\"recipe__card\" id=\"recipe-".concat(this.id, "\">\n                <div class=\"recipe__image\">\n                    <img src=\"\" alt=\"\">\n                </div>\n                <div class=\"recipe__info\">\n                    <div class=\"recipe__title\">\n                        <h2>").concat(this.name, "</h2>\n                        <div class=\"recipe__time\">\n                            <img src=\"../dist/clock.bdc9bc77.svg\" alt=\"\">\n                            <span>").concat(this.time, " min.</span>\n                        </div>\n                    </div>\n                    <div class=\"recipe__meta\">\n                        <div class=\"ingredients\">\n                           <ul id=\"").concat(this.id, "\">\n                           </ul>\n                        </div>\n                        <div class=\"instructions\">\n                            <p>").concat(this.description, "</p>\n                        </div>\n                    </div>\n                </div>\n            </article>\n        ");
+    }
+  }]);
+
+  return Recipe;
+}();
+
+exports.Recipe = Recipe;
+},{}],"components/Ingredient.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = listExpand;
+exports.NoUnitAndQuantity = exports.UnitAndQuantity = exports.NoUnit = exports.NoQuantity = exports.Ingredient = void 0;
 
-function listExpand() {
-  var inputIngredient = document.getElementById('ingredient-input');
-  var boxIngredients = document.getElementById('ingredients-expand');
-  var inputAppareil = document.getElementById('appareils-input');
-  var boxAppareil = document.getElementById('appareils-expand');
-  var inputUsentiles = document.getElementById('ustensiles-input');
-  var parentNode = document.getElementById('ustensiles-search');
-  var boxUstensiles = parentNode.getElementsByTagName('div')[0]; //Fonctions à réutiliser
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-  var addingClass = function addingClass(paraStyle1, paraStyle2, size, paraClass1, paraClass2, classe) {
-    paraStyle1.style.width = size;
-    paraStyle2.style.width = size;
-    paraClass1.classList.add('onclick');
-    paraClass2.classList.add(classe);
-  };
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-  var removingClass = function removingClass(paraStyle1, paraStyle2, size, paraClass1, paraClass2, classe) {
-    paraStyle1.style.width = size;
-    paraStyle2.style.width = size;
-    paraClass1.classList.remove('onclick');
-    paraClass2.classList.remove(classe);
-  };
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-  var callFonction = function callFonction(paraEvent1, paraEvent2, fonction) {
-    paraEvent1.addEventListener('click', fonction);
-    paraEvent2.addEventListener('click', fonction);
-  }; //Fonctions pour les dropdowns
+var Ingredient = function Ingredient(object) {
+  _classCallCheck(this, Ingredient);
 
-
-  var searchIngredient = function searchIngredient() {
-    var searchWrapper = document.getElementById('ingredients-search');
-    var listWrapper = document.getElementById('ingredients-list');
-
-    if (searchWrapper.classList.contains('show')) {
-      removingClass(searchWrapper, listWrapper, "170px", inputIngredient, listWrapper, "grid-list");
-      inputIngredient.setAttribute('placeholder', 'Ingrédient');
-    } else {
-      addingClass(searchWrapper, listWrapper, "500px", inputIngredient, listWrapper, "grid-list");
-      inputIngredient.setAttribute('placeholder', 'Rechercher un ingrédient');
-    }
-  };
-
-  callFonction(inputIngredient, boxIngredients, searchIngredient);
-
-  var searchAppareils = function searchAppareils() {
-    var searchWrapper = document.getElementById('appareils-search');
-    var listWrapper = document.getElementById('appareils-list');
-
-    if (searchWrapper.classList.contains('show')) {
-      removingClass(searchWrapper, listWrapper, "170px", inputAppareil, listWrapper, "grid-list-appareils");
-      inputAppareil.setAttribute('placeholder', 'Appareils');
-    } else {
-      inputAppareil.setAttribute('placeholder', 'Rechercher un appareil');
-      addingClass(searchWrapper, listWrapper, "500px", inputAppareil, listWrapper, "grid-list-appareils");
-    }
-  };
-
-  callFonction(inputAppareil, boxAppareil, searchAppareils);
-
-  var searchUstensiles = function searchUstensiles() {
-    var searchWrapper = document.getElementById('ustensiles-search');
-    var listWrapper = document.getElementById('ustensiles-list');
-
-    if (searchWrapper.classList.contains('show')) {
-      removingClass(searchWrapper, listWrapper, "170px", inputUsentiles, listWrapper, "grid-list");
-      inputUsentiles.setAttribute('placeholder', 'Ustensiles');
-    } else {
-      addingClass(searchWrapper, listWrapper, "500px", inputUsentiles, listWrapper, "grid-list");
-      inputUsentiles.setAttribute('placeholder', 'Rechercher un ustensile');
-    }
-  };
-
-  callFonction(inputUsentiles, boxUstensiles, searchUstensiles);
-}
-},{}],"utiles/clearSearch.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = clearPage;
-
-var _search = require("../utiles/search");
-
-function clearPage() {
-  var toRemove = document.querySelectorAll('article');
-  toRemove.forEach(function (recipe) {
-    recipe.style.display = "none";
-  });
-  var ingredientsRemove = document.querySelectorAll('#ingredients-list span');
-  var ustensilsRemove = document.querySelectorAll('#ustensiles-list span');
-  var applianceRemove = document.querySelectorAll('#appareils-list span');
-  ingredientsRemove.forEach(function (elem) {
-    elem.style.display = "none";
-  });
-  ustensilsRemove.forEach(function (elem) {
-    elem.style.display = "none";
-  });
-  applianceRemove.forEach(function (elem) {
-    elem.style.display = "none";
-  });
-}
-},{"../utiles/search":"utiles/search.js"}],"utiles/removeTags.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = removeTag;
-
-var _recipes = require("../data/recipes");
-
-var _filters = require("./filters");
-
-var _clearSearch = _interopRequireDefault(require("./clearSearch"));
-
-var _addRecipes = _interopRequireDefault(require("./addRecipes"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-//Importation et fonctions des listes générées par les filtres
-function removeTag(listName) {
-  var _loop = function _loop(i) {
-    //Supprime les tags
-    listName[i].addEventListener('click', function () {
-      //Trouver l'élément dans la liste de filtres
-      for (var j = 0; j < _filters.filtersArray.length; j++) {
-        //Identifie le filtre dans la liste de filtre et le supprime
-        if (listName[i].innerText == _filters.filtersArray[j]) {
-          _filters.filtersArray.splice(j, 1);
-        } //Si la liste = 0, on re-met toutes les recettes à partir de l'input
-
-
-        if (_filters.filtersArray.length == 0) {
-          (function () {
-            (0, _clearSearch.default)();
-            var recipesSearch = [];
-
-            for (var _i = 0; _i < _recipes.recipes.length; _i++) {
-              recipesSearch.push(_recipes.recipes[_i]);
-            }
-
-            var search = document.getElementById('search-input').value.toLowerCase();
-            var filteredObjt = recipesSearch.filter(function (recipe) {
-              return recipe.name.toLowerCase().includes(search) || recipe.description.toLowerCase().includes(search);
-            });
-            (0, _addRecipes.default)(filteredObjt);
-            (0, _addRecipes.default)(filteredObjt);
-          })();
-        }
-      }
-
-      listName[i].remove();
-    });
-  };
-
-  for (var i = 0; i < listName.length; i++) {
-    _loop(i);
+  if (object.ingredient && !object.unit && !object.quantity) {
+    return new NoUnitAndQuantity(object);
+  } else if (!object.quantity) {
+    return new NoQuantity(object);
+  } else if (!object.unit) {
+    return new NoUnit(object);
+  } else {
+    return new UnitAndQuantity(object);
   }
-}
-},{"../data/recipes":"data/recipes.js","./filters":"utiles/filters.js","./clearSearch":"utiles/clearSearch.js","./addRecipes":"utiles/addRecipes.js"}],"assets/delete.svg":[function(require,module,exports) {
-module.exports = "/delete.3b390d6e.svg";
-},{}],"utiles/filters.js":[function(require,module,exports) {
-"use strict";
+};
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = filtersFunction;
-exports.tagList = exports.filtersArray = void 0;
+exports.Ingredient = Ingredient;
 
-var _recipes = require("../data/recipes");
+var UnitAndQuantity = /*#__PURE__*/function () {
+  function UnitAndQuantity(object) {
+    _classCallCheck(this, UnitAndQuantity);
 
-var _search = require("../utiles/search");
-
-var _clearSearch = _interopRequireDefault(require("../utiles/clearSearch"));
-
-var _addRecipes = _interopRequireDefault(require("../utiles/addRecipes"));
-
-var _removeTags = _interopRequireDefault(require("../utiles/removeTags"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-var tagArray = [];
-var applianceArray = [];
-var ustensilesArray = [];
-var filtersArray = [],
-    tagList;
-exports.tagList = tagList;
-exports.filtersArray = filtersArray;
-
-function filtersFunction() {
-  var tags = document.querySelectorAll('.dropdown-menu span');
-  var addedTags = document.querySelectorAll('.added-tag');
-  var ingredientsArray = [];
-  var appareilsArray = [];
-  var ustensilsArray = []; //Crée les listes comparatives
-
-  for (var j = 0; j < _recipes.recipes.length; j++) {
-    for (var k = 0; k < _recipes.recipes[j].ingredients.length; k++) {
-      ingredientsArray.push(_recipes.recipes[j].ingredients[k].ingredient);
-    }
-
-    for (var _k = 0; _k < _recipes.recipes[j].appliance.length; _k++) {
-      appareilsArray.push(_recipes.recipes[j].appliance);
-    }
-
-    for (var _k2 = 0; _k2 < _recipes.recipes[j].ustensils.length; _k2++) {
-      ustensilsArray.push(_recipes.recipes[j].ustensils[_k2]);
-    }
+    this.ingredient = object.ingredient;
+    this.unit = object.unit;
+    this.quantity = object.quantity;
   }
 
-  var _loop = function _loop(i) {
-    var addTag = function addTag() {
-      //Creates and adds the new tag 
-      var newTag = document.createElement('span');
-      newTag.classList.add('added-tag');
-      newTag.innerText = tags[i].innerText;
-      document.getElementById('added-tags').appendChild(newTag);
-      addedTags = document.querySelectorAll('.added-tag');
-      exports.tagList = tagList = document.getElementsByClassName('added-tag'); //Adds icon
+  _createClass(UnitAndQuantity, [{
+    key: "displayIngredient",
+    value: function displayIngredient() {
+      return "\n            <li><span><strong>".concat(this.ingredient, " :</strong></span> <span>").concat(this.quantity, " ").concat(this.unit, "</span></li>\n        ");
+    }
+  }]);
 
-      var deleteIcon = document.createElement('img');
+  return UnitAndQuantity;
+}();
 
-      var _iterator = _createForOfIteratorHelper(addedTags),
-          _step;
+exports.UnitAndQuantity = UnitAndQuantity;
 
-      try {
-        for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var tag = _step.value;
-          tag.appendChild(deleteIcon);
-        }
-      } catch (err) {
-        _iterator.e(err);
-      } finally {
-        _iterator.f();
-      }
+var NoQuantity = /*#__PURE__*/function () {
+  function NoQuantity(object) {
+    _classCallCheck(this, NoQuantity);
 
-      ;
-
-      var iconPath = require('../assets/delete.svg');
-
-      deleteIcon.setAttribute('src', iconPath); //Ajout des classes personnalisées
-
-      for (var _i = 0; _i < _recipes.recipes.length; _i++) {
-        for (var _j = 0; _j < _recipes.recipes[_i].ingredients.length; _j++) {
-          if (_recipes.recipes[_i].ingredients[_j].ingredient == newTag.textContent) {
-            newTag.classList.add('ingredient-tag');
-          }
-        }
-
-        for (var _k3 = 0; _k3 < _recipes.recipes[_i].ustensils.length; _k3++) {
-          if (_recipes.recipes[_i].ustensils[_k3] == newTag.textContent) {
-            newTag.classList.add('ustentil-tag');
-          }
-        }
-
-        for (var l = 0; l < _recipes.recipes[_i].appliance.length; l++) {
-          if (_recipes.recipes[_i].appliance == newTag.textContent) {
-            newTag.classList.add('appliance-tag');
-          }
-        }
-      }
-
-      for (var _j2 = 0; _j2 < addedTags.length; _j2++) {
-        var tagName = addedTags[_j2].innerText; //Ajoute les filtres d'ingrédients
-
-        if (!tagArray.includes(tagName) && ingredientsArray.includes(tagName)) {
-          tagArray.push(tagName);
-          filtersArray.push(tagName); //Ajoute les filtres d'appareils
-        } else if (!applianceArray.includes(tagName) && appareilsArray.includes(tagName)) {
-          applianceArray.push(tagName);
-          filtersArray.push(tagName); //Ajoute les filtres d'ustensiles
-        } else if (!ustensilesArray.includes(tagName) && ustensilsArray.includes(tagName)) {
-          ustensilesArray.push(tagName);
-          filtersArray.push(tagName);
-        }
-
-        if (filtersArray.includes(tags[i].innerText)) {
-          tags[i].style.display = "none";
-        } else if (!filtersArray.includes(tags[i].innerText)) {
-          tags[i].style.display = "inline";
-        }
-      }
-
-      (0, _clearSearch.default)(); //Compare les ingredients pour chaque recette            
-
-      var recipesDisplay = [];
-      filtersArray.forEach(function (elem) {
-        for (var _i2 = 0; _i2 < _search.resultsArray.length; _i2++) {
-          for (var _j3 = 0; _j3 < _search.resultsArray[_i2].ingredients.length; _j3++) {
-            for (var _k4 = 0; _k4 < _search.resultsArray[_i2].ustensils.length; _k4++) {
-              if (_search.resultsArray[_i2].ingredients[_j3].ingredient.includes(elem) || _search.resultsArray[_i2].ustensils[_k4].includes(elem) || _search.resultsArray[_i2].appliance.includes(elem)) {
-                recipesDisplay.push(_search.resultsArray[_i2]);
-              } else if (!_search.resultsArray[_i2].ingredients[_j3].ingredient.includes(elem) && !_search.resultsArray[_i2].ustensils[_k4].includes(elem) && !_search.resultsArray[_i2].appliance.includes(elem)) {//Identifier les recettes en trop
-              }
-            }
-          }
-        }
-      }); //Filtre les doublons
-
-      var uniqueValuesSet = new Set();
-      var filteredRecipes = recipesDisplay.filter(function (recipe) {
-        var isPresentInArray = uniqueValuesSet.has(recipe.id);
-        uniqueValuesSet.add(recipe.id);
-        return !isPresentInArray;
-      }); //Displays the recipes with ingredients
-
-      (0, _addRecipes.default)(filteredRecipes);
-      (0, _addRecipes.default)(filteredRecipes);
-      (0, _addRecipes.default)(filteredRecipes); //Fonction de suppression + re-filtrage
-
-      (0, _removeTags.default)(tagList);
-    };
-
-    tags[i].addEventListener('click', addTag);
-  };
-
-  for (var i = 0; i < tags.length; i++) {
-    _loop(i);
+    this.ingredient = object.ingredient;
+    this.unit = object.unit;
   }
-}
-},{"../data/recipes":"data/recipes.js","../utiles/search":"utiles/search.js","../utiles/clearSearch":"utiles/clearSearch.js","../utiles/addRecipes":"utiles/addRecipes.js","../utiles/removeTags":"utiles/removeTags.js","../assets/delete.svg":"assets/delete.svg"}],"utiles/addRecipes.js":[function(require,module,exports) {
+
+  _createClass(NoQuantity, [{
+    key: "displayIngredient",
+    value: function displayIngredient() {
+      return "\n            <li><span><strong>".concat(this.ingredient, " :</strong></span> <span> ").concat(this.unit, "</span></li>\n        ");
+    }
+  }]);
+
+  return NoQuantity;
+}();
+
+exports.NoQuantity = NoQuantity;
+
+var NoUnit = /*#__PURE__*/function () {
+  function NoUnit(object) {
+    _classCallCheck(this, NoUnit);
+
+    this.ingredient = object.ingredient;
+    this.quantity = object.quantity;
+  }
+
+  _createClass(NoUnit, [{
+    key: "displayIngredient",
+    value: function displayIngredient() {
+      return "\n            <li><span><strong>".concat(this.ingredient, " :</strong></span> <span> ").concat(this.quantity, "</span></li>\n        ");
+    }
+  }]);
+
+  return NoUnit;
+}();
+
+exports.NoUnit = NoUnit;
+
+var NoUnitAndQuantity = /*#__PURE__*/function () {
+  function NoUnitAndQuantity(object) {
+    _classCallCheck(this, NoUnitAndQuantity);
+
+    this.ingredient = object.ingredient;
+  }
+
+  _createClass(NoUnitAndQuantity, [{
+    key: "displayIngredient",
+    value: function displayIngredient() {
+      return "\n            <li><span><strong>".concat(this.ingredient, "</strong></li>\n        ");
+    }
+  }]);
+
+  return NoUnitAndQuantity;
+}();
+
+exports.NoUnitAndQuantity = NoUnitAndQuantity;
+},{}],"utils/addRecipes.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2053,7 +1753,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = addRecipes;
 
-var _Ingredients = require("../components/Ingredients");
+var _Ingredient = require("../components/Ingredient");
 
 var _filters = _interopRequireDefault(require("./filters"));
 
@@ -2073,7 +1773,7 @@ function addRecipes(recipes) {
     document.getElementById('search-results').innerHTML = htmlString;
   };
 
-  displayRecipes(recipes); //Ajoute les ingrédients
+  displayRecipes();
 
   var addIngredients = function addIngredients() {
     //Display the ingredients for each recipes found
@@ -2081,13 +1781,13 @@ function addRecipes(recipes) {
       var ingredientsBlock = document.getElementById(recipes[i].id);
 
       for (var j = 0; j < recipes[i].ingredients.length; j++) {
-        var ingredientsList = new _Ingredients.Ingredient(recipes[i].ingredients[j]);
+        var ingredientsList = new _Ingredient.Ingredient(recipes[i].ingredients[j]);
         ingredientsBlock.innerHTML += ingredientsList.displayIngredient();
       }
     }
   };
 
-  addIngredients(recipes); //Actualise les dropdown lists
+  addIngredients();
 
   var updateDropdowns = function updateDropdowns() {
     var ingrList = [];
@@ -2158,104 +1858,191 @@ function addRecipes(recipes) {
     (0, _filters.default)();
   };
 
-  updateDropdowns(recipes);
+  updateDropdowns();
 }
-},{"../components/Ingredients":"components/Ingredients.js","./filters":"utiles/filters.js"}],"utiles/search.js":[function(require,module,exports) {
+},{"../components/Ingredient":"components/Ingredient.js","./filters":"utils/filters.js"}],"utils/clearPage.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = clearPage;
+
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function clearPage() {
+  var toRemove = document.querySelectorAll('article');
+
+  var _iterator = _createForOfIteratorHelper(toRemove),
+      _step;
+
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var article = _step.value;
+      article.remove();
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+}
+},{}],"utils/search.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = searchFunction;
-exports.resultsArray = exports.recipesArray = void 0;
+exports.resultsArray = void 0;
 
 var _recipes = require("../data/recipes");
 
-var _Recipes = require("../components/Recipes");
+var _Recipe = require("../components/Recipe");
 
-var _addRecipes = _interopRequireDefault(require("./addRecipes"));
+var _addRecipes = _interopRequireDefault(require("../utils/addRecipes"));
+
+var _clearPage = _interopRequireDefault(require("../utils/clearPage"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//Search algo with for loop
-var recipesArray = [];
-exports.recipesArray = recipesArray;
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+//Liste des recettes recherchées à récupérer et filtrer
 var resultsArray = [];
 exports.resultsArray = resultsArray;
 
 function searchFunction() {
-  var input = document.getElementById('search-input');
-  var ingredientInput = document.getElementById('ingredient-input');
-  var appareilsInput = document.getElementById('appareils-input');
+  //Si aucune recette n'a été recherchée
+  //On affiche l'ensemble de la liste de recettes
+  if (resultsArray.length == 0) {
+    var _iterator = _createForOfIteratorHelper(_recipes.recipes),
+        _step;
 
-  for (var i = 0; i < _recipes.recipes.length; i++) {
-    //Displays the recipes
-    var recipesList = new _Recipes.Recipe(_recipes.recipes[i]);
-    recipesArray.push(recipesList);
-    document.getElementById('search-results').innerHTML += recipesList.diplayRecipe();
+    try {
+      for (_iterator.s(); !(_step = _iterator.n()).done;) {
+        var recipe = _step.value;
+        var recipesList = new _Recipe.Recipe(recipe);
+        document.getElementById('search-results').innerHTML += recipesList.diplayRecipe(); //Ajoute les ingrédients
+
+        (0, _addRecipes.default)(_recipes.recipes); //Ajoute les dropdowns
+
+        (0, _addRecipes.default)(_recipes.recipes);
+      }
+    } catch (err) {
+      _iterator.e(err);
+    } finally {
+      _iterator.f();
+    }
   }
 
-  var globalSearch = function globalSearch(searchItem) {
-    searchItem = input.value.toLowerCase();
+  var input = document.getElementById('search-input');
 
-    for (var _i = 0; _i < _recipes.recipes.length; _i++) {
-      var recipesID = document.getElementById("recipe-" + _recipes.recipes[_i].id); //Lance la recherche à partir de 3 caractères ou affiche toutes les recettes si < 3
+  var globalSearch = function globalSearch() {
+    var searchInput = input.value.toLowerCase();
 
-      if (searchItem.length >= 3) {
-        var recipeName = _recipes.recipes[_i].name.toLowerCase();
+    if (searchInput.length > 2) {
+      var recipeName = _recipes.recipes[i].name.toLowerCase(); //La recherche comprend le nom de la recette, les appareils et la description
 
-        var newRecipes = void 0; //La recherche comprend le nom de la recette, les appareils et la description
 
-        if (recipeName.includes(searchItem) || _recipes.recipes[_i].appliance.includes(searchItem) || _recipes.recipes[_i].description.includes(searchItem)) {
-          newRecipes = new _Recipes.Recipe(_recipes.recipes[_i]);
-          resultsArray.push(newRecipes);
-          recipesArray.push(newRecipes);
-        } else {
-          recipesID.style.display = "none";
+      if (recipeName.includes(searchItem) || _recipes.recipes[i].appliance.includes(searchItem) || _recipes.recipes[i].description.includes(searchItem)) {
+        newRecipes = new _Recipe.Recipe(_recipes.recipes[i]);
+        resultsArray.push(newRecipes);
+      }
+
+      if (resultsArray.length > 0) {
+        //Afficher les recettes ici
+        (0, _clearPage.default)();
+
+        var _iterator2 = _createForOfIteratorHelper(resultsArray),
+            _step2;
+
+        try {
+          for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+            var _recipe = _step2.value;
+            document.getElementById('no-result').style.display = "none"; //let newRecipe = new Recipe(recipe);
+
+            document.getElementById('search-results').innerHTML += resultsArray.diplayRecipe(); //addIngredients(resultsArray); updateDropdowns(resultsArray)
+          }
+        } catch (err) {
+          _iterator2.e(err);
+        } finally {
+          _iterator2.f();
         }
-      } else {
-        recipesID.style.display = "";
+      } else if (resultsArray.length == 0) {
+        //Afficher qu'aucune recette n'a été trouvée
+        (0, _clearPage.default)();
+        document.getElementById('no-result').style.display = "inline";
+        document.getElementById('no-result').innerText = "Aucune recette n'a été trouvée.";
+      } //Si l'utilisateur supprime les caractères, on remet toute les recettes
+
+    } else if (searchInput.length < 3) {
+      var _iterator3 = _createForOfIteratorHelper(_recipes.recipes),
+          _step3;
+
+      try {
+        for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+          var _recipe2 = _step3.value;
+
+          var _recipesList = new _Recipe.Recipe(_recipe2);
+
+          document.getElementById('search-results').innerHTML += _recipesList.diplayRecipe(); //Ajoute les ingrédients
+          //addIngredients(recipes)
+          //Ajoute les dropdowns
+          //updateDropdowns(recipes);
+        }
+      } catch (err) {
+        _iterator3.e(err);
+      } finally {
+        _iterator3.f();
       }
     }
-
-    return resultsArray;
   };
 
   input.addEventListener('input', globalSearch); //Filter each list
 
   var filterList = function filterList(input, listID) {
-    var searchInput, ustensilesList, ElementSpan, text;
+    var searchInput, listName, ElementSpan, text;
     searchInput = input.value.toLowerCase();
-    ustensilesList = document.getElementById(listID);
-    ElementSpan = ustensilesList.getElementsByTagName('span');
+    listName = document.getElementById(listID);
+    ElementSpan = document.getElementsByTagName('.dropdownspan');
 
-    for (var _i2 = 0; _i2 < ElementSpan.length; _i2++) {
-      text = ElementSpan[_i2].innerText.toLowerCase() || ElementSpan[_i2].textContent.toLowerCase();
+    for (var _i = 0; _i < ElementSpan.length; _i++) {
+      text = ElementSpan[_i].innerText.toLowerCase() || ElementSpan[_i].textContent.toLowerCase();
 
       if (text.indexOf(searchInput) > -1) {
-        ElementSpan[_i2].style.display = "";
+        ElementSpan[_i].style.display = "";
       } else {
-        ElementSpan[_i2].style.display = "none";
+        ElementSpan[_i].style.display = "none";
       }
     }
   }; //Filter results arrays
 
 
   var arrayFilter = function arrayFilter(arrayName) {
-    for (var _i3 = 0; _i3 < arrayName.length; _i3++) {
+    for (var _i2 = 0; _i2 < arrayName.length; _i2++) {
       for (var j = 0; j < arrayName.length; j++) {
-        if (arrayName[_i3].name == arrayName[j].name && _i3 != j) {
-          arrayName.splice(_i3, _i3 + 1);
+        if (arrayName[_i2].name == arrayName[j].name && _i2 != j) {
+          arrayName.splice(_i2, _i2 + 1);
         }
       }
     }
   };
 
-  var ingredientsArray = [];
+  var ingredientInput = document.getElementById('ingredient-input');
+  var appareilsInput = document.getElementById('appareils-input');
+  var ustensilesInput = document.getElementById('ustensiles-input');
 
   var ingredientsSearch = function ingredientsSearch() {
     filterList(ingredientInput, 'ingredients-list');
-    arrayFilter(ingredientsArray);
   };
 
   ingredientInput.addEventListener('input', ingredientsSearch);
@@ -2263,78 +2050,337 @@ function searchFunction() {
 
   var appareilsSearch = function appareilsSearch() {
     filterList(appareilsInput, 'appareils-list');
-
-    for (var j = 0; j < _recipes.recipes.length; j++) {
-      var applianceTest = _recipes.recipes[j].appliance.toLowerCase();
-
-      var searchInput = appareilsInput.value.toLowerCase();
-      var filteredRecipe = void 0;
-
-      if (applianceTest.includes(searchInput)) {
-        filteredRecipe = new _Recipes.Recipe(_recipes.recipes[j]);
-        appareilsArray.push(filteredRecipe);
-      } else {}
-    }
-
-    arrayFilter(appareilsArray);
-    console.log("Appareils : ", appareilsArray);
   };
 
   appareilsInput.addEventListener('input', appareilsSearch);
-  var ustensilesArray = [];
-  var ustensilesInput = document.getElementById('ustensiles-input');
 
   var ustensilesSearch = function ustensilesSearch() {
     filterList(ustensilesInput, 'ustensiles-list');
-
-    for (var j = 0; j < _recipes.recipes.length; j++) {
-      for (var k = 0; k < _recipes.recipes[j].ustensils.length; k++) {
-        if (ustensilesInput.length == 0) {
-          ustensilesArray = [];
-        } else {
-          var ustensilesTest = _recipes.recipes[j].ustensils[k].toLowerCase();
-
-          var searchInput = ustensilesInput.value.toLowerCase();
-
-          if (ustensilesTest.includes(searchInput)) {
-            var filteredRecipes = new _Recipes.Recipe(_recipes.recipes[j]);
-            ustensilesArray.push(filteredRecipes);
-          } else {}
-        }
-      }
-    }
   };
 
   ustensilesInput.addEventListener('input', ustensilesSearch);
 }
-},{"../data/recipes":"data/recipes.js","../components/Recipes":"components/Recipes.js","./addRecipes":"utiles/addRecipes.js"}],"app.js":[function(require,module,exports) {
+},{"../data/recipes":"data/recipes.js","../components/Recipe":"components/Recipe.js","../utils/addRecipes":"utils/addRecipes.js","../utils/clearPage":"utils/clearPage.js"}],"utils/removeTag.js":[function(require,module,exports) {
 "use strict";
 
-var _Ingredients = require("./components/Ingredients");
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = removeTag;
 
-var _Recipes = require("./components/Recipes");
+var _recipes = require("../data/recipes");
 
-var _recipes = require("../src/data/recipes");
+var _filters = require("./filters");
 
-var _dropdownLists = _interopRequireDefault(require("./utiles/dropdownLists"));
+var _search = require("./search");
 
-var _listExpand = _interopRequireDefault(require("./components/listExpand"));
+var _addRecipes = _interopRequireDefault(require("../utils/addRecipes"));
 
-var _search = _interopRequireDefault(require("./utiles/search"));
-
-var _filters = _interopRequireDefault(require("./utiles/filters"));
+var _clearPage = _interopRequireDefault(require("../utils/clearPage"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//Importation des listes générées par les filtres
+function removeTag(listName) {
+  var _loop = function _loop(i) {
+    //Supprime les tags
+    listName[i].addEventListener('click', function () {
+      //Trouver l'élément dans la liste de filtres
+      for (var j = 0; j < _filters.filtersArray.length; j++) {
+        //Identifie le filtre dans la liste de filtre et le supprime
+        if (listName[i].innerText == _filters.filtersArray[j]) {
+          _filters.filtersArray.splice(j, 1);
+        } //Si la liste = 0, on re-met toutes les recettes à partir de l'input
+
+
+        if (_filters.filtersArray.length == 0) {
+          (0, _clearPage.default)();
+          var recipesSearch = [];
+          var search = document.getElementById('search-input').value.toLowerCase();
+
+          if (recipeName.includes(search) || _recipes.recipes[i].appliance.includes(search) || _recipes.recipes[i].description.includes(search)) {
+            _search.resultsArray.push(recipesSearch);
+          }
+
+          (0, _addRecipes.default)(recipesSearch);
+          (0, _addRecipes.default)(recipesSearch);
+        } else {
+          //Sinon on re-filtre avec la liste 
+          var filterAll = [];
+
+          for (var _i = 0; _i < _recipes.recipes.length; _i++) {
+            for (var _j = 0; _j < _recipes.recipes.ingredients.length; _j++) {
+              for (var k = 0; k < _recipes.recipes.ustensils.length; k++) {
+                if (_recipes.recipes[_i].ingredients[_j].ingredient.includes(elem) || _recipes.recipes[_i].ustensils[k].includes(elem) || _recipes.recipes[_i].appliance.includes(elem)) {
+                  filterAll.push(_recipes.recipes[_i]);
+                }
+              }
+            }
+
+            (0, _clearPage.default)(filterAll);
+            (0, _addRecipes.default)(filterAll);
+            (0, _addRecipes.default)(filterAll);
+            (0, _addRecipes.default)(filterAll);
+          }
+        }
+      } //Supprime le tag cliqué
+
+
+      listName[i].remove();
+    });
+  };
+
+  //Récupère la liste de tags
+  for (var i = 0; i < listName.length; i++) {
+    _loop(i);
+  }
+}
+},{"../data/recipes":"data/recipes.js","./filters":"utils/filters.js","./search":"utils/search.js","../utils/addRecipes":"utils/addRecipes.js","../utils/clearPage":"utils/clearPage.js"}],"assets/delete_icon.png":[function(require,module,exports) {
+module.exports = "/delete_icon.04ec1ce2.png";
+},{}],"utils/filters.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = filterFunction;
+exports.filtersArray = exports.tagList = void 0;
+
+var _recipes = require("../data/recipes");
+
+var _search = require("./search");
+
+var _clearPage = _interopRequireDefault(require("./clearPage"));
+
+var _addRecipes = _interopRequireDefault(require("./addRecipes"));
+
+var _removeTag = _interopRequireDefault(require("./removeTag"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+var tagList,
+    filtersArray = [];
+exports.filtersArray = filtersArray;
+exports.tagList = tagList;
+
+function filterFunction() {
+  var tags = document.querySelectorAll('.dropdown-menu span');
+  var ingredientsArray = [];
+  var appareilsArray = [];
+  var ustensilsArray = []; //Crée les listes comparatives pour ajouter les filtres séparemment
+
+  for (var j = 0; j < _recipes.recipes.length; j++) {
+    for (var k = 0; k < _recipes.recipes[j].ingredients.length; k++) {
+      ingredientsArray.push(_recipes.recipes[j].ingredients[k].ingredient);
+    }
+
+    for (var _k = 0; _k < _recipes.recipes[j].appliance.length; _k++) {
+      appareilsArray.push(_recipes.recipes[j].appliance);
+    }
+
+    for (var _k2 = 0; _k2 < _recipes.recipes[j].ustensils.length; _k2++) {
+      ustensilsArray.push(_recipes.recipes[j].ustensils[_k2]);
+    }
+  }
+
+  var _loop = function _loop(i) {
+    var addTags = function addTags() {
+      //Adds the new tag 
+      var newTag = document.createElement('span');
+      newTag.classList.add('added-tag');
+      newTag.innerText = tags[i].innerText;
+      document.getElementById('added-tags').appendChild(newTag);
+      var addedTags = document.querySelectorAll('.added-tag');
+      exports.tagList = tagList = document.getElementsByClassName('added-tag'); //Adds icon
+
+      var deleteIcon = document.createElement('img');
+
+      var _iterator = _createForOfIteratorHelper(addedTags),
+          _step;
+
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var tag = _step.value;
+          tag.appendChild(deleteIcon);
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+
+      ;
+
+      var iconPath = require('../assets/delete_icon.png');
+
+      deleteIcon.setAttribute('src', iconPath); //Ajout des classes personnalisées
+
+      for (var _i = 0; _i < _recipes.recipes.length; _i++) {
+        for (var _j = 0; _j < _recipes.recipes[_i].ingredients.length; _j++) {
+          if (_recipes.recipes[_i].ingredients[_j].ingredient == newTag.textContent) {
+            newTag.classList.add('ingredient-tag');
+          }
+        }
+
+        for (var _k3 = 0; _k3 < _recipes.recipes[_i].ustensils.length; _k3++) {
+          if (_recipes.recipes[_i].ustensils[_k3] == newTag.textContent) {
+            newTag.classList.add('ustentil-tag');
+          }
+        }
+
+        for (var l = 0; l < _recipes.recipes[_i].appliance.length; l++) {
+          if (_recipes.recipes[_i].appliance == newTag.textContent) {
+            newTag.classList.add('appliance-tag');
+          }
+        }
+      } //Ajout des tags dans chaque liste de filtre
+
+
+      var _iterator2 = _createForOfIteratorHelper(addedTags),
+          _step2;
+
+      try {
+        for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+          var _tag = _step2.value;
+          var tagName = _tag.innerText;
+
+          if (!filtersArray.includes(tagName) && ingredientsArray.includes(tagName)) {
+            filtersArray.push(tagName);
+          }
+
+          if (!filtersArray.includes(tagName) && ustensilsArray.includes(tagName)) {
+            filtersArray.push(tagName);
+          }
+
+          if (!filtersArray.includes(tagName) && appareilsArray.includes(tagName)) {
+            filtersArray.push(tagName);
+          }
+        } //Fonction pour vérifier si une liste est vide
+
+      } catch (err) {
+        _iterator2.e(err);
+      } finally {
+        _iterator2.f();
+      }
+
+      var ifEmpty = function ifEmpty(arrayName) {
+        var noResult = document.getElementById('no-result');
+
+        if (arrayName.length == 0) {
+          noResult.innerText = "Pas de recette trouvée.";
+          noResult.style.display = "inline";
+        } else if (arrayName.length > 0) {
+          noResult.style.display = "none";
+        } else {
+          noResult.display = "inline";
+        }
+      }; //Filtre les résultats selon les nouvelles listes de filtres
+      //Départ avant l'ajout d'un tag : toutes les listes de filtres sont vides
+      ///////////////////Filtre avec liste unique////////////////////////////////////////////////////////////
+      //Cas 1 : l'utilisateur a utilisé la barre de recherche
+
+
+      var filterAll = [];
+
+      if (filtersArray.length > 0 && _search.resultsArray.length > 0) {
+        for (var _i2 = 0; _i2 < _search.resultsArray.length; _i2++) {
+          for (var _j2 = 0; _j2 < _search.resultsArray.ingredients.length; _j2++) {
+            for (var _k4 = 0; _k4 < _search.resultsArray.ustensils.length; _k4++) {
+              if (_search.resultsArray[_i2].ingredients[_j2].ingredient.includes(elem) || _search.resultsArray[_i2].ustensils[_k4].includes(elem) || _search.resultsArray[_i2].appliance.includes(elem)) {
+                filterAll.push(_search.resultsArray[_i2]);
+              }
+            }
+          }
+        }
+
+        (0, _clearPage.default)(filterAll);
+        (0, _addRecipes.default)(filterAll);
+        (0, _addRecipes.default)(filterAll);
+        (0, _addRecipes.default)(filterAll);
+        ifEmpty(filterAll); //Cas 2 : l'utilisateur choisit d'abord un filtre
+      } else if (filtersArray.length > 0 && _recipes.recipes.length == 0) {
+        for (var _i3 = 0; _i3 < _recipes.recipes.length; _i3++) {
+          for (var _j3 = 0; _j3 < _recipes.recipes.ingredients.length; _j3++) {
+            for (var _k5 = 0; _k5 < _recipes.recipes.ustensils.length; _k5++) {
+              if (_recipes.recipes[_i3].ingredients[_j3].ingredient.includes(elem) || _recipes.recipes[_i3].ustensils[_k5].includes(elem) || _recipes.recipes[_i3].appliance.includes(elem)) {
+                filterAll.push(_recipes.recipes[_i3]);
+              }
+            }
+          }
+
+          (0, _clearPage.default)(filterAll);
+          (0, _addRecipes.default)(filterAll);
+          (0, _addRecipes.default)(filterAll);
+          (0, _addRecipes.default)(filterAll);
+          ifEmpty(filterAll);
+        }
+      }
+
+      (0, _removeTag.default)(tagList);
+    };
+
+    tags[i].addEventListener('click', addTags);
+  };
+
+  for (var i = 0; i < tags.length; i++) {
+    _loop(i);
+  }
+}
+},{"../data/recipes":"data/recipes.js","./search":"utils/search.js","./clearPage":"utils/clearPage.js","./addRecipes":"utils/addRecipes.js","./removeTag":"utils/removeTag.js","../assets/delete_icon.png":"assets/delete_icon.png"}],"app.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.recipesArray = void 0;
+
+var _listExpand = _interopRequireDefault(require("./components/listExpand"));
+
+var _filters = _interopRequireDefault(require("./utils/filters"));
+
+var _search = _interopRequireDefault(require("./utils/search"));
+
+var _recipes = require("./data/recipes");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+var recipesArray = [];
+exports.recipesArray = recipesArray;
+
+var _iterator = _createForOfIteratorHelper(_recipes.recipes),
+    _step;
+
+try {
+  for (_iterator.s(); !(_step = _iterator.n()).done;) {
+    var recipe = _step.value;
+    recipesArray.push(recipe);
+  }
+} catch (err) {
+  _iterator.e(err);
+} finally {
+  _iterator.f();
+}
+
 var init = function init() {
   (0, _search.default)();
-  (0, _dropdownLists.default)();
   (0, _listExpand.default)();
   (0, _filters.default)();
 };
 
 init();
-},{"./components/Ingredients":"components/Ingredients.js","./components/Recipes":"components/Recipes.js","../src/data/recipes":"data/recipes.js","./utiles/dropdownLists":"utiles/dropdownLists.js","./components/listExpand":"components/listExpand.js","./utiles/search":"utiles/search.js","./utiles/filters":"utiles/filters.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./components/listExpand":"components/listExpand.js","./utils/filters":"utils/filters.js","./utils/search":"utils/search.js","./data/recipes":"data/recipes.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -2362,7 +2408,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64041" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65476" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
