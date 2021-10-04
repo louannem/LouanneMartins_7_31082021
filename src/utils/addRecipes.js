@@ -61,22 +61,22 @@ export default function addRecipes (recipes){
             for(let j = 0; j < recipes[i].ingredients.length; j++) { ingrList.push(recipes[i].ingredients[j].ingredient);}
             for(let k = 0; k < recipes[i].ustensils.length; k++) { ustList.push(recipes[i].ustensils[k]) }
         }
-        let removeDupl = (list) => {
-            return list.filter(function(elem, index, self) {   return index === self.indexOf(elem); })
-        }
+        let removeDupl = (list) => {  return list.filter(function(elem, index, self) {   return index === self.indexOf(elem); }) }
         let ingrDupl = removeDupl(ingrList); let appDupl = removeDupl(appList); let ustDupl = removeDupl(ustList);
 
         //Supprime les anciennes listes
         let oldLst = document.querySelectorAll('.dropdown-menu  span');
-        for(let list of oldLst) { list.style.display = "none"} 
+        for(let list of oldLst) { list.remove();} 
 
         //Réinjecte les listes
         let newList = (list, parentId) => {
-            for(let elem of list) { 
+            for(let i = 0; i < 30; i++) {
                 let parentBlock = document.getElementById(parentId);
                 let spanWrapper = document.createElement('span');
                 parentBlock.appendChild(spanWrapper);
-                spanWrapper.innerText += elem
+                spanWrapper.innerText += list[i];
+                if(spanWrapper.innerText == "undefined") { spanWrapper.style.display="none"}
+                
             }
         }
         newList(ingrDupl, 'ingredients-list') ; newList(appDupl, 'appareils-list', newList(ustDupl, 'ustensiles-list'));

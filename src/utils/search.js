@@ -1,8 +1,11 @@
 import { recipes } from "../data/recipes";
 import { Recipe } from "../components/Recipe";
+import displayRecipes from "../utils/addRecipes";
 import addIngredients from "../utils/addRecipes";
 import updateDropdowns from "../utils/addRecipes";
 import clearPage from "../utils/clearPage";
+import ingredientsList from "./dropdownLists";
+import addRecipes from "../utils/addRecipes";
 
 
 //Liste des recettes recherchées à récupérer et filtrer
@@ -19,9 +22,9 @@ export default function searchFunction() {
             document.getElementById('search-results').innerHTML += recipesList.diplayRecipe();
 
             //Ajoute les ingrédients
-            addIngredients(recipes)
+            addRecipes(recipes);
             //Ajoute les dropdowns
-            updateDropdowns(recipes);
+            //ingredientsList();
         }
     }
 
@@ -45,7 +48,7 @@ export default function searchFunction() {
                     document.getElementById('no-result').style.display = "none";
                     let newRecipe = new Recipe(recipe);
                     document.getElementById('search-results').innerHTML += newRecipe.diplayRecipe();
-                    addIngredients(resultsArray); updateDropdowns(resultsArray)
+                    addRecipes(resultsArray);
                 }
             } else if (resultsArray.length == 0){
                 //Afficher qu'aucune recette n'a été trouvée
@@ -61,9 +64,9 @@ export default function searchFunction() {
                 document.getElementById('search-results').innerHTML += recipesList.diplayRecipe();
     
                 //Ajoute les ingrédients
-                addIngredients(recipes)
+                addRecipes(recipes)
                 //Ajoute les dropdowns
-                updateDropdowns(recipes);
+                //updateDropdowns(recipes);
             }
         }
     }
@@ -86,15 +89,6 @@ export default function searchFunction() {
         }
     }
 
-
-     //Filter results arrays
-     let arrayFilter = (arrayName) => {
-        for(let i = 0; i < arrayName.length; i++) {
-            for(let j = 0; j < arrayName.length; j++) {
-                if(arrayName[i].name == arrayName[j].name && i != j) { arrayName.splice(i, i+1)}
-            }
-        }
-    }
 
     let ingredientInput = document.getElementById('ingredient-input');
     let appareilsInput = document.getElementById('appareils-input');
