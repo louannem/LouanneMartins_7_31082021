@@ -74,8 +74,6 @@ export default function searchFunction() {
             if(text.indexOf(searchInput) > -1) {
                 ElementSpan[i].style.display="";
             } else { ElementSpan[i].style.display="none"}
-
-
             if(text == "undefined") { ElementSpan[i].style.display="none"}
         }
     }
