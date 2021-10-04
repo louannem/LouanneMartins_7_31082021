@@ -78,7 +78,7 @@ export default function searchFunction() {
 
         searchInput = input.value.toLowerCase();
         listName = document.getElementById(listID);
-        ElementSpan = document.getElementsByTagName('.dropdownspan');
+        ElementSpan = document.querySelectorAll('.dropdown-menu span');
 
         for(let i = 0; i < ElementSpan.length; i++) {
             text = ElementSpan[i].innerText.toLowerCase() || ElementSpan[i].textContent.toLowerCase();
@@ -86,6 +86,8 @@ export default function searchFunction() {
             if(text.indexOf(searchInput) > -1) {
                 ElementSpan[i].style.display="";
             } else { ElementSpan[i].style.display = "none"}
+
+            if(text == "undefined") { ElementSpan[i].style.display="none"}
         }
     }
 

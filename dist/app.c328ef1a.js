@@ -1895,8 +1895,6 @@ exports.default = ingredientsList;
 
 var _recipes = require("../data/recipes");
 
-var _Ingredient = require("../components/Ingredient");
-
 function ingredientsList() {
   var ingredientArray = [];
   var ustensilesArray = [];
@@ -1945,7 +1943,7 @@ function ingredientsList() {
     appareilsWrapper.innerText += appareilsDuplicate[_i2];
   }
 }
-},{"../data/recipes":"data/recipes.js","../components/Ingredient":"components/Ingredient.js"}],"utils/search.js":[function(require,module,exports) {
+},{"../data/recipes":"data/recipes.js"}],"utils/search.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2065,7 +2063,7 @@ function searchFunction() {
     var searchInput, listName, ElementSpan, text;
     searchInput = input.value.toLowerCase();
     listName = document.getElementById(listID);
-    ElementSpan = document.getElementsByTagName('.dropdownspan');
+    ElementSpan = document.querySelectorAll('.dropdown-menu span');
 
     for (var i = 0; i < ElementSpan.length; i++) {
       text = ElementSpan[i].innerText.toLowerCase() || ElementSpan[i].textContent.toLowerCase();
@@ -2073,6 +2071,10 @@ function searchFunction() {
       if (text.indexOf(searchInput) > -1) {
         ElementSpan[i].style.display = "";
       } else {
+        ElementSpan[i].style.display = "none";
+      }
+
+      if (text == "undefined") {
         ElementSpan[i].style.display = "none";
       }
     }
@@ -2433,7 +2435,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56419" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50666" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

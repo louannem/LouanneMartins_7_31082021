@@ -1,6 +1,4 @@
 import { recipes } from "../data/recipes";
-import { Ingredient } from "../components/Ingredient";
-
 
 export default function ingredientsList() {
     let ingredientArray = [];
