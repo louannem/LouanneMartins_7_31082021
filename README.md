@@ -8,7 +8,7 @@ https://louannem.github.io/LouanneMartins_7_31082021/dist/search.html
 
 Algorithme de recherche en Javascript.
 - Branche algorithme-1 : développé avec une boucle for()
-- Branche algorithme-2 : développé avec la fonction fitler()
+- Branche algorithme-2 : développé avec la fonction filter()
 
 
 Cas d'utilisation : 
