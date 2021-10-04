@@ -17,15 +17,8 @@ export default function searchFunction() {
     //Si aucune recette n'a été recherchée
     //On affiche l'ensemble de la liste de recettes
     if(resultsArray.length == 0) {
-        for(let recipe of recipes){
-            let recipesList = new Recipe(recipe);
-            document.getElementById('search-results').innerHTML += recipesList.diplayRecipe();
-
-            //Ajoute les ingrédients
+           //Ajoute les ingrédients
             addRecipes(recipes);
-            //Ajoute les dropdowns
-            //ingredientsList();
-        }
     }
 
 
@@ -46,8 +39,6 @@ export default function searchFunction() {
                 clearPage(); 
                 for(let recipe of resultsArray) { 
                     document.getElementById('no-result').style.display = "none";
-                    let newRecipe = new Recipe(recipe);
-                    document.getElementById('search-results').innerHTML += newRecipe.diplayRecipe();
                     addRecipes(resultsArray);
                 }
             } else if (resultsArray.length == 0){
@@ -59,15 +50,9 @@ export default function searchFunction() {
             }
             //Si l'utilisateur supprime les caractères, on remet toute les recettes
         } else if (searchInput.length < 3) {
-            for(let recipe of recipes){
-                let recipesList = new Recipe(recipe);
-                document.getElementById('search-results').innerHTML += recipesList.diplayRecipe();
-    
-                //Ajoute les ingrédients
-                addRecipes(recipes)
-                //Ajoute les dropdowns
-                //updateDropdowns(recipes);
-            }
+                clearPage(); addRecipes(recipes);
+                //Réinitialise la liste
+                resultsArray = [];
         }
     }
     input.addEventListener('input', globalSearch);

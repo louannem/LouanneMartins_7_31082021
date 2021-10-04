@@ -2,7 +2,7 @@ import { Ingredient } from "../components/Ingredient";
 import filterFunction from "./filters";
 
 export default function addRecipes (recipes){
-    const displayRecipes = () => {
+
         const htmlString = recipes
             .map((recipe) => {
                 return `
@@ -33,12 +33,10 @@ export default function addRecipes (recipes){
             })
             .join('');
             document.getElementById('search-results').innerHTML = htmlString;
-    };
-
-    displayRecipes();
+  
 
 
-    const addIngredients = () => {
+
         //Display the ingredients for each recipes found
         for(let i = 0; i < recipes.length; i++){
             let ingredientsBlock = document.getElementById(recipes[i].id);
@@ -47,10 +45,9 @@ export default function addRecipes (recipes){
                 ingredientsBlock.innerHTML += ingredientsList.displayIngredient();
             }
         } 
-    }
-    addIngredients();
 
-    const updateDropdowns = () => {
+
+
         let ingrList = [] ;
         let appList = [];
         let ustList = [];
@@ -84,7 +81,4 @@ export default function addRecipes (recipes){
         //Ré-applique la fonction de filtre
         filterFunction();
     
-    }
-    updateDropdowns()
-
 }

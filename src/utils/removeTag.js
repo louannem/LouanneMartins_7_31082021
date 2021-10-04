@@ -21,7 +21,7 @@ export default function removeTag(listName) {
                     if(listName[i].innerText == filtersArray[j]) { filtersArray.splice(j, 1); }
 
                     //Si la liste = 0, on re-met toutes les recettes à partir de l'input
-                    if(filtersArray.length == 0) {
+                    if(filtersArray.length == 0 && resultsArray.length > 0) {
                         clearPage();
                         let recipesSearch = [];
                         for(let i = 0; i < recipes.length; i ++) { recipesSearch.push(recipes[i])}
@@ -32,9 +32,12 @@ export default function removeTag(listName) {
                                 recipe.description.toLowerCase().includes(search) 
                             )
                         });
-                        addRecipes(filteredObjt); addIngredients(filteredObjt);
-                    } else {
-                        console.log(tagList)
+                        addRecipes(filteredObjt);
+                        //Dans le cas où il n'y a aucune recherche de faite et que la liste de fitlre est vidée
+                    }  else if(resultsArray.length == 0 && filtersArray.length == 0) {
+                        clearPage(); addRecipes(recipes);
+                    }
+                    else {
                     //Sinon on re-filtre avec la liste 
                     const filterAll = resultsArray.filter((recipe) => {
                         return (recipe.ingredients.some((ingredients) => {
@@ -52,7 +55,7 @@ export default function removeTag(listName) {
                         })
                         )
                     })
-                    clearPage(filterAll); addRecipes(filterAll); addIngredients(filterAll); updateDropdowns(filterAll); 
+                    clearPage(filterAll); addRecipes(filterAll);
 
                     
                     }

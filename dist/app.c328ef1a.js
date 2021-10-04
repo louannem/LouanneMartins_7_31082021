@@ -1766,93 +1766,80 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function addRecipes(recipes) {
-  var displayRecipes = function displayRecipes() {
-    var htmlString = recipes.map(function (recipe) {
-      return "\n                <article class=\"recipe__card\" id=\"recipe-".concat(recipe.id, "\">\n                <div class=\"recipe__image\">\n                    <img src=\"\" alt=\"\">\n                </div>\n                <div class=\"recipe__info\">\n                    <div class=\"recipe__title\">\n                        <h2>").concat(recipe.name, "</h2>\n                        <div class=\"recipe__time\">\n                            <img src=\"../dist/clock.bdc9bc77.svg\" alt=\"\">\n                            <span>").concat(recipe.time, " min.</span>\n                        </div>\n                    </div>\n                    <div class=\"recipe__meta\">\n                        <div class=\"ingredients\">\n                        <ul id=\"").concat(recipe.id, "\">\n                        </ul>\n                        </div>\n                        <div class=\"instructions\">\n                            <p>").concat(recipe.description, "</p>\n                        </div>\n                    </div>\n                </div>\n            </article>\n            ");
-    }).join('');
-    document.getElementById('search-results').innerHTML = htmlString;
+  var htmlString = recipes.map(function (recipe) {
+    return "\n                <article class=\"recipe__card\" id=\"recipe-".concat(recipe.id, "\">\n                <div class=\"recipe__image\">\n                    <img src=\"\" alt=\"\">\n                </div>\n                <div class=\"recipe__info\">\n                    <div class=\"recipe__title\">\n                        <h2>").concat(recipe.name, "</h2>\n                        <div class=\"recipe__time\">\n                            <img src=\"../dist/clock.bdc9bc77.svg\" alt=\"\">\n                            <span>").concat(recipe.time, " min.</span>\n                        </div>\n                    </div>\n                    <div class=\"recipe__meta\">\n                        <div class=\"ingredients\">\n                        <ul id=\"").concat(recipe.id, "\">\n                        </ul>\n                        </div>\n                        <div class=\"instructions\">\n                            <p>").concat(recipe.description, "</p>\n                        </div>\n                    </div>\n                </div>\n            </article>\n            ");
+  }).join('');
+  document.getElementById('search-results').innerHTML = htmlString; //Display the ingredients for each recipes found
+
+  for (var i = 0; i < recipes.length; i++) {
+    var ingredientsBlock = document.getElementById(recipes[i].id);
+
+    for (var j = 0; j < recipes[i].ingredients.length; j++) {
+      var ingredientsList = new _Ingredient.Ingredient(recipes[i].ingredients[j]);
+      ingredientsBlock.innerHTML += ingredientsList.displayIngredient();
+    }
+  }
+
+  var ingrList = [];
+  var appList = [];
+  var ustList = []; //Récupère les listes mises à jour
+
+  for (var _i = 0; _i < recipes.length; _i++) {
+    appList.push(recipes[_i].appliance);
+
+    for (var _j = 0; _j < recipes[_i].ingredients.length; _j++) {
+      ingrList.push(recipes[_i].ingredients[_j].ingredient);
+    }
+
+    for (var k = 0; k < recipes[_i].ustensils.length; k++) {
+      ustList.push(recipes[_i].ustensils[k]);
+    }
+  }
+
+  var removeDupl = function removeDupl(list) {
+    return list.filter(function (elem, index, self) {
+      return index === self.indexOf(elem);
+    });
   };
 
-  displayRecipes();
+  var ingrDupl = removeDupl(ingrList);
+  var appDupl = removeDupl(appList);
+  var ustDupl = removeDupl(ustList); //Supprime les anciennes listes
 
-  var addIngredients = function addIngredients() {
-    //Display the ingredients for each recipes found
-    for (var i = 0; i < recipes.length; i++) {
-      var ingredientsBlock = document.getElementById(recipes[i].id);
+  var oldLst = document.querySelectorAll('.dropdown-menu  span');
 
-      for (var j = 0; j < recipes[i].ingredients.length; j++) {
-        var ingredientsList = new _Ingredient.Ingredient(recipes[i].ingredients[j]);
-        ingredientsBlock.innerHTML += ingredientsList.displayIngredient();
+  var _iterator = _createForOfIteratorHelper(oldLst),
+      _step;
+
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var list = _step.value;
+      list.remove();
+    } //Réinjecte les listes
+
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+
+  var newList = function newList(list, parentId) {
+    for (var _i2 = 0; _i2 < 30; _i2++) {
+      var parentBlock = document.getElementById(parentId);
+      var spanWrapper = document.createElement('span');
+      parentBlock.appendChild(spanWrapper);
+      spanWrapper.innerText += list[_i2];
+
+      if (spanWrapper.innerText == "undefined") {
+        spanWrapper.style.display = "none";
       }
     }
   };
 
-  addIngredients();
+  newList(ingrDupl, 'ingredients-list');
+  newList(appDupl, 'appareils-list', newList(ustDupl, 'ustensiles-list')); //Ré-applique la fonction de filtre
 
-  var updateDropdowns = function updateDropdowns() {
-    var ingrList = [];
-    var appList = [];
-    var ustList = []; //Récupère les listes mises à jour
-
-    for (var i = 0; i < recipes.length; i++) {
-      appList.push(recipes[i].appliance);
-
-      for (var j = 0; j < recipes[i].ingredients.length; j++) {
-        ingrList.push(recipes[i].ingredients[j].ingredient);
-      }
-
-      for (var k = 0; k < recipes[i].ustensils.length; k++) {
-        ustList.push(recipes[i].ustensils[k]);
-      }
-    }
-
-    var removeDupl = function removeDupl(list) {
-      return list.filter(function (elem, index, self) {
-        return index === self.indexOf(elem);
-      });
-    };
-
-    var ingrDupl = removeDupl(ingrList);
-    var appDupl = removeDupl(appList);
-    var ustDupl = removeDupl(ustList); //Supprime les anciennes listes
-
-    var oldLst = document.querySelectorAll('.dropdown-menu  span');
-
-    var _iterator = _createForOfIteratorHelper(oldLst),
-        _step;
-
-    try {
-      for (_iterator.s(); !(_step = _iterator.n()).done;) {
-        var list = _step.value;
-        list.remove();
-      } //Réinjecte les listes
-
-    } catch (err) {
-      _iterator.e(err);
-    } finally {
-      _iterator.f();
-    }
-
-    var newList = function newList(list, parentId) {
-      for (var _i = 0; _i < 30; _i++) {
-        var parentBlock = document.getElementById(parentId);
-        var spanWrapper = document.createElement('span');
-        parentBlock.appendChild(spanWrapper);
-        spanWrapper.innerText += list[_i];
-
-        if (spanWrapper.innerText == "undefined") {
-          spanWrapper.style.display = "none";
-        }
-      }
-    };
-
-    newList(ingrDupl, 'ingredients-list');
-    newList(appDupl, 'appareils-list', newList(ustDupl, 'ustensiles-list')); //Ré-applique la fonction de filtre
-
-    (0, _filters.default)();
-  };
-
-  updateDropdowns();
+  (0, _filters.default)();
 }
 },{"../components/Ingredient":"components/Ingredient.js","./filters":"utils/filters.js"}],"utils/clearPage.js":[function(require,module,exports) {
 "use strict";
@@ -1978,23 +1965,8 @@ function searchFunction() {
   //Si aucune recette n'a été recherchée
   //On affiche l'ensemble de la liste de recettes
   if (resultsArray.length == 0) {
-    var _iterator = _createForOfIteratorHelper(_recipes.recipes),
-        _step;
-
-    try {
-      for (_iterator.s(); !(_step = _iterator.n()).done;) {
-        var recipe = _step.value;
-        var recipesList = new _Recipe.Recipe(recipe);
-        document.getElementById('search-results').innerHTML += recipesList.diplayRecipe(); //Ajoute les ingrédients
-
-        (0, _addRecipes.default)(_recipes.recipes); //Ajoute les dropdowns
-        //ingredientsList();
-      }
-    } catch (err) {
-      _iterator.e(err);
-    } finally {
-      _iterator.f();
-    }
+    //Ajoute les ingrédients
+    (0, _addRecipes.default)(_recipes.recipes);
   }
 
   var input = document.getElementById('search-input');
@@ -2011,21 +1983,19 @@ function searchFunction() {
         //Afficher les recettes ici
         (0, _clearPage.default)();
 
-        var _iterator2 = _createForOfIteratorHelper(resultsArray),
-            _step2;
+        var _iterator = _createForOfIteratorHelper(resultsArray),
+            _step;
 
         try {
-          for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-            var _recipe = _step2.value;
+          for (_iterator.s(); !(_step = _iterator.n()).done;) {
+            var recipe = _step.value;
             document.getElementById('no-result').style.display = "none";
-            var newRecipe = new _Recipe.Recipe(_recipe);
-            document.getElementById('search-results').innerHTML += newRecipe.diplayRecipe();
             (0, _addRecipes.default)(resultsArray);
           }
         } catch (err) {
-          _iterator2.e(err);
+          _iterator.e(err);
         } finally {
-          _iterator2.f();
+          _iterator.f();
         }
       } else if (resultsArray.length == 0) {
         //Afficher qu'aucune recette n'a été trouvée
@@ -2035,25 +2005,10 @@ function searchFunction() {
       } //Si l'utilisateur supprime les caractères, on remet toute les recettes
 
     } else if (searchInput.length < 3) {
-      var _iterator3 = _createForOfIteratorHelper(_recipes.recipes),
-          _step3;
+      (0, _clearPage.default)();
+      (0, _addRecipes.default)(_recipes.recipes); //Réinitialise la liste
 
-      try {
-        for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
-          var _recipe2 = _step3.value;
-
-          var _recipesList = new _Recipe.Recipe(_recipe2);
-
-          document.getElementById('search-results').innerHTML += _recipesList.diplayRecipe(); //Ajoute les ingrédients
-
-          (0, _addRecipes.default)(_recipes.recipes); //Ajoute les dropdowns
-          //updateDropdowns(recipes);
-        }
-      } catch (err) {
-        _iterator3.e(err);
-      } finally {
-        _iterator3.f();
-      }
+      exports.resultsArray = resultsArray = [];
     }
   };
 
@@ -2135,7 +2090,7 @@ function removeTag(listName) {
         } //Si la liste = 0, on re-met toutes les recettes à partir de l'input
 
 
-        if (_filters.filtersArray.length == 0) {
+        if (_filters.filtersArray.length == 0 && _search.resultsArray.length > 0) {
           (function () {
             (0, _clearPage.default)();
             var recipesSearch = [];
@@ -2148,12 +2103,13 @@ function removeTag(listName) {
             var filteredObjt = recipesSearch.filter(function (recipe) {
               return recipe.name.toLowerCase().includes(search) || recipe.description.toLowerCase().includes(search);
             });
-            (0, _addRecipes.default)(filteredObjt);
-            (0, _addRecipes.default)(filteredObjt);
+            (0, _addRecipes.default)(filteredObjt); //Dans le cas où il n'y a aucune recherche de faite et que la liste de fitlre est vidée
           })();
+        } else if (_search.resultsArray.length == 0 && _filters.filtersArray.length == 0) {
+          (0, _clearPage.default)();
+          (0, _addRecipes.default)(_recipes.recipes);
         } else {
-          console.log(_filters.tagList); //Sinon on re-filtre avec la liste 
-
+          //Sinon on re-filtre avec la liste 
           var filterAll = _search.resultsArray.filter(function (recipe) {
             return recipe.ingredients.some(function (ingredients) {
               return _filters.filtersArray.every(function (tag) {
@@ -2169,8 +2125,6 @@ function removeTag(listName) {
           });
 
           (0, _clearPage.default)(filterAll);
-          (0, _addRecipes.default)(filterAll);
-          (0, _addRecipes.default)(filterAll);
           (0, _addRecipes.default)(filterAll);
         }
       } //Supprime le tag cliqué
@@ -2434,7 +2388,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49311" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55592" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
