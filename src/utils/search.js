@@ -1,7 +1,7 @@
 import { recipes } from "../data/recipes";
 import { Recipe } from "../components/Recipe";
-import addIngredients from "../utils/addRecipes";
-import updateDropdowns from "../utils/addRecipes";
+import addRecipes from "../utils/addRecipes";
+import dropdownLists from "../utils/dropdownLists";
 import clearPage from "../utils/clearPage";
 
 
@@ -14,15 +14,8 @@ export default function searchFunction() {
     //Si aucune recette n'a été recherchée
     //On affiche l'ensemble de la liste de recettes
     if(resultsArray.length == 0) {
-        for(let recipe of recipes){
-            let recipesList = new Recipe(recipe);
-            document.getElementById('search-results').innerHTML += recipesList.diplayRecipe();
-
             //Ajoute les ingrédients
-            addIngredients(recipes)
-            //Ajoute les dropdowns
-            updateDropdowns(recipes);
-        }
+            addRecipes(recipes);
     }
 
 
@@ -32,21 +25,25 @@ export default function searchFunction() {
         const searchInput = input.value.toLowerCase();
         
         if(searchInput.length > 2) {
-            let recipeName = recipes[i].name.toLowerCase();
-            //La recherche comprend le nom de la recette, les appareils et la description
-            if(recipeName.includes(searchItem) || recipes[i].appliance.includes(searchItem) || recipes[i].description.includes(searchItem)) {
-                newRecipes = new Recipe(recipes[i]);
-                resultsArray.push(newRecipes);
+            for(let i = 0; i < recipes.length; i++) {
+                let recipeName = recipes[i].name.toLowerCase();
+                //La recherche comprend le nom de la recette, les appareils et la description
+                if(recipeName.includes(searchInput) || recipes[i].appliance.includes(searchInput) || recipes[i].description.includes(searchInput)) {
+                    let newRecipes = new Recipe(recipes[i]);
+                    resultsArray.push(newRecipes);
+                    //let removeDupl = resultsArray.filter(function(elem, index, self) {   return index === self.indexOf(elem); });
+                }
             } 
             if(resultsArray.length > 0) {
-                //Afficher les recettes ici
+                //Afficher les recettes ici           
                 clearPage(); 
-                for(let recipe of resultsArray) { 
-                    document.getElementById('no-result').style.display = "none";
-                    //let newRecipe = new Recipe(recipe);
-                    document.getElementById('search-results').innerHTML += resultsArray.diplayRecipe();
-                    //addIngredients(resultsArray); updateDropdowns(resultsArray)
-                }
+
+                let removeDupl = resultsArray.reduce((unique, elem) => {
+                    if(!unique.some(obj => obj.id === elem.id)){unique.push(elem);}
+                    return unique
+                }, []);
+                addRecipes(removeDupl);
+                
             } else if (resultsArray.length == 0){
                 //Afficher qu'aucune recette n'a été trouvée
                 clearPage();
@@ -55,15 +52,10 @@ export default function searchFunction() {
             }
             //Si l'utilisateur supprime les caractères, on remet toute les recettes
         } else if (searchInput.length < 3) {
-            for(let recipe of recipes){
-                let recipesList = new Recipe(recipe);
-                document.getElementById('search-results').innerHTML += recipesList.diplayRecipe();
-    
-                //Ajoute les ingrédients
-                //addIngredients(recipes)
-                //Ajoute les dropdowns
-                //updateDropdowns(recipes);
-            }
+                clearPage();
+                addRecipes(recipes);
+                resultsArray = [];
+                console.log(resultsArray)
         }
     }
     input.addEventListener('input', globalSearch);
@@ -74,26 +66,19 @@ export default function searchFunction() {
 
         searchInput = input.value.toLowerCase();
         listName = document.getElementById(listID);
-        ElementSpan = document.getElementsByTagName('.dropdownspan');
+        ElementSpan = document.querySelectorAll('.dropdown-menu span');
 
         for(let i = 0; i < ElementSpan.length; i++) {
             text = ElementSpan[i].innerText.toLowerCase() || ElementSpan[i].textContent.toLowerCase();
 
             if(text.indexOf(searchInput) > -1) {
                 ElementSpan[i].style.display="";
-            } else { ElementSpan[i].style.display = "none"}
+            } else { ElementSpan[i].remove()}
+
+            if(text == "undefined") { ElementSpan[i].style.display="none"}
         }
     }
 
-
-     //Filter results arrays
-     let arrayFilter = (arrayName) => {
-        for(let i = 0; i < arrayName.length; i++) {
-            for(let j = 0; j < arrayName.length; j++) {
-                if(arrayName[i].name == arrayName[j].name && i != j) { arrayName.splice(i, i+1)}
-            }
-        }
-    }
 
     let ingredientInput = document.getElementById('ingredient-input');
     let appareilsInput = document.getElementById('appareils-input');
@@ -106,7 +91,6 @@ export default function searchFunction() {
     ingredientInput.addEventListener('input', ingredientsSearch);
 
 
-    let appareilsArray=[];
     let appareilsSearch = () => {
         filterList(appareilsInput, 'appareils-list');
     }

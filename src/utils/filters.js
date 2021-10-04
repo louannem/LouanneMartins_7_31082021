@@ -2,8 +2,6 @@ import { recipes } from "../data/recipes";
 import { resultsArray } from "./search";
 import clearPage from "./clearPage";
 import addRecipes from "./addRecipes";
-import addIngredients from "./addRecipes";
-import updateDropdowns from "./addRecipes";
 import removeTag from "./removeTag";
 
 export let tagList, filtersArray = [];
@@ -79,35 +77,41 @@ export default function filterFunction () {
                 //Cas 1 : l'utilisateur a utilisé la barre de recherche
 
                 let filterAll = []; 
-
+                
                 if(filtersArray.length > 0 && resultsArray.length > 0) {
                     for(let i = 0; i < resultsArray.length; i++){
-                        for(let j = 0; j < resultsArray.ingredients.length; j++) {
-                            for(let k = 0; k < resultsArray.ustensils.length; k++) {
-                                if(resultsArray[i].ingredients[j].ingredient.includes(elem) ||
-                                resultsArray[i].ustensils[k].includes(elem) ||
-                                resultsArray[i].appliance.includes(elem)) {
-                                    filterAll.push(resultsArray[i])
+                        for(let j = 0; j < resultsArray[i].ingredients.length; j++) {
+                            for(let k = 0; k < resultsArray[i].ustensils.length; k++) {
+                                for(let elem of filtersArray) {
+                                    if(resultsArray[i].ingredients[j].ingredient.includes(elem) ||
+                                        resultsArray[i].ustensils[k].includes(elem) ||
+                                        resultsArray[i].appliance.includes(elem)) {
+                                        filterAll.push(resultsArray[i]);
+                                    }
                                 }
                             }
                         }
                     }
-
-                    clearPage(filterAll); addRecipes(filterAll); addIngredients(filterAll); updateDropdowns(filterAll); ifEmpty(filterAll);
+                    //Filtre les doublons
+                    let removeDupl = filterAll.filter(function(elem, index, self) {   return index === self.indexOf(elem); });
+                    clearPage(); addRecipes(removeDupl); ifEmpty(removeDupl);
                 
                     //Cas 2 : l'utilisateur choisit d'abord un filtre
-                } else if (filtersArray.length > 0 && recipes.length == 0) {
+                } else if (filtersArray.length > 0 && resultsArray.length == 0) {
                     for(let i = 0; i < recipes.length; i++){
-                        for(let j = 0; j < recipes.ingredients.length; j++) {
-                            for(let k = 0; k < recipes.ustensils.length; k++) {
-                                if(recipes[i].ingredients[j].ingredient.includes(elem) ||
-                                recipes[i].ustensils[k].includes(elem) ||
-                                recipes[i].appliance.includes(elem)) {
-                                    filterAll.push(recipes[i])
+                        for(let j = 0; j < recipes[i].ingredients.length; j++) {
+                            for(let k = 0; k < recipes[i].ustensils.length; k++) {
+                                for(let elem of filtersArray) {
+                                    if(recipes[i].ingredients[j].ingredient.includes(elem) ||
+                                    recipes[i].ustensils[k].includes(elem) ||
+                                    recipes[i].appliance.includes(elem)) {
+                                        filterAll.push(recipes[i])
+                                    }
                                 }
                             }
                         }
-                    clearPage(filterAll); addRecipes(filterAll); addIngredients(filterAll); updateDropdowns(filterAll); ifEmpty(filterAll);
+                        let removeDupl = filterAll.filter(function(elem, index, self) {   return index === self.indexOf(elem); });
+                        clearPage(); addRecipes(removeDupl); ifEmpty(removeDupl);
                 }
             }
             removeTag(tagList);

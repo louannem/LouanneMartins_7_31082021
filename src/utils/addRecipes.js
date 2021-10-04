@@ -2,7 +2,6 @@ import { Ingredient } from "../components/Ingredient";
 import filterFunction from "./filters";
 
 export default function addRecipes (recipes){
-    const displayRecipes = () => {
         const htmlString = recipes
             .map((recipe) => {
                 return `
@@ -33,12 +32,9 @@ export default function addRecipes (recipes){
             })
             .join('');
             document.getElementById('search-results').innerHTML = htmlString;
-    };
-
-    displayRecipes();
 
 
-    const addIngredients = () => {
+
         //Display the ingredients for each recipes found
         for(let i = 0; i < recipes.length; i++){
             let ingredientsBlock = document.getElementById(recipes[i].id);
@@ -47,10 +43,7 @@ export default function addRecipes (recipes){
                 ingredientsBlock.innerHTML += ingredientsList.displayIngredient();
             }
         } 
-    }
-    addIngredients();
 
-    const updateDropdowns = () => {
         let ingrList = [] ;
         let appList = [];
         let ustList = [];
@@ -72,18 +65,16 @@ export default function addRecipes (recipes){
 
         //Réinjecte les listes
         let newList = (list, parentId) => {
-            for(let elem of list) { 
+            for(let i = 0; i < 30; i++) {
                 let parentBlock = document.getElementById(parentId);
                 let spanWrapper = document.createElement('span');
                 parentBlock.appendChild(spanWrapper);
-                spanWrapper.innerText += elem
+                spanWrapper.innerText += list[i];
+                if(spanWrapper.innerText == "undefined") { spanWrapper.style.display="none"}
             }
         }
         newList(ingrDupl, 'ingredients-list') ; newList(appDupl, 'appareils-list', newList(ustDupl, 'ustensiles-list'));
         //Ré-applique la fonction de filtre
         filterFunction();
-    
-    }
-    updateDropdowns()
 
 }

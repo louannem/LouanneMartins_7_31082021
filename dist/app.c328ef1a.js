@@ -1766,101 +1766,140 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function addRecipes(recipes) {
-  var displayRecipes = function displayRecipes() {
-    var htmlString = recipes.map(function (recipe) {
-      return "\n                <article class=\"recipe__card\" id=\"recipe-".concat(recipe.id, "\">\n                <div class=\"recipe__image\">\n                    <img src=\"\" alt=\"\">\n                </div>\n                <div class=\"recipe__info\">\n                    <div class=\"recipe__title\">\n                        <h2>").concat(recipe.name, "</h2>\n                        <div class=\"recipe__time\">\n                            <img src=\"../dist/clock.bdc9bc77.svg\" alt=\"\">\n                            <span>").concat(recipe.time, " min.</span>\n                        </div>\n                    </div>\n                    <div class=\"recipe__meta\">\n                        <div class=\"ingredients\">\n                        <ul id=\"").concat(recipe.id, "\">\n                        </ul>\n                        </div>\n                        <div class=\"instructions\">\n                            <p>").concat(recipe.description, "</p>\n                        </div>\n                    </div>\n                </div>\n            </article>\n            ");
-    }).join('');
-    document.getElementById('search-results').innerHTML = htmlString;
+  var htmlString = recipes.map(function (recipe) {
+    return "\n                <article class=\"recipe__card\" id=\"recipe-".concat(recipe.id, "\">\n                <div class=\"recipe__image\">\n                    <img src=\"\" alt=\"\">\n                </div>\n                <div class=\"recipe__info\">\n                    <div class=\"recipe__title\">\n                        <h2>").concat(recipe.name, "</h2>\n                        <div class=\"recipe__time\">\n                            <img src=\"../dist/clock.bdc9bc77.svg\" alt=\"\">\n                            <span>").concat(recipe.time, " min.</span>\n                        </div>\n                    </div>\n                    <div class=\"recipe__meta\">\n                        <div class=\"ingredients\">\n                        <ul id=\"").concat(recipe.id, "\">\n                        </ul>\n                        </div>\n                        <div class=\"instructions\">\n                            <p>").concat(recipe.description, "</p>\n                        </div>\n                    </div>\n                </div>\n            </article>\n            ");
+  }).join('');
+  document.getElementById('search-results').innerHTML = htmlString; //Display the ingredients for each recipes found
+
+  for (var i = 0; i < recipes.length; i++) {
+    var ingredientsBlock = document.getElementById(recipes[i].id);
+
+    for (var j = 0; j < recipes[i].ingredients.length; j++) {
+      var ingredientsList = new _Ingredient.Ingredient(recipes[i].ingredients[j]);
+      ingredientsBlock.innerHTML += ingredientsList.displayIngredient();
+    }
+  }
+
+  var ingrList = [];
+  var appList = [];
+  var ustList = []; //Récupère les listes mises à jour
+
+  for (var _i = 0; _i < recipes.length; _i++) {
+    appList.push(recipes[_i].appliance);
+
+    for (var _j = 0; _j < recipes[_i].ingredients.length; _j++) {
+      ingrList.push(recipes[_i].ingredients[_j].ingredient);
+    }
+
+    for (var k = 0; k < recipes[_i].ustensils.length; k++) {
+      ustList.push(recipes[_i].ustensils[k]);
+    }
+  }
+
+  var removeDupl = function removeDupl(list) {
+    return list.filter(function (elem, index, self) {
+      return index === self.indexOf(elem);
+    });
   };
 
-  displayRecipes();
+  var ingrDupl = removeDupl(ingrList);
+  var appDupl = removeDupl(appList);
+  var ustDupl = removeDupl(ustList); //Supprime les anciennes listes
 
-  var addIngredients = function addIngredients() {
-    //Display the ingredients for each recipes found
-    for (var i = 0; i < recipes.length; i++) {
-      var ingredientsBlock = document.getElementById(recipes[i].id);
+  var oldLst = document.querySelectorAll('.dropdown-menu  span');
 
-      for (var j = 0; j < recipes[i].ingredients.length; j++) {
-        var ingredientsList = new _Ingredient.Ingredient(recipes[i].ingredients[j]);
-        ingredientsBlock.innerHTML += ingredientsList.displayIngredient();
+  var _iterator = _createForOfIteratorHelper(oldLst),
+      _step;
+
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var list = _step.value;
+      list.style.display = "none";
+    } //Réinjecte les listes
+
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+
+  var newList = function newList(list, parentId) {
+    for (var _i2 = 0; _i2 < 30; _i2++) {
+      var parentBlock = document.getElementById(parentId);
+      var spanWrapper = document.createElement('span');
+      parentBlock.appendChild(spanWrapper);
+      spanWrapper.innerText += list[_i2];
+
+      if (spanWrapper.innerText == "undefined") {
+        spanWrapper.style.display = "none";
       }
     }
   };
 
-  addIngredients();
+  newList(ingrDupl, 'ingredients-list');
+  newList(appDupl, 'appareils-list', newList(ustDupl, 'ustensiles-list')); //Ré-applique la fonction de filtre
 
-  var updateDropdowns = function updateDropdowns() {
-    var ingrList = [];
-    var appList = [];
-    var ustList = []; //Récupère les listes mises à jour
-
-    for (var i = 0; i < recipes.length; i++) {
-      appList.push(recipes[i].appliance);
-
-      for (var j = 0; j < recipes[i].ingredients.length; j++) {
-        ingrList.push(recipes[i].ingredients[j].ingredient);
-      }
-
-      for (var k = 0; k < recipes[i].ustensils.length; k++) {
-        ustList.push(recipes[i].ustensils[k]);
-      }
-    }
-
-    var removeDupl = function removeDupl(list) {
-      return list.filter(function (elem, index, self) {
-        return index === self.indexOf(elem);
-      });
-    };
-
-    var ingrDupl = removeDupl(ingrList);
-    var appDupl = removeDupl(appList);
-    var ustDupl = removeDupl(ustList); //Supprime les anciennes listes
-
-    var oldLst = document.querySelectorAll('.dropdown-menu  span');
-
-    var _iterator = _createForOfIteratorHelper(oldLst),
-        _step;
-
-    try {
-      for (_iterator.s(); !(_step = _iterator.n()).done;) {
-        var list = _step.value;
-        list.style.display = "none";
-      } //Réinjecte les listes
-
-    } catch (err) {
-      _iterator.e(err);
-    } finally {
-      _iterator.f();
-    }
-
-    var newList = function newList(list, parentId) {
-      var _iterator2 = _createForOfIteratorHelper(list),
-          _step2;
-
-      try {
-        for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-          var elem = _step2.value;
-          var parentBlock = document.getElementById(parentId);
-          var spanWrapper = document.createElement('span');
-          parentBlock.appendChild(spanWrapper);
-          spanWrapper.innerText += elem;
-        }
-      } catch (err) {
-        _iterator2.e(err);
-      } finally {
-        _iterator2.f();
-      }
-    };
-
-    newList(ingrDupl, 'ingredients-list');
-    newList(appDupl, 'appareils-list', newList(ustDupl, 'ustensiles-list')); //Ré-applique la fonction de filtre
-
-    (0, _filters.default)();
-  };
-
-  updateDropdowns();
+  (0, _filters.default)();
 }
-},{"../components/Ingredient":"components/Ingredient.js","./filters":"utils/filters.js"}],"utils/clearPage.js":[function(require,module,exports) {
+},{"../components/Ingredient":"components/Ingredient.js","./filters":"utils/filters.js"}],"utils/dropdownLists.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = ingredientsList;
+
+var _recipes = require("../data/recipes");
+
+function ingredientsList() {
+  var ingredientArray = [];
+  var ustensilesArray = [];
+  var appareilsArray = [];
+
+  for (var i = 0; i < _recipes.recipes.length; i++) {
+    //Affiche les ingradients de chaque recette
+    for (var j = 0; j < _recipes.recipes[i].ingredients.length; j++) {
+      ingredientArray.push(_recipes.recipes[i].ingredients[j].ingredient);
+    }
+
+    for (var k = 0; k < _recipes.recipes[i].ustensils.length; k++) {
+      ustensilesArray.push(_recipes.recipes[i].ustensils[k]);
+    }
+
+    appareilsArray.push(_recipes.recipes[i].appliance);
+  } //Gets rid of duplicates
+
+
+  var removeDupl = function removeDupl(objectsArray) {
+    return objectsArray.filter(function (elem, index, self) {
+      return index === self.indexOf(elem);
+    });
+  };
+
+  var ingredientDuplicate = removeDupl(ingredientArray);
+  var ustensilesDuplicate = removeDupl(ustensilesArray);
+  var appareilsDuplicate = removeDupl(appareilsArray);
+  var ingredientsBlock = document.getElementById('ingredients-list');
+  var ustensilesBlock = document.getElementById('ustensiles-list');
+  var appareilsBlock = document.getElementById('appareils-list');
+  var maxUstensiles = 30;
+
+  for (var _i = 0; _i <= maxUstensiles; _i++) {
+    var ingredientsWrapper = document.createElement('span');
+    var ustensilesWrapper = document.createElement('span');
+    ingredientsBlock.appendChild(ingredientsWrapper);
+    ustensilesBlock.appendChild(ustensilesWrapper);
+    ingredientsWrapper.innerText += ingredientDuplicate[_i];
+    ustensilesWrapper.innerText += ustensilesDuplicate[_i];
+  }
+
+  for (var _i2 = 0; _i2 <= 10; _i2++) {
+    var appareilsWrapper = document.createElement('span');
+    appareilsBlock.appendChild(appareilsWrapper);
+    appareilsWrapper.innerText += appareilsDuplicate[_i2];
+  }
+}
+},{"../data/recipes":"data/recipes.js"}],"utils/clearPage.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1906,15 +1945,11 @@ var _Recipe = require("../components/Recipe");
 
 var _addRecipes = _interopRequireDefault(require("../utils/addRecipes"));
 
+var _dropdownLists = _interopRequireDefault(require("../utils/dropdownLists"));
+
 var _clearPage = _interopRequireDefault(require("../utils/clearPage"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 //Liste des recettes recherchées à récupérer et filtrer
 var resultsArray = [];
@@ -1924,24 +1959,8 @@ function searchFunction() {
   //Si aucune recette n'a été recherchée
   //On affiche l'ensemble de la liste de recettes
   if (resultsArray.length == 0) {
-    var _iterator = _createForOfIteratorHelper(_recipes.recipes),
-        _step;
-
-    try {
-      for (_iterator.s(); !(_step = _iterator.n()).done;) {
-        var recipe = _step.value;
-        var recipesList = new _Recipe.Recipe(recipe);
-        document.getElementById('search-results').innerHTML += recipesList.diplayRecipe(); //Ajoute les ingrédients
-
-        (0, _addRecipes.default)(_recipes.recipes); //Ajoute les dropdowns
-
-        (0, _addRecipes.default)(_recipes.recipes);
-      }
-    } catch (err) {
-      _iterator.e(err);
-    } finally {
-      _iterator.f();
-    }
+    //Ajoute les ingrédients
+    (0, _addRecipes.default)(_recipes.recipes);
   }
 
   var input = document.getElementById('search-input');
@@ -1950,33 +1969,29 @@ function searchFunction() {
     var searchInput = input.value.toLowerCase();
 
     if (searchInput.length > 2) {
-      var recipeName = _recipes.recipes[i].name.toLowerCase(); //La recherche comprend le nom de la recette, les appareils et la description
+      for (var i = 0; i < _recipes.recipes.length; i++) {
+        var recipeName = _recipes.recipes[i].name.toLowerCase(); //La recherche comprend le nom de la recette, les appareils et la description
 
 
-      if (recipeName.includes(searchItem) || _recipes.recipes[i].appliance.includes(searchItem) || _recipes.recipes[i].description.includes(searchItem)) {
-        newRecipes = new _Recipe.Recipe(_recipes.recipes[i]);
-        resultsArray.push(newRecipes);
+        if (recipeName.includes(searchInput) || _recipes.recipes[i].appliance.includes(searchInput) || _recipes.recipes[i].description.includes(searchInput)) {
+          var newRecipes = new _Recipe.Recipe(_recipes.recipes[i]);
+          resultsArray.push(newRecipes); //let removeDupl = resultsArray.filter(function(elem, index, self) {   return index === self.indexOf(elem); });
+        }
       }
 
       if (resultsArray.length > 0) {
-        //Afficher les recettes ici
+        //Afficher les recettes ici           
         (0, _clearPage.default)();
-
-        var _iterator2 = _createForOfIteratorHelper(resultsArray),
-            _step2;
-
-        try {
-          for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-            var _recipe = _step2.value;
-            document.getElementById('no-result').style.display = "none"; //let newRecipe = new Recipe(recipe);
-
-            document.getElementById('search-results').innerHTML += resultsArray.diplayRecipe(); //addIngredients(resultsArray); updateDropdowns(resultsArray)
+        var removeDupl = resultsArray.reduce(function (unique, elem) {
+          if (!unique.some(function (obj) {
+            return obj.id === elem.id;
+          })) {
+            unique.push(elem);
           }
-        } catch (err) {
-          _iterator2.e(err);
-        } finally {
-          _iterator2.f();
-        }
+
+          return unique;
+        }, []);
+        (0, _addRecipes.default)(removeDupl);
       } else if (resultsArray.length == 0) {
         //Afficher qu'aucune recette n'a été trouvée
         (0, _clearPage.default)();
@@ -1985,25 +2000,10 @@ function searchFunction() {
       } //Si l'utilisateur supprime les caractères, on remet toute les recettes
 
     } else if (searchInput.length < 3) {
-      var _iterator3 = _createForOfIteratorHelper(_recipes.recipes),
-          _step3;
-
-      try {
-        for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
-          var _recipe2 = _step3.value;
-
-          var _recipesList = new _Recipe.Recipe(_recipe2);
-
-          document.getElementById('search-results').innerHTML += _recipesList.diplayRecipe(); //Ajoute les ingrédients
-          //addIngredients(recipes)
-          //Ajoute les dropdowns
-          //updateDropdowns(recipes);
-        }
-      } catch (err) {
-        _iterator3.e(err);
-      } finally {
-        _iterator3.f();
-      }
+      (0, _clearPage.default)();
+      (0, _addRecipes.default)(_recipes.recipes);
+      exports.resultsArray = resultsArray = [];
+      console.log(resultsArray);
     }
   };
 
@@ -2013,26 +2013,19 @@ function searchFunction() {
     var searchInput, listName, ElementSpan, text;
     searchInput = input.value.toLowerCase();
     listName = document.getElementById(listID);
-    ElementSpan = document.getElementsByTagName('.dropdownspan');
+    ElementSpan = document.querySelectorAll('.dropdown-menu span');
 
-    for (var _i = 0; _i < ElementSpan.length; _i++) {
-      text = ElementSpan[_i].innerText.toLowerCase() || ElementSpan[_i].textContent.toLowerCase();
+    for (var i = 0; i < ElementSpan.length; i++) {
+      text = ElementSpan[i].innerText.toLowerCase() || ElementSpan[i].textContent.toLowerCase();
 
       if (text.indexOf(searchInput) > -1) {
-        ElementSpan[_i].style.display = "";
+        ElementSpan[i].style.display = "";
       } else {
-        ElementSpan[_i].style.display = "none";
+        ElementSpan[i].style.display = "none";
       }
-    }
-  }; //Filter results arrays
 
-
-  var arrayFilter = function arrayFilter(arrayName) {
-    for (var _i2 = 0; _i2 < arrayName.length; _i2++) {
-      for (var j = 0; j < arrayName.length; j++) {
-        if (arrayName[_i2].name == arrayName[j].name && _i2 != j) {
-          arrayName.splice(_i2, _i2 + 1);
-        }
+      if (text == "undefined") {
+        ElementSpan[i].style.display = "none";
       }
     }
   };
@@ -2046,7 +2039,6 @@ function searchFunction() {
   };
 
   ingredientInput.addEventListener('input', ingredientsSearch);
-  var appareilsArray = [];
 
   var appareilsSearch = function appareilsSearch() {
     filterList(appareilsInput, 'appareils-list');
@@ -2060,7 +2052,7 @@ function searchFunction() {
 
   ustensilesInput.addEventListener('input', ustensilesSearch);
 }
-},{"../data/recipes":"data/recipes.js","../components/Recipe":"components/Recipe.js","../utils/addRecipes":"utils/addRecipes.js","../utils/clearPage":"utils/clearPage.js"}],"utils/removeTag.js":[function(require,module,exports) {
+},{"../data/recipes":"data/recipes.js","../components/Recipe":"components/Recipe.js","../utils/addRecipes":"utils/addRecipes.js","../utils/dropdownLists":"utils/dropdownLists.js","../utils/clearPage":"utils/clearPage.js"}],"utils/removeTag.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2093,17 +2085,20 @@ function removeTag(listName) {
         } //Si la liste = 0, on re-met toutes les recettes à partir de l'input
 
 
-        if (_filters.filtersArray.length == 0) {
+        if (_filters.filtersArray.length == 0 && _search.resultsArray.length > 0) {
           (0, _clearPage.default)();
           var recipesSearch = [];
           var search = document.getElementById('search-input').value.toLowerCase();
 
-          if (recipeName.includes(search) || _recipes.recipes[i].appliance.includes(search) || _recipes.recipes[i].description.includes(search)) {
+          if (_recipes.recipes[i].appliance.toLowerCase().includes(search) || _recipes.recipes[i].appliance.includes(search) || _recipes.recipes[i].description.includes(search)) {
             _search.resultsArray.push(recipesSearch);
           }
 
-          (0, _addRecipes.default)(recipesSearch);
-          (0, _addRecipes.default)(recipesSearch);
+          console.log(search);
+          (0, _addRecipes.default)(_search.resultsArray);
+        } else if (_search.resultsArray.length == 0 && _filters.filtersArray.length == 0) {
+          (0, _clearPage.default)();
+          (0, _addRecipes.default)(_recipes.recipes);
         } else {
           //Sinon on re-filtre avec la liste 
           var filterAll = [];
@@ -2118,8 +2113,6 @@ function removeTag(listName) {
             }
 
             (0, _clearPage.default)(filterAll);
-            (0, _addRecipes.default)(filterAll);
-            (0, _addRecipes.default)(filterAll);
             (0, _addRecipes.default)(filterAll);
           }
         }
@@ -2290,35 +2283,65 @@ function filterFunction() {
 
       if (filtersArray.length > 0 && _search.resultsArray.length > 0) {
         for (var _i2 = 0; _i2 < _search.resultsArray.length; _i2++) {
-          for (var _j2 = 0; _j2 < _search.resultsArray.ingredients.length; _j2++) {
-            for (var _k4 = 0; _k4 < _search.resultsArray.ustensils.length; _k4++) {
-              if (_search.resultsArray[_i2].ingredients[_j2].ingredient.includes(elem) || _search.resultsArray[_i2].ustensils[_k4].includes(elem) || _search.resultsArray[_i2].appliance.includes(elem)) {
-                filterAll.push(_search.resultsArray[_i2]);
+          for (var _j2 = 0; _j2 < _search.resultsArray[_i2].ingredients.length; _j2++) {
+            for (var _k4 = 0; _k4 < _search.resultsArray[_i2].ustensils.length; _k4++) {
+              var _iterator3 = _createForOfIteratorHelper(filtersArray),
+                  _step3;
+
+              try {
+                for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+                  var elem = _step3.value;
+
+                  if (_search.resultsArray[_i2].ingredients[_j2].ingredient.includes(elem) || _search.resultsArray[_i2].ustensils[_k4].includes(elem) || _search.resultsArray[_i2].appliance.includes(elem)) {
+                    filterAll.push(_search.resultsArray[_i2]);
+                  }
+                }
+              } catch (err) {
+                _iterator3.e(err);
+              } finally {
+                _iterator3.f();
               }
             }
           }
-        }
+        } //Filtre les doublons
 
-        (0, _clearPage.default)(filterAll);
-        (0, _addRecipes.default)(filterAll);
-        (0, _addRecipes.default)(filterAll);
-        (0, _addRecipes.default)(filterAll);
-        ifEmpty(filterAll); //Cas 2 : l'utilisateur choisit d'abord un filtre
-      } else if (filtersArray.length > 0 && _recipes.recipes.length == 0) {
+
+        var removeDupl = filterAll.filter(function (elem, index, self) {
+          return index === self.indexOf(elem);
+        });
+        (0, _clearPage.default)();
+        (0, _addRecipes.default)(removeDupl);
+        ifEmpty(removeDupl); //Cas 2 : l'utilisateur choisit d'abord un filtre
+      } else if (filtersArray.length > 0 && _search.resultsArray.length == 0) {
         for (var _i3 = 0; _i3 < _recipes.recipes.length; _i3++) {
-          for (var _j3 = 0; _j3 < _recipes.recipes.ingredients.length; _j3++) {
-            for (var _k5 = 0; _k5 < _recipes.recipes.ustensils.length; _k5++) {
-              if (_recipes.recipes[_i3].ingredients[_j3].ingredient.includes(elem) || _recipes.recipes[_i3].ustensils[_k5].includes(elem) || _recipes.recipes[_i3].appliance.includes(elem)) {
-                filterAll.push(_recipes.recipes[_i3]);
+          for (var _j3 = 0; _j3 < _recipes.recipes[_i3].ingredients.length; _j3++) {
+            for (var _k5 = 0; _k5 < _recipes.recipes[_i3].ustensils.length; _k5++) {
+              var _iterator4 = _createForOfIteratorHelper(filtersArray),
+                  _step4;
+
+              try {
+                for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+                  var _elem = _step4.value;
+
+                  if (_recipes.recipes[_i3].ingredients[_j3].ingredient.includes(_elem) || _recipes.recipes[_i3].ustensils[_k5].includes(_elem) || _recipes.recipes[_i3].appliance.includes(_elem)) {
+                    filterAll.push(_recipes.recipes[_i3]);
+                  }
+                }
+              } catch (err) {
+                _iterator4.e(err);
+              } finally {
+                _iterator4.f();
               }
             }
           }
 
-          (0, _clearPage.default)(filterAll);
-          (0, _addRecipes.default)(filterAll);
-          (0, _addRecipes.default)(filterAll);
-          (0, _addRecipes.default)(filterAll);
-          ifEmpty(filterAll);
+          var _removeDupl = filterAll.filter(function (elem, index, self) {
+            return index === self.indexOf(elem);
+          });
+
+          (0, _clearPage.default)();
+          (0, _addRecipes.default)(_removeDupl);
+          ifEmpty(_removeDupl);
         }
       }
 
@@ -2408,7 +2431,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65476" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49412" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

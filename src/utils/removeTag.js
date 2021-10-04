@@ -3,8 +3,6 @@ import { recipes } from "../data/recipes";
 import { filtersArray, tagList } from "./filters";
 import { resultsArray } from "./search";
 import addRecipes from "../utils/addRecipes";
-import addIngredients from "../utils/addRecipes";
-import updateDropdowns from "../utils/addRecipes";
 import clearPage from "../utils/clearPage"
 
 
@@ -21,15 +19,19 @@ export default function removeTag(listName) {
                     if(listName[i].innerText == filtersArray[j]) { filtersArray.splice(j, 1); }
 
                     //Si la liste = 0, on re-met toutes les recettes à partir de l'input
-                    if(filtersArray.length == 0) {
+                    if(filtersArray.length == 0 && resultsArray.length > 0) {
                         clearPage();
                         let recipesSearch = [];
                         let search = document.getElementById('search-input').value.toLowerCase();
-                        if(recipeName.includes(search) || recipes[i].appliance.includes(search) || recipes[i].description.includes(search)) {
+                        if(recipes[i].appliance.toLowerCase().includes(search) || recipes[i].appliance.includes(search) || recipes[i].description.includes(search)) {
                             resultsArray.push(recipesSearch);
                         } 
-                        addRecipes(recipesSearch); addIngredients(recipesSearch);
-                    } else {
+                        console.log(search)
+                        addRecipes(resultsArray); 
+                    }  else if(resultsArray.length == 0 && filtersArray.length == 0) {
+                        clearPage(); addRecipes(recipes);
+                    }
+                    else {
                     //Sinon on re-filtre avec la liste 
                     let filterAll = [];
                     for(let i = 0; i < recipes.length; i++){
@@ -42,7 +44,7 @@ export default function removeTag(listName) {
                                 }
                             }
                         }
-                        clearPage(filterAll); addRecipes(filterAll); addIngredients(filterAll); updateDropdowns(filterAll); 
+                        clearPage(filterAll); addRecipes(filterAll); 
                         }                    
                     }
                 }
