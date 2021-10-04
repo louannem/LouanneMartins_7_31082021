@@ -109,7 +109,7 @@ h1 {
     margin: 30px 0px;
 }
 
-#no-result {  display: none; }
+#no-result {  display: none; width: 100%; text-align: center; margin-top: 20px}
 
 article {
     height: 385px;

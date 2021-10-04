@@ -15,6 +15,8 @@ export default function searchFunction() {
     if(resultsArray.length == 0) {
             //Ajoute les ingrédients
             addRecipes(recipes);
+            document.getElementById('no-result').style.display="";
+            console.log(document.getElementById('no-result'))
     }
 
 
@@ -35,6 +37,8 @@ export default function searchFunction() {
             if(resultsArray.length > 0) {
                 //Afficher les recettes ici           
                 clearPage(); 
+                document.getElementById('no-result').style.display="none";
+                console.log(document.getElementById('no-result'))
 
                 let removeDupl = resultsArray.reduce((unique, elem) => {
                     if(!unique.some(obj => obj.id === elem.id)){unique.push(elem);}
@@ -45,13 +49,14 @@ export default function searchFunction() {
             } else if (resultsArray.length == 0){
                 //Afficher qu'aucune recette n'a été trouvée
                 clearPage();
-                document.getElementById('no-result').style.display = "inline";
+                document.getElementById('no-result').style.display = "block";
                 document.getElementById('no-result').innerText = "Aucune recette ne correspond à votre critère... vous pouvez chercher « tarte aux pommes », « poisson », etc. "
             }
             //Si l'utilisateur supprime les caractères, on remet toute les recettes
         } else if (searchInput.length < 3) {
                 clearPage();
                 addRecipes(recipes);
+                document.getElementById('no-result').style.display = "none";
                 resultsArray = [];
         }
     }

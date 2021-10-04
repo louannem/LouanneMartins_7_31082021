@@ -1901,6 +1901,8 @@ function searchFunction() {
   if (resultsArray.length == 0) {
     //Ajoute les ingrédients
     (0, _addRecipes.default)(_recipes.recipes);
+    document.getElementById('no-result').style.display = "";
+    console.log(document.getElementById('no-result'));
   }
 
   var input = document.getElementById('search-input');
@@ -1922,6 +1924,8 @@ function searchFunction() {
       if (resultsArray.length > 0) {
         //Afficher les recettes ici           
         (0, _clearPage.default)();
+        document.getElementById('no-result').style.display = "none";
+        console.log(document.getElementById('no-result'));
         var removeDupl = resultsArray.reduce(function (unique, elem) {
           if (!unique.some(function (obj) {
             return obj.id === elem.id;
@@ -1935,13 +1939,14 @@ function searchFunction() {
       } else if (resultsArray.length == 0) {
         //Afficher qu'aucune recette n'a été trouvée
         (0, _clearPage.default)();
-        document.getElementById('no-result').style.display = "inline";
+        document.getElementById('no-result').style.display = "block";
         document.getElementById('no-result').innerText = "Aucune recette ne correspond à votre critère... vous pouvez chercher « tarte aux pommes », « poisson », etc. ";
       } //Si l'utilisateur supprime les caractères, on remet toute les recettes
 
     } else if (searchInput.length < 3) {
       (0, _clearPage.default)();
       (0, _addRecipes.default)(_recipes.recipes);
+      document.getElementById('no-result').style.display = "none";
       exports.resultsArray = resultsArray = [];
     }
   };
@@ -2369,7 +2374,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55619" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55378" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
