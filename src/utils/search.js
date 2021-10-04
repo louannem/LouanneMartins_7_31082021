@@ -1,7 +1,6 @@
 import { recipes } from "../data/recipes";
 import { Recipe } from "../components/Recipe";
 import addRecipes from "../utils/addRecipes";
-import dropdownLists from "../utils/dropdownLists";
 import clearPage from "../utils/clearPage";
 
 
@@ -31,7 +30,6 @@ export default function searchFunction() {
                 if(recipeName.includes(searchInput) || recipes[i].appliance.includes(searchInput) || recipes[i].description.includes(searchInput)) {
                     let newRecipes = new Recipe(recipes[i]);
                     resultsArray.push(newRecipes);
-                    //let removeDupl = resultsArray.filter(function(elem, index, self) {   return index === self.indexOf(elem); });
                 }
             } 
             if(resultsArray.length > 0) {
@@ -48,14 +46,13 @@ export default function searchFunction() {
                 //Afficher qu'aucune recette n'a été trouvée
                 clearPage();
                 document.getElementById('no-result').style.display = "inline";
-                document.getElementById('no-result').innerText = "Aucune recette n'a été trouvée."
+                document.getElementById('no-result').innerText = "Aucune recette ne correspond à votre critère... vous pouvez chercher « tarte aux pommes », « poisson », etc. "
             }
             //Si l'utilisateur supprime les caractères, on remet toute les recettes
         } else if (searchInput.length < 3) {
                 clearPage();
                 addRecipes(recipes);
                 resultsArray = [];
-                console.log(resultsArray)
         }
     }
     input.addEventListener('input', globalSearch);

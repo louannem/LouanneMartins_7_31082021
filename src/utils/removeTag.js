@@ -1,6 +1,6 @@
 //Importation des listes générées par les filtres
 import { recipes } from "../data/recipes";
-import { filtersArray, tagList } from "./filters";
+import { filtersArray } from "./filters";
 import { resultsArray } from "./search";
 import addRecipes from "../utils/addRecipes";
 import clearPage from "../utils/clearPage"
@@ -26,7 +26,6 @@ export default function removeTag(listName) {
                         if(recipes[i].appliance.toLowerCase().includes(search) || recipes[i].appliance.includes(search) || recipes[i].description.includes(search)) {
                             resultsArray.push(recipesSearch);
                         } 
-                        console.log(search)
                         addRecipes(resultsArray); 
                     }  else if(resultsArray.length == 0 && filtersArray.length == 0) {
                         clearPage(); addRecipes(recipes);

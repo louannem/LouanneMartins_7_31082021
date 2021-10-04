@@ -1841,65 +1841,7 @@ function addRecipes(recipes) {
 
   (0, _filters.default)();
 }
-},{"../components/Ingredient":"components/Ingredient.js","./filters":"utils/filters.js"}],"utils/dropdownLists.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = ingredientsList;
-
-var _recipes = require("../data/recipes");
-
-function ingredientsList() {
-  var ingredientArray = [];
-  var ustensilesArray = [];
-  var appareilsArray = [];
-
-  for (var i = 0; i < _recipes.recipes.length; i++) {
-    //Affiche les ingradients de chaque recette
-    for (var j = 0; j < _recipes.recipes[i].ingredients.length; j++) {
-      ingredientArray.push(_recipes.recipes[i].ingredients[j].ingredient);
-    }
-
-    for (var k = 0; k < _recipes.recipes[i].ustensils.length; k++) {
-      ustensilesArray.push(_recipes.recipes[i].ustensils[k]);
-    }
-
-    appareilsArray.push(_recipes.recipes[i].appliance);
-  } //Gets rid of duplicates
-
-
-  var removeDupl = function removeDupl(objectsArray) {
-    return objectsArray.filter(function (elem, index, self) {
-      return index === self.indexOf(elem);
-    });
-  };
-
-  var ingredientDuplicate = removeDupl(ingredientArray);
-  var ustensilesDuplicate = removeDupl(ustensilesArray);
-  var appareilsDuplicate = removeDupl(appareilsArray);
-  var ingredientsBlock = document.getElementById('ingredients-list');
-  var ustensilesBlock = document.getElementById('ustensiles-list');
-  var appareilsBlock = document.getElementById('appareils-list');
-  var maxUstensiles = 30;
-
-  for (var _i = 0; _i <= maxUstensiles; _i++) {
-    var ingredientsWrapper = document.createElement('span');
-    var ustensilesWrapper = document.createElement('span');
-    ingredientsBlock.appendChild(ingredientsWrapper);
-    ustensilesBlock.appendChild(ustensilesWrapper);
-    ingredientsWrapper.innerText += ingredientDuplicate[_i];
-    ustensilesWrapper.innerText += ustensilesDuplicate[_i];
-  }
-
-  for (var _i2 = 0; _i2 <= 10; _i2++) {
-    var appareilsWrapper = document.createElement('span');
-    appareilsBlock.appendChild(appareilsWrapper);
-    appareilsWrapper.innerText += appareilsDuplicate[_i2];
-  }
-}
-},{"../data/recipes":"data/recipes.js"}],"utils/clearPage.js":[function(require,module,exports) {
+},{"../components/Ingredient":"components/Ingredient.js","./filters":"utils/filters.js"}],"utils/clearPage.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1945,8 +1887,6 @@ var _Recipe = require("../components/Recipe");
 
 var _addRecipes = _interopRequireDefault(require("../utils/addRecipes"));
 
-var _dropdownLists = _interopRequireDefault(require("../utils/dropdownLists"));
-
 var _clearPage = _interopRequireDefault(require("../utils/clearPage"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -1975,7 +1915,7 @@ function searchFunction() {
 
         if (recipeName.includes(searchInput) || _recipes.recipes[i].appliance.includes(searchInput) || _recipes.recipes[i].description.includes(searchInput)) {
           var newRecipes = new _Recipe.Recipe(_recipes.recipes[i]);
-          resultsArray.push(newRecipes); //let removeDupl = resultsArray.filter(function(elem, index, self) {   return index === self.indexOf(elem); });
+          resultsArray.push(newRecipes);
         }
       }
 
@@ -1996,14 +1936,13 @@ function searchFunction() {
         //Afficher qu'aucune recette n'a été trouvée
         (0, _clearPage.default)();
         document.getElementById('no-result').style.display = "inline";
-        document.getElementById('no-result').innerText = "Aucune recette n'a été trouvée.";
+        document.getElementById('no-result').innerText = "Aucune recette ne correspond à votre critère... vous pouvez chercher « tarte aux pommes », « poisson », etc. ";
       } //Si l'utilisateur supprime les caractères, on remet toute les recettes
 
     } else if (searchInput.length < 3) {
       (0, _clearPage.default)();
       (0, _addRecipes.default)(_recipes.recipes);
       exports.resultsArray = resultsArray = [];
-      console.log(resultsArray);
     }
   };
 
@@ -2052,7 +1991,7 @@ function searchFunction() {
 
   ustensilesInput.addEventListener('input', ustensilesSearch);
 }
-},{"../data/recipes":"data/recipes.js","../components/Recipe":"components/Recipe.js","../utils/addRecipes":"utils/addRecipes.js","../utils/dropdownLists":"utils/dropdownLists.js","../utils/clearPage":"utils/clearPage.js"}],"utils/removeTag.js":[function(require,module,exports) {
+},{"../data/recipes":"data/recipes.js","../components/Recipe":"components/Recipe.js","../utils/addRecipes":"utils/addRecipes.js","../utils/clearPage":"utils/clearPage.js"}],"utils/removeTag.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2094,7 +2033,6 @@ function removeTag(listName) {
             _search.resultsArray.push(recipesSearch);
           }
 
-          console.log(search);
           (0, _addRecipes.default)(_search.resultsArray);
         } else if (_search.resultsArray.length == 0 && _filters.filtersArray.length == 0) {
           (0, _clearPage.default)();
@@ -2431,7 +2369,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55400" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55619" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
