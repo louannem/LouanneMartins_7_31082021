@@ -37,15 +37,14 @@ export default function searchFunction() {
             if(resultsArray.length > 0) {
                 //Afficher les recettes ici
                 clearPage(); 
-                for(let recipe of resultsArray) { 
                     document.getElementById('no-result').style.display = "none";
                     addRecipes(resultsArray);
-                }
+    
             } else if (resultsArray.length == 0){
                 //Afficher qu'aucune recette n'a été trouvée
                 clearPage();
                 document.getElementById('no-result').style.display = "inline";
-                document.getElementById('no-result').innerText = "Aucune recette n'a été trouvée."
+                document.getElementById('no-result').innerText = "Aucune recette ne correspond à votre critère... vous pouvez chercher « tarte aux pommes », « poisson », etc."
 
             }
             //Si l'utilisateur supprime les caractères, on remet toute les recettes
