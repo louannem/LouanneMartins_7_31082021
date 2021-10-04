@@ -103,7 +103,6 @@ export default function searchFunction() {
     ingredientInput.addEventListener('input', ingredientsSearch);
 
 
-    let appareilsArray=[];
     let appareilsSearch = () => {
         filterList(appareilsInput, 'appareils-list');
     }

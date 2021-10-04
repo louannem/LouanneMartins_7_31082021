@@ -2089,7 +2089,6 @@ function searchFunction() {
   };
 
   ingredientInput.addEventListener('input', ingredientsSearch);
-  var appareilsArray = [];
 
   var appareilsSearch = function appareilsSearch() {
     filterList(appareilsInput, 'appareils-list');
@@ -2340,7 +2339,7 @@ function filterFunction() {
       if (filtersArray.length > 0 && _search.resultsArray.length > 0) {
         var filterAll = _search.resultsArray.filter(function (recipe) {
           return recipe.ingredients.some(function (ingredients) {
-            return filtersArray.every(function (tag) {
+            return filtersArray.some(function (tag) {
               return tag == ingredients.ingredient;
             });
           }) || recipe.ustensils.some(function (ustensils) {
@@ -2360,7 +2359,7 @@ function filterFunction() {
       } else if (filtersArray.length > 0 && _search.resultsArray.length == 0) {
         var _filterAll = _recipes.recipes.filter(function (recipe) {
           return recipe.ingredients.some(function (ingredients) {
-            return filtersArray.every(function (tag) {
+            return filtersArray.some(function (tag) {
               return tag == ingredients.ingredient;
             });
           }) || recipe.ustensils.some(function (ustensils) {
@@ -2435,7 +2434,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50666" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49311" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

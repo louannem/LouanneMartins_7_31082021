@@ -80,7 +80,7 @@ export default function filterFunction () {
                 if(filtersArray.length > 0 && resultsArray.length > 0) {
                     const filterAll = resultsArray.filter((recipe) => {
                         return (recipe.ingredients.some((ingredients) => {
-                            return filtersArray.every((tag) => {
+                            return filtersArray.some((tag) => {
                                 return tag == ingredients.ingredient
                             })
                         }) ||
@@ -100,7 +100,7 @@ export default function filterFunction () {
                 } else if (filtersArray.length > 0 && resultsArray.length == 0) {
                     const filterAll = recipes.filter((recipe) => {
                         return (recipe.ingredients.some((ingredients) => {
-                            return filtersArray.every((tag) => {
+                            return filtersArray.some((tag) => {
                                 return tag == ingredients.ingredient
                             })
                         }) ||
@@ -115,7 +115,9 @@ export default function filterFunction () {
                         )
                     })
                     clearPage(filterAll); addRecipes(filterAll); addIngredients(filterAll); updateDropdowns(filterAll); ifEmpty(filterAll);
+                    
                 }
+                
             removeTag(tagList);
         }
         tags[i].addEventListener('click', addTags)

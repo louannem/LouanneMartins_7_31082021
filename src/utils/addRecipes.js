@@ -80,6 +80,7 @@ export default function addRecipes (recipes){
             }
         }
         newList(ingrDupl, 'ingredients-list') ; newList(appDupl, 'appareils-list', newList(ustDupl, 'ustensiles-list'));
+        
         //Ré-applique la fonction de filtre
         filterFunction();
     
