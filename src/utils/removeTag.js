@@ -1,16 +1,25 @@
 //Importation des listes générées par les filtres
 import { recipes } from "../data/recipes";
-import { filtersArray, tagList } from "./filters";
+import { filtersArray } from "./filters";
 import { resultsArray } from "./search";
 import addRecipes from "../utils/addRecipes";
-import addIngredients from "../utils/addRecipes";
-import updateDropdowns from "../utils/addRecipes";
 import clearPage from "../utils/clearPage"
 
 
 
 export default function removeTag(listName) {
-    //Récupère la liste de tags
+    //Fonction pour vérifier si une liste est vide
+            let ifEmpty = (arrayName) => {
+                let noResult = document.getElementById('no-result');
+                if(arrayName.length == 0) { 
+                    noResult.innerText = "Aucune recette ne correspond à votre critère... vous pouvez chercher « tarte aux pommes », « poisson », etc.";
+                    noResult.style.display = "inline"
+                   } else if (arrayName.length > 0) {
+                       noResult.style.display = "none";
+                   } else {
+                       noResult.display="inline";
+                   }
+            }
     
         for(let i = 0; i<listName.length; i++) { 
             //Supprime les tags
@@ -35,13 +44,13 @@ export default function removeTag(listName) {
                         addRecipes(filteredObjt);
                         //Dans le cas où il n'y a aucune recherche de faite et que la liste de fitlre est vidée
                     }  else if(resultsArray.length == 0 && filtersArray.length == 0) {
-                        clearPage(); addRecipes(recipes);
+                        clearPage(); addRecipes(recipes); ifEmpty(recipes);
                     }
-                    else {
+                    else if (filtersArray.length > 0 && resultsArray.length > 0){
                     //Sinon on re-filtre avec la liste 
                     const filterAll = resultsArray.filter((recipe) => {
                         return (recipe.ingredients.some((ingredients) => {
-                            return filtersArray.every((tag) => {
+                            return filtersArray.some((tag) => {
                                 return tag == ingredients.ingredient
                             })
                         }) ||
@@ -55,13 +64,31 @@ export default function removeTag(listName) {
                         })
                         )
                     })
-                    clearPage(filterAll); addRecipes(filterAll);
-
+                    clearPage(filterAll); addRecipes(filterAll); ifEmpty(filterAll);
                     
+                    } else if (filtersArray.length > 0 && resultsArray.length == 0) {
+                        const filterAll = recipes.filter((recipe) => {
+                            return (recipe.ingredients.some((ingredients) => {
+                                return filtersArray.some((tag) => {
+                                    return tag == ingredients.ingredient
+                                })
+                            }) ||
+                            recipe.ustensils.some((ustensils) => {
+                                return filtersArray.every((tag) => {
+                                    return tag == ustensils
+                                })
+                            }) ||
+                            filtersArray.every((tag) => {
+                                return tag == recipe.appliance
+                            })
+                            )
+                        })
+                        clearPage(filterAll); addRecipes(filterAll); ifEmpty(filterAll); 
                     }
                 }
                 //Supprime le tag cliqué
-                listName[i].remove();
+                (console.log(listName[i].innerText))
+                listName[i].style.display="none";
                 
             });
         }

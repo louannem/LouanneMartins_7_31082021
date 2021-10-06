@@ -2,8 +2,6 @@ import { recipes } from "../data/recipes";
 import { resultsArray } from "./search";
 import clearPage from "./clearPage";
 import addRecipes from "./addRecipes";
-import addIngredients from "./addRecipes";
-import updateDropdowns from "./addRecipes";
 import removeTag from "./removeTag";
 
 export let tagList, filtersArray = [];
@@ -24,14 +22,13 @@ export default function filterFunction () {
 
     for(let i = 0; i < tags.length; i++) {
         let addTags = () => {
-
              //Adds the new tag 
             let newTag = document.createElement('span');
             newTag.classList.add('added-tag');
             newTag.innerText = tags[i].innerText;
             document.getElementById('added-tags').appendChild(newTag);
             let addedTags = document.querySelectorAll('.added-tag');
-            tagList = document.getElementsByClassName('added-tag');
+            //tagList = document.getElementsByClassName('added-tag');
             //Adds icon
             let deleteIcon = document.createElement('img');
             for(let tag of addedTags) { tag.appendChild(deleteIcon)};
@@ -63,7 +60,7 @@ export default function filterFunction () {
             let ifEmpty = (arrayName) => {
                 let noResult = document.getElementById('no-result');
                 if(arrayName.length == 0) { 
-                    noResult.innerText = "Pas de recette trouvée.";
+                    noResult.innerText = "Aucune recette ne correspond à votre critère... vous pouvez chercher « tarte aux pommes », « poisson », etc.";
                     noResult.style.display = "inline"
                    } else if (arrayName.length > 0) {
                        noResult.style.display = "none";
@@ -80,7 +77,7 @@ export default function filterFunction () {
                 if(filtersArray.length > 0 && resultsArray.length > 0) {
                     const filterAll = resultsArray.filter((recipe) => {
                         return (recipe.ingredients.some((ingredients) => {
-                            return filtersArray.some((tag) => {
+                            return filtersArray.every((tag) => {
                                 return tag == ingredients.ingredient
                             })
                         }) ||
@@ -94,7 +91,7 @@ export default function filterFunction () {
                         })
                         )
                     })
-                    clearPage(filterAll); addRecipes(filterAll); addIngredients(filterAll); updateDropdowns(filterAll); ifEmpty(filterAll);
+                    clearPage(filterAll); addRecipes(filterAll); ifEmpty(filterAll);
                 
                     //Cas 2 : l'utilisateur choisit d'abord un filtre
                 } else if (filtersArray.length > 0 && resultsArray.length == 0) {
@@ -113,12 +110,10 @@ export default function filterFunction () {
                             return tag == recipe.appliance
                         })
                         )
-                    })
-                    clearPage(filterAll); addRecipes(filterAll); addIngredients(filterAll); updateDropdowns(filterAll); ifEmpty(filterAll);
-                    
-                }
-                
-            removeTag(tagList);
+                    });
+                    clearPage(filterAll); addRecipes(filterAll);  ifEmpty(filterAll);
+                }  
+            removeTag(addedTags);
         }
         tags[i].addEventListener('click', addTags)
     }

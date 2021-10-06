@@ -1837,7 +1837,7 @@ function addRecipes(recipes) {
   };
 
   newList(ingrDupl, 'ingredients-list');
-  newList(appDupl, 'appareils-list', newList(ustDupl, 'ustensiles-list')); //Ré-applique la fonction de filtre
+  newList(appDupl, 'appareils-list', newList(ustDupl, 'ustensiles-list')); //Applique la fonction de filtre
 
   (0, _filters.default)();
 }
@@ -2061,6 +2061,20 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 //Importation des listes générées par les filtres
 function removeTag(listName) {
+  //Fonction pour vérifier si une liste est vide
+  var ifEmpty = function ifEmpty(arrayName) {
+    var noResult = document.getElementById('no-result');
+
+    if (arrayName.length == 0) {
+      noResult.innerText = "Aucune recette ne correspond à votre critère... vous pouvez chercher « tarte aux pommes », « poisson », etc.";
+      noResult.style.display = "inline";
+    } else if (arrayName.length > 0) {
+      noResult.style.display = "none";
+    } else {
+      noResult.display = "inline";
+    }
+  };
+
   var _loop = function _loop(i) {
     //Supprime les tags
     listName[i].addEventListener('click', function () {
@@ -2090,11 +2104,12 @@ function removeTag(listName) {
         } else if (_search.resultsArray.length == 0 && _filters.filtersArray.length == 0) {
           (0, _clearPage.default)();
           (0, _addRecipes.default)(_recipes.recipes);
-        } else {
+          ifEmpty(_recipes.recipes);
+        } else if (_filters.filtersArray.length > 0 && _search.resultsArray.length > 0) {
           //Sinon on re-filtre avec la liste 
           var filterAll = _search.resultsArray.filter(function (recipe) {
             return recipe.ingredients.some(function (ingredients) {
-              return _filters.filtersArray.every(function (tag) {
+              return _filters.filtersArray.some(function (tag) {
                 return tag == ingredients.ingredient;
               });
             }) || recipe.ustensils.some(function (ustensils) {
@@ -2108,15 +2123,34 @@ function removeTag(listName) {
 
           (0, _clearPage.default)(filterAll);
           (0, _addRecipes.default)(filterAll);
+          ifEmpty(filterAll);
+        } else if (_filters.filtersArray.length > 0 && _search.resultsArray.length == 0) {
+          var _filterAll = _recipes.recipes.filter(function (recipe) {
+            return recipe.ingredients.some(function (ingredients) {
+              return _filters.filtersArray.some(function (tag) {
+                return tag == ingredients.ingredient;
+              });
+            }) || recipe.ustensils.some(function (ustensils) {
+              return _filters.filtersArray.every(function (tag) {
+                return tag == ustensils;
+              });
+            }) || _filters.filtersArray.every(function (tag) {
+              return tag == recipe.appliance;
+            });
+          });
+
+          (0, _clearPage.default)(_filterAll);
+          (0, _addRecipes.default)(_filterAll);
+          ifEmpty(_filterAll);
         }
       } //Supprime le tag cliqué
 
 
-      listName[i].remove();
+      console.log(listName[i].innerText);
+      listName[i].style.display = "none";
     });
   };
 
-  //Récupère la liste de tags
   for (var i = 0; i < listName.length; i++) {
     _loop(i);
   }
@@ -2182,8 +2216,8 @@ function filterFunction() {
       newTag.classList.add('added-tag');
       newTag.innerText = tags[i].innerText;
       document.getElementById('added-tags').appendChild(newTag);
-      var addedTags = document.querySelectorAll('.added-tag');
-      exports.tagList = tagList = document.getElementsByClassName('added-tag'); //Adds icon
+      var addedTags = document.querySelectorAll('.added-tag'); //tagList = document.getElementsByClassName('added-tag');
+      //Adds icon
 
       var deleteIcon = document.createElement('img');
 
@@ -2259,7 +2293,7 @@ function filterFunction() {
         var noResult = document.getElementById('no-result');
 
         if (arrayName.length == 0) {
-          noResult.innerText = "Pas de recette trouvée.";
+          noResult.innerText = "Aucune recette ne correspond à votre critère... vous pouvez chercher « tarte aux pommes », « poisson », etc.";
           noResult.style.display = "inline";
         } else if (arrayName.length > 0) {
           noResult.style.display = "none";
@@ -2275,7 +2309,7 @@ function filterFunction() {
       if (filtersArray.length > 0 && _search.resultsArray.length > 0) {
         var filterAll = _search.resultsArray.filter(function (recipe) {
           return recipe.ingredients.some(function (ingredients) {
-            return filtersArray.some(function (tag) {
+            return filtersArray.every(function (tag) {
               return tag == ingredients.ingredient;
             });
           }) || recipe.ustensils.some(function (ustensils) {
@@ -2288,8 +2322,6 @@ function filterFunction() {
         });
 
         (0, _clearPage.default)(filterAll);
-        (0, _addRecipes.default)(filterAll);
-        (0, _addRecipes.default)(filterAll);
         (0, _addRecipes.default)(filterAll);
         ifEmpty(filterAll); //Cas 2 : l'utilisateur choisit d'abord un filtre
       } else if (filtersArray.length > 0 && _search.resultsArray.length == 0) {
@@ -2309,12 +2341,10 @@ function filterFunction() {
 
         (0, _clearPage.default)(_filterAll);
         (0, _addRecipes.default)(_filterAll);
-        (0, _addRecipes.default)(_filterAll);
-        (0, _addRecipes.default)(_filterAll);
         ifEmpty(_filterAll);
       }
 
-      (0, _removeTag.default)(tagList);
+      (0, _removeTag.default)(addedTags);
     };
 
     tags[i].addEventListener('click', addTags);
@@ -2338,7 +2368,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var init = function init() {
   (0, _search.default)();
   (0, _listExpand.default)();
-  (0, _filters.default)();
 };
 
 init();
@@ -2370,7 +2399,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55416" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58158" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

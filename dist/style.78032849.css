@@ -136,7 +136,7 @@ article .recipe__image { height: 160px; width: 100%; background-color: #C7BEBE; 
 .recipe__time img { margin : 0px 5px}
 
 .recipe__meta { display: flex; font-family: Lato; font-size: 12px; margin-top: 20px;}
-.recipe__meta > div { width: 50%;}
+.recipe__meta > div { width: 50%; padding: 1px;}
 .recipe__meta p { 
     max-height: 100%; 
     line-height: 12px; 

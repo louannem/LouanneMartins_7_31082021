@@ -6,7 +6,6 @@ import searchFunction from "./utils/search";
 const init = () => {
     searchFunction();
     listExpand();
-    filterFunction();
 }
 
-init()
+init();
