@@ -3,7 +3,6 @@ import { resultsArray } from "./search";
 import clearPage from "./clearPage";
 import addRecipes from "./addRecipes";
 import removeTag from "./removeTag";
-import { ingredientsFilters, applianceFilters, ustensilsFilters } from "../app";
 
 export let tagList, filtersArray = [];
 
@@ -69,8 +68,6 @@ export default function filterFunction () {
                        noResult.display="inline";
                    }
             }
-
-            console.log(filtersArray)
 
             //Filtre les résultats selon les nouvelles listes de filtres
              //Départ avant l'ajout d'un tag : toutes les listes de filtres sont vides

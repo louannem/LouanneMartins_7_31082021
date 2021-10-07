@@ -44,12 +44,12 @@ export default function removeTag(listName) {
                         addRecipes(filteredObjt);
                         //Dans le cas où il n'y a aucune recherche de faite et que la liste de fitlre est vidée
                     }  else if(resultsArray.length == 0 && filtersArray.length == 0) {
-                        clearPage(); addRecipes(recipes); 
+                        clearPage(); addRecipes(recipes); ifEmpty(recipes);
                     }
                     else if (filtersArray.length > 0 && resultsArray.length > 0){
                     //Sinon on re-filtre avec la liste 
                     const filterAll = resultsArray.filter((recipe) => {
-                        return (recipe.ingredients.every((ingredients) => {
+                        return (recipe.ingredients.some((ingredients) => {
                             return filtersArray.some((tag) => {
                                 return tag == ingredients.ingredient
                             })

@@ -1,7 +1,8 @@
 import listExpand from "./components/listExpand";
+import filterFunction from "./utils/filters";
 import searchFunction from "./utils/search";
 
-export let ingredientsFilters = [], applianceFilters = [], ustensilsFilters= [];
+
 const init = () => {
     searchFunction();
     listExpand();
