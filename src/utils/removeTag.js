@@ -67,23 +67,23 @@ export default function removeTag(listName) {
                     clearPage(filterAll); addRecipes(filterAll); ifEmpty(filterAll);
                     
                     } else if (filtersArray.length > 0 && resultsArray.length == 0) {
-                        const filterAll = recipes.filter((recipe) => {
-                            return (recipe.ingredients.some((ingredients) => {
-                                return filtersArray.some((tag) => {
-                                    return tag == ingredients.ingredient
-                                })
-                            }) ||
-                            recipe.ustensils.some((ustensils) => {
-                                return filtersArray.every((tag) => {
-                                    return tag == ustensils
-                                })
-                            }) ||
-                            filtersArray.every((tag) => {
-                                return tag == recipe.appliance
-                            })
-                            )
-                        })
-                        clearPage(filterAll); addRecipes(filterAll); ifEmpty(filterAll); 
+                        let results = [];
+                        for(let recipe of recipes) {
+                        const filter = (arr1) => arr1.every(elem =>  {
+                           return (recipe.ingredients.some(ingredients => {
+                                return ingredients.ingredient == elem
+                        }) ||
+                        recipe.ustensils.some(ustensils => {
+                            return ustensils == elem   
+                        })||
+                        recipe.appliance == elem
+                        )
+                    })
+                        if(filter(filtersArray)) {
+                            results.push(recipe);
+                            clearPage(); addRecipes(results); ifEmpty(results)
+                        }
+                    } 
                     }
                 }
                 //Supprime le tag cliqué

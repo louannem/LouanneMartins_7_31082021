@@ -4,7 +4,7 @@ import clearPage from "./clearPage";
 import addRecipes from "./addRecipes";
 import removeTag from "./removeTag";
 
-export let tagList, filtersArray = [];
+export let tagList, filtersArray = [], ingredientFilters = [], applianceFilters = [], ustensilsFilters = [];
 
 export default function filterFunction () {
     let tags = document.querySelectorAll('.dropdown-menu span');
@@ -18,6 +18,13 @@ export default function filterFunction () {
         for(let k = 0; k < recipes[j].ingredients.length; k++) { ingredientsArray.push(recipes[j].ingredients[k].ingredient) }
         for(let k = 0; k < recipes[j].appliance.length; k++) { appareilsArray.push(recipes[j].appliance) }
         for(let k = 0; k < recipes[j].ustensils.length; k++) { ustensilsArray.push(recipes[j].ustensils[k]) }        
+    }
+
+    //Creation du filtre
+    const filter = {
+    ingredients : [],
+    "appliance":"",
+    ustensils : []
     }
 
     for(let i = 0; i < tags.length; i++) {
@@ -48,13 +55,24 @@ export default function filterFunction () {
                 }
             }
 
+
             //Ajout des tags dans chaque liste de filtre
             for(let tag of addedTags) {
                 let tagName = tag.innerText;
-                if(!filtersArray.includes(tagName) && ingredientsArray.includes(tagName)) { filtersArray.push(tagName)}
-                if(!filtersArray.includes(tagName) && ustensilsArray.includes(tagName)) { filtersArray.push(tagName)}
-                if(!filtersArray.includes(tagName) && appareilsArray.includes(tagName)) { filtersArray.push(tagName)}
+                if(!filtersArray.includes(tagName) && ingredientsArray.includes(tagName)) { 
+                    filtersArray.push(tagName); ingredientFilters.push(tagName);
+                }
+                if(!filtersArray.includes(tagName) && ustensilsArray.includes(tagName)) { 
+                    filtersArray.push(tagName); ustensilsFilters.push(tagName);
+                }
+                if(!filtersArray.includes(tagName) && appareilsArray.includes(tagName)) { filtersArray.push(tagName); applianceFilters.push(tagName)}
              }
+
+             //Ajoute les différents filtres sélectionnés
+             for(let ingredient of ingredientFilters) { filter.ingredients.push({ingredient: ingredient}) }
+             for(let ustensil of ustensilsFilters) { filter.ustensils.push(ustensil) }
+             for(let appliances of applianceFilters) { filter.appliance = appliances}
+          
 
             //Fonction pour vérifier si une liste est vide
             let ifEmpty = (arrayName) => {
@@ -69,18 +87,39 @@ export default function filterFunction () {
                    }
             }
 
+
             //Filtre les résultats selon les nouvelles listes de filtres
              //Départ avant l'ajout d'un tag : toutes les listes de filtres sont vides
 
 ///////////////////Filtre avec liste unique////////////////////////////////////////////////////////////
+            let results = [];
+
                 //Cas 1 : l'utilisateur a utilisé la barre de recherche
                 if(filtersArray.length > 0 && resultsArray.length > 0) {
-                    const filterAll = resultsArray.filter((recipe) => {
-                        return (recipe.ingredients.some((ingredients) => {
-                            return filtersArray.every((tag) => {
-                                return tag == ingredients.ingredient
-                            })
+                    for(let recipe of resultsArray) {
+                        const filter = (arr1) => arr1.every(elem =>  {
+                           return (recipe.ingredients.some(ingredients => {
+                                return ingredients.ingredient == elem
                         }) ||
+                        recipe.ustensils.some(ustensils => {
+                            return ustensils == elem   
+                        })||
+                        recipe.appliance == elem
+                        )
+                    })
+                        if(filter(filtersArray)) {
+                            results.push(recipe);
+                            clearPage(); addRecipes(results); ifEmpty(results)
+                        }
+                    }
+                    
+                    
+                  /*  const filterAll = resultsArray.filter((recipe) => {
+                        return (recipe.ingredients.some((ingredients) => {
+                            return filtersArray.every((elem) => {ingredients.ingredient.includes(elem) })
+                            
+                            
+                        })||
                         recipe.ustensils.some((ustensils) => {
                             return filtersArray.every((tag) => {
                                 return tag == ustensils
@@ -91,14 +130,36 @@ export default function filterFunction () {
                         })
                         )
                     })
-                    clearPage(filterAll); addRecipes(filterAll); ifEmpty(filterAll);
+                    
+                    clearPage(filterAll); addRecipes(filterAll); ifEmpty(filterAll);*/
                 
                     //Cas 2 : l'utilisateur choisit d'abord un filtre
+
+                    
                 } else if (filtersArray.length > 0 && resultsArray.length == 0) {
-                    const filterAll = recipes.filter((recipe) => {
+                    for(let recipe of recipes) {
+                        const filter = (arr1) => arr1.every(elem =>  {
+                           return (recipe.ingredients.some(ingredients => {
+                                return ingredients.ingredient == elem
+                        }) ||
+                        recipe.ustensils.some(ustensils => {
+                            return ustensils == elem   
+                        })||
+                        recipe.appliance == elem
+                        )
+                    })
+                        if(filter(filtersArray)) {
+                            results.push(recipe);
+                            clearPage(); addRecipes(results); ifEmpty(results)
+                        }
+                    }
+
+
+
+                    /*const filterAll = recipes.filter((recipe) => {
                         return (recipe.ingredients.some((ingredients) => {
                             return filtersArray.some((tag) => {
-                                return tag == ingredients.ingredient
+                                return ingredients.ingredient === tag
                             })
                         }) ||
                         recipe.ustensils.some((ustensils) => {
@@ -106,12 +167,12 @@ export default function filterFunction () {
                                 return tag == ustensils
                             })
                         }) ||
-                        filtersArray.every((tag) => {
+                        filtersArray.some((tag) => {
                             return tag == recipe.appliance
                         })
                         )
                     });
-                    clearPage(filterAll); addRecipes(filterAll);  ifEmpty(filterAll);
+                    clearPage(filterAll); addRecipes(filterAll);  ifEmpty(filterAll);*/
                 }  
             removeTag(addedTags);
         }

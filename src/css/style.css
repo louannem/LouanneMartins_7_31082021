@@ -82,7 +82,7 @@ h1 {
     box-sizing: border-box;
 }
 
-.grid-list span { line-height: 1em; cursor: pointer;}
+.dropdown-menu span { line-height: 1em; cursor: pointer;}
 
 #added-tags { min-height: 0px; display: flex; align-items: center; margin-bottom: 1rem;}
 .added-tag { margin: 10px 10px; cursor: pointer; border-radius: 5px; padding: 10px; height: 45px; min-width: 107px; color: white; text-align: center; display: flex; align-items: center; justify-content: space-between;}
