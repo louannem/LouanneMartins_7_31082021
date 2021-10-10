@@ -16,7 +16,6 @@ export default function searchFunction() {
             //Ajoute les ingrédients
             addRecipes(recipes);
             document.getElementById('no-result').style.display="";
-            console.log(document.getElementById('no-result'))
     }
 
 
@@ -32,13 +31,15 @@ export default function searchFunction() {
                 if(recipeName.includes(searchInput) || recipes[i].appliance.includes(searchInput) || recipes[i].description.includes(searchInput)) {
                     let newRecipes = new Recipe(recipes[i]);
                     resultsArray.push(newRecipes);
+                } else if (recipeName.includes(searchInput) || recipes[i].appliance.includes(searchInput) || recipes[i].description.includes(searchInput)){
+                    resultsArray = [];
+                    clearPage();
                 }
             } 
             if(resultsArray.length > 0) {
                 //Afficher les recettes ici           
                 clearPage(); 
                 document.getElementById('no-result').style.display="none";
-                console.log(document.getElementById('no-result'))
 
                 let removeDupl = resultsArray.reduce((unique, elem) => {
                     if(!unique.some(obj => obj.id === elem.id)){unique.push(elem);}
@@ -57,7 +58,6 @@ export default function searchFunction() {
                 clearPage();
                 addRecipes(recipes);
                 document.getElementById('no-result').style.display = "none";
-                resultsArray = [];
         }
     }
     input.addEventListener('input', globalSearch);

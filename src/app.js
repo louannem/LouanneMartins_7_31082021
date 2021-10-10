@@ -9,7 +9,7 @@ for(let recipe of recipes){recipesArray.push(recipe)}
 const init = () => {
     searchFunction();
     listExpand();
-    filterFunction();
+    //filterFunction();
 }
 
 init();
