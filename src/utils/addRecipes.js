@@ -1,5 +1,6 @@
 import { Ingredient } from "../components/Ingredient";
 import filterFunction from "./filters";
+import { filtersArray } from "./filters";
 
 export default function addRecipes (recipes){
 
@@ -72,7 +73,7 @@ export default function addRecipes (recipes){
                 let spanWrapper = document.createElement('span');
                 parentBlock.appendChild(spanWrapper);
                 spanWrapper.innerText += list[i];
-                if(spanWrapper.innerText == "undefined") { spanWrapper.style.display="none"}
+                if(spanWrapper.innerText == "undefined" || filtersArray.includes(spanWrapper.innerText)) { spanWrapper.style.display="none"}
                 
             }
         }
