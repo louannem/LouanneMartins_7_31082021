@@ -6,23 +6,31 @@ import addRecipes from "../utils/addRecipes";
 import clearPage from "../utils/clearPage"
 
 
-
+/**
+ * Fonction pour supprimer les tags et re-mettre à jour la recherche
+ * @param {string} listName Liste à re-filtrer
+ */
 export default function removeTag(listName) {
-    //Fonction pour vérifier si une liste est vide
-            let ifEmpty = (arrayName) => {
-                let noResult = document.getElementById('no-result');
-                if(arrayName.length == 0) { 
-                    noResult.innerText = "Aucune recette ne correspond à votre critère... vous pouvez chercher « tarte aux pommes », « poisson », etc.";
-                    noResult.style.display = "inline"
-                   } else if (arrayName.length > 0) {
-                       noResult.style.display = "none";
-                   } else {
-                       noResult.display="inline";
-                   }
-            }
+    /**
+     * Vérifie si une lsite est vide
+     * @param {string} arrayName Liste de recettes à tester
+     */
+    let ifEmpty = (arrayName) => {
+        let noResult = document.getElementById('no-result');
+        if(arrayName.length == 0) { 
+            noResult.innerText = "Aucune recette ne correspond à votre critère... vous pouvez chercher « tarte aux pommes », « poisson », etc.";
+            noResult.style.display = "inline"
+        } else if (arrayName.length > 0) {
+            noResult.style.display = "none";
+        } else {
+            noResult.display="inline";
+        }
+    }
     
         for(let i = 0; i<listName.length; i++) { 
-            //Supprime les tags
+            /**
+             * Fonction pour supprimer les tags et re-mettre à jour les recherches
+             */
             listName[i].addEventListener('click', function(){
                 //Trouver l'élément dans la liste de filtres
                 for(let j = 0; j < filtersArray.length; j++) {
@@ -87,7 +95,6 @@ export default function removeTag(listName) {
                     }
                 }
                 //Supprime le tag cliqué
-                (console.log(listName[i].innerText))
                 listName[i].style.display="none";
                 
             });

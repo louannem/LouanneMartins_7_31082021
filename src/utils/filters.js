@@ -20,14 +20,10 @@ export default function filterFunction () {
         for(let k = 0; k < recipes[j].ustensils.length; k++) { ustensilsArray.push(recipes[j].ustensils[k]) }        
     }
 
-    //Creation du filtre
-    const filter = {
-    ingredients : [],
-    "appliance":"",
-    ustensils : []
-    }
-
     for(let i = 0; i < tags.length; i++) {
+        /**
+         * Fonction pour ajouter un fitlre 
+         */
         let addTags = () => {
              //Adds the new tag 
             let newTag = document.createElement('span');
@@ -39,6 +35,7 @@ export default function filterFunction () {
             //Adds icon
             let deleteIcon = document.createElement('img');
             for(let tag of addedTags) { tag.appendChild(deleteIcon)}
+            // eslint-disable-next-line no-undef
             const iconPath = require('../assets/delete_icon.png');
             deleteIcon.setAttribute('src', iconPath);
 
@@ -68,13 +65,11 @@ export default function filterFunction () {
                 if(!filtersArray.includes(tagName) && appareilsArray.includes(tagName)) { filtersArray.push(tagName); applianceFilters.push(tagName)}
              }
 
-             //Ajoute les différents filtres sélectionnés
-             for(let ingredient of ingredientFilters) { filter.ingredients.push({ingredient: ingredient}) }
-             for(let ustensil of ustensilsFilters) { filter.ustensils.push(ustensil) }
-             for(let appliances of applianceFilters) { filter.appliance = appliances}
-          
 
-            //Fonction pour vérifier si une liste est vide
+            /**
+             * Teste si une liste de recherche est vide ou non et affiche un message en fonction
+             * @param {string} arrayName Array à tester
+             */
             let ifEmpty = (arrayName) => {
                 let noResult = document.getElementById('no-result');
                 if(arrayName.length == 0) { 
@@ -97,6 +92,11 @@ export default function filterFunction () {
                 //Cas 1 : l'utilisateur a utilisé la barre de recherche
                 if(filtersArray.length > 0 && resultsArray.length > 0) {
                     for(let recipe of resultsArray) {
+                        /**
+                         * Fonction pour filtrer les recettes cherchées
+                         * @param {string} arr1 Liste de filtres à tester 
+                         * @returns Retourne vrai ou faux selon la présence des filtres dans les recettes
+                         */
                         const filter = (arr1) => arr1.every(elem =>  {
                            return (recipe.ingredients.some(ingredients => {
                                 return ingredients.ingredient == elem
@@ -120,6 +120,11 @@ export default function filterFunction () {
                     
                 } else if (filtersArray.length > 0 && resultsArray.length == 0) {
                     for(let recipe of recipes) {
+                        /**
+                         * Fonction pour filtrer les recettes
+                         * @param {string} arr1 Liste de filtres à tester
+                         * @returns Retourne vrai ou faux
+                         */
                         const filter = (arr1) => arr1.every(elem =>  {
                            return (recipe.ingredients.some(ingredients => {
                                 return ingredients.ingredient == elem
@@ -135,26 +140,6 @@ export default function filterFunction () {
                             clearPage(); addRecipes(results); ifEmpty(results)
                         }
                     }
-
-
-
-                    /*const filterAll = recipes.filter((recipe) => {
-                        return (recipe.ingredients.some((ingredients) => {
-                            return filtersArray.some((tag) => {
-                                return ingredients.ingredient === tag
-                            })
-                        }) ||
-                        recipe.ustensils.some((ustensils) => {
-                            return filtersArray.every((tag) => {
-                                return tag == ustensils
-                            })
-                        }) ||
-                        filtersArray.some((tag) => {
-                            return tag == recipe.appliance
-                        })
-                        )
-                    });
-                    clearPage(filterAll); addRecipes(filterAll);  ifEmpty(filterAll);*/
                 }  
             removeTag(addedTags);
         }

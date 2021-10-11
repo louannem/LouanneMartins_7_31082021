@@ -6,7 +6,9 @@ import addRecipes from "../utils/addRecipes";
 //Liste des recettes recherchées à récupérer et filtrer
 export let resultsArray = [];
 
-
+/**
+ * Fonction pour rechercher les recettes par mot-clé
+ */
 export default function searchFunction() {
 
     //Si aucune recette n'a été recherchée
@@ -19,6 +21,9 @@ export default function searchFunction() {
 
     const input = document.getElementById('search-input');
     
+    /**
+     * Fonction pour rechercher les recettes par mot-clé
+     */
     let globalSearch = () => {
         const searchInput = input.value.toLowerCase();
         
@@ -52,7 +57,11 @@ export default function searchFunction() {
     }
     input.addEventListener('input', globalSearch);
 
-     //Filter each list
+     /**
+      * Fonction pour fitlrer les listes de dropdown avec les input
+      * @param {string} input Input de la liste
+      * @param {string} listID Liste à trier
+      */
      let filterList = (input, listID) => {
         let searchInput, listName, ElementSpan, text;
 

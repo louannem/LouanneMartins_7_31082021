@@ -1,5 +1,8 @@
 import { recipes } from "../data/recipes";
 
+/**
+ * Fonction pour afficher les listes de dropdowns
+ */
 export default function ingredientsList() {
     let ingredientArray = [];
     let ustensilesArray = [];
@@ -14,7 +17,11 @@ export default function ingredientsList() {
 
 
 
-    //Gets rid of duplicates
+    /**
+     * Fonction pour supprimer les doublons d'une liste
+     * @param {string} objectsArray Liste à filtrer
+     * @returns Retourne une nouvelle liste filtrée
+     */
     let removeDupl = (objectsArray) => {       return objectsArray.filter(function(elem, index, self) {   return index === self.indexOf(elem); })}
     
     let ingredientDuplicate = removeDupl(ingredientArray);
