@@ -38,7 +38,7 @@ export default function filterFunction () {
             //tagList = document.getElementsByClassName('added-tag');
             //Adds icon
             let deleteIcon = document.createElement('img');
-            for(let tag of addedTags) { tag.appendChild(deleteIcon)};
+            for(let tag of addedTags) { tag.appendChild(deleteIcon)}
             const iconPath = require('../assets/delete_icon.png');
             deleteIcon.setAttribute('src', iconPath);
 
@@ -113,25 +113,7 @@ export default function filterFunction () {
                         }
                     }
                     
-                    
-                  /*  const filterAll = resultsArray.filter((recipe) => {
-                        return (recipe.ingredients.some((ingredients) => {
-                            return filtersArray.every((elem) => {ingredients.ingredient.includes(elem) })
-                            
-                            
-                        })||
-                        recipe.ustensils.some((ustensils) => {
-                            return filtersArray.every((tag) => {
-                                return tag == ustensils
-                            })
-                        }) ||
-                        filtersArray.every((tag) => {
-                            return tag == recipe.appliance
-                        })
-                        )
-                    })
-                    
-                    clearPage(filterAll); addRecipes(filterAll); ifEmpty(filterAll);*/
+                  
                 
                     //Cas 2 : l'utilisateur choisit d'abord un filtre
 

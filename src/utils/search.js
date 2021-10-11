@@ -1,10 +1,5 @@
 import { recipes } from "../data/recipes";
-import { Recipe } from "../components/Recipe";
-import displayRecipes from "../utils/addRecipes";
-import addIngredients from "../utils/addRecipes";
-import updateDropdowns from "../utils/addRecipes";
 import clearPage from "../utils/clearPage";
-import ingredientsList from "./dropdownLists";
 import addRecipes from "../utils/addRecipes";
 
 
@@ -62,6 +57,7 @@ export default function searchFunction() {
         let searchInput, listName, ElementSpan, text;
 
         searchInput = input.value.toLowerCase();
+        // eslint-disable-next-line no-unused-vars
         listName = document.getElementById(listID);
         ElementSpan = document.querySelectorAll('.dropdown-menu span');
 
