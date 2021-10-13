@@ -1,6 +1,6 @@
 //Importation des listes générées par les filtres
 import { recipes } from "../data/recipes";
-import { filtersArray, ingredientsList, applianceList, ustensilsList } from "./filters";
+import { filtersArray,ingredientsList, applianceList, ustensilsList } from "./filters";
 import { resultsArray } from "./search";
 import addRecipes from "../utils/addRecipes";
 import clearPage from "../utils/clearPage"
@@ -52,9 +52,8 @@ export default function removeTag(listName) {
                                             filterAll.push(resultsArray[i])
                                         }
                                        
-                                        //return resultsArray[i].ingredients[j].ingredient == tag
 
-                                        //Cas é : ing = 0, app > 0, ust = 0
+                                        //Cas 2 : ing = 0, app > 0, ust = 0
                                     } else if (ingredientsList.length == 0 && applianceList.length > 0 && ustensilsList.length == 0){
                                         if(resultsArray[i].appliance.indexOf(tag) > -1) {
                                             filterAll.push(resultsArray[i])
@@ -101,7 +100,7 @@ export default function removeTag(listName) {
                                             
                     } else if (filtersArray.length > 0 && resultsArray.length == 0) {
                         //On re-filtre avec la liste de fitlres et toutes les recettes
-                        filterAll = [];
+                        let filterAll = [];
                         for(let tag of filtersArray) {     
                             for(let i = 0; i < recipes.length; i++) {
                                 for(let j = 0; j < recipes[i].ingredients.length; j++) {
@@ -153,7 +152,7 @@ export default function removeTag(listName) {
                                 }
                             }
                         }                      
-                    
+                    console.log(filterAll)
                     clearPage(); addRecipes(removeDuplicate(filterAll, 'id'));
                     }
                         

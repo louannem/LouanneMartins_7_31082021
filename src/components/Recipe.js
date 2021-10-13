@@ -19,7 +19,7 @@ export class Recipe {
                     <div class="recipe__title">
                         <h2>${this.name}</h2>
                         <div class="recipe__time">
-                            <img src="../dist/clock.bdc9bc77.svg" alt="">
+                            <img src="" alt="">
                             <span>${this.time} min.</span>
                         </div>
                     </div>

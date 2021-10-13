@@ -4,8 +4,7 @@ import clearPage from "./clearPage";
 import addRecipes from "./addRecipes";
 import removeTag from "./removeTag";
 
-export let tagList, filtersArray = [];
-let ingredientsList = [], applianceList = [], ustensilsList = []
+export let tagList, filtersArray = [],  ingredientsList = [], applianceList = [], ustensilsList = [], array =[], trueNumb, newA;
 
 export default function filterFunction () {
     let tags = document.querySelectorAll('.dropdown-menu span');
@@ -90,10 +89,10 @@ export default function filterFunction () {
 
 ///////////////////Filtre avec liste unique////////////////////////////////////////////////////////////
                 //Cas 1 : l'utilisateur a utilisé la barre de recherche
-                let filterAll = [];
+                
                
                 if(filtersArray.length > 0 && resultsArray.length > 0) {
-                    
+                    let filterAll = [];
                     for(let tag of filtersArray) {     
                         for(let i = 0; i < resultsArray.length; i++) {
                             for(let j = 0; j < resultsArray[i].ingredients.length; j++) {
@@ -105,7 +104,6 @@ export default function filterFunction () {
                                             filterAll.push(resultsArray[i])
                                         }
                                        
-                                        //return resultsArray[i].ingredients[j].ingredient == tag
 
                                         //Cas é : ing = 0, app > 0, ust = 0
                                     } else if (ingredientsList.length == 0 && applianceList.length > 0 && ustensilsList.length == 0){
@@ -149,29 +147,79 @@ export default function filterFunction () {
                     }
                 }                      
           
-          clearPage(); addRecipes(removeDuplicate(filterAll, 'id'));
+          clearPage(); addRecipes(removeDuplicate(filterAll, 'id')); ifEmpty(filterAll)
                             
                     
                 
                     //Cas 2 : l'utilisateur choisit d'abord un filtre
-                } else if (filtersArray.length > 0 && resultsArray.length == 0) {               
-                        for(let tag of filtersArray) {     
+                } else if (filtersArray.length > 0 && resultsArray.length == 0) {   
+                
+                    
+                    let filterAll = [], check=false;   
+                    
+                    if(array.length == 0) {
+                        for(let i = 0; i < filtersArray.length; i++) {
+                            for(let j = 0; j< recipes.length; j++) {
+                                     for(let k = 0; k < recipes[j].ingredients.length; k++) {
+                                        if(recipes[j].ingredients[k].ingredient == filtersArray[i]) {
+                                            check = true;
+                                            array.push(recipes[j]);                                           
+                                        }                                
+                                    }
+                                }
+                            }
+                    } else if (array.length > 0) {
+                        for(let k = 0; k < array.length; k++) {
+                            trueNumb = 0
+                            for(let i = 0; i < array[k].ingredients.length; i++) {
+                                for(let j = 0; j <= filtersArray.length; j++) {
+                                    if(array[k].ingredients[i].ingredient.includes(filtersArray[j])) {
+                                    trueNumb++;
+                                    console.log(array[k])
+                                    break
+                                }
+                                    
+                            }
+                        }
+                         if(trueNumb !== filtersArray.length) {  
+                             //A supprimer de la liste
+                             console.log(array[k], k) ;
+                             array.splice(k,1);
+                             k--;
+                            }                               
+                        }
+                        console.log(array)
+                    }
+
+                    
+                    
+                 
+                        for(let tag of filtersArray) {
                             for(let i = 0; i < recipes.length; i++) {
                                 for(let j = 0; j < recipes[i].ingredients.length; j++) {
+
+                            
                                     for(let k = 0; k < recipes[i].ustensils.length; k ++) {
-                                        
                                         //Cas 1 : ingrédients > 0, app = 0 & ust = 0
                                         if(ingredientsList.length > 0 && applianceList.length == 0 && ustensilsList.length == 0) {
-                                            if(recipes[i].ingredients[j].ingredient.indexOf(tag) > -1) {
-                                                filterAll.push(recipes[i])                                                
+                                            for(let l = 0; l < ingredientsList.length; l++) {
+                                                
+                                                if(recipes[i].ingredients[j].ingredient == ingredientsList[l]) {
+                                                    check = true;
+                                                    if(l == ingredientsList.length -1) { filterAll.push(recipes[i]) }
+                                                    break;
+                                                }
+                                               
                                             }
-                                            //Cas é : ing = 0, app > 0, ust = 0
+                                 
+                                    
+                                            //Cas 2 : ing = 0, app > 0, ust = 0
                                         } else if (ingredientsList.length == 0 && applianceList.length > 0 && ustensilsList.length == 0){
-                                            if(recipes[i].appliance.indexOf(tag) > -1) {
+                                            if(recipes[i].appliance.indexOf(last) > -1) {
                                                 filterAll.push(recipes[i])
                                         }
                                     } else if (ingredientsList.length == 0 && applianceList.length == 0 && ustensilsList.length > 0){
-                                        if(recipes[i].ustensils[k].indexOf(tag) > -1) {
+                                        if(recipes[i].ustensils[k].indexOf(last) > -1) {
                                             filterAll.push(recipes[i])
                                         }
                                     } else if (ingredientsList.length > 0 && applianceList.length == 0 && ustensilsList.length > 0){
@@ -207,7 +255,7 @@ export default function filterFunction () {
                         }
                     }                      
                   
-              clearPage(); addRecipes(removeDuplicate(filterAll, 'id'));
+              clearPage(); addRecipes(removeDuplicate(filterAll, 'id')); ifEmpty(filterAll)
             }
             
             removeTag(tagList);
