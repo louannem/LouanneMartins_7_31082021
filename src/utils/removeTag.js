@@ -3,7 +3,8 @@ import { recipes } from "../data/recipes";
 import { filtersArray } from "./filters";
 import { resultsArray } from "./search";
 import addRecipes from "../utils/addRecipes";
-import clearPage from "../utils/clearPage"
+import clearPage from "../utils/clearPage";
+import updateFilters from "./updateFilters";
 
 
 /**
@@ -37,7 +38,7 @@ export default function removeTag(listName) {
                     //Identifie le filtre dans la liste de filtre et le supprime
                     if(listName[i].innerText == filtersArray[j]) { filtersArray.splice(j, 1); }
 
-                    //Si la liste = 0, on re-met toutes les recettes à partir de l'input
+                    //Si la liste de filtre = 0, on re-met toutes les recettes à partir de l'input
                     if(filtersArray.length == 0 && resultsArray.length > 0) {
                         clearPage();
                         let recipesSearch = [];
@@ -56,6 +57,7 @@ export default function removeTag(listName) {
                     }
                     else if (filtersArray.length > 0 && resultsArray.length > 0){
                     //Sinon on re-filtre avec la liste 
+                    let filtersArray = updateFilters();
                     const filterAll = resultsArray.filter((recipe) => {
                         return (recipe.ingredients.some((ingredients) => {
                             return filtersArray.some((tag) => {
@@ -76,6 +78,7 @@ export default function removeTag(listName) {
                     
                     } else if (filtersArray.length > 0 && resultsArray.length == 0) {
                         let results = [];
+                        let filtersArray = updateFilters();
                         for(let recipe of recipes) {
                         const filter = (arr1) => arr1.every(elem =>  {
                            return (recipe.ingredients.some(ingredients => {

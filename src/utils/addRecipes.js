@@ -19,6 +19,9 @@ export default function addRecipes (recipes){
                     <div class="recipe__title">
                         <h2>${recipe.name}</h2>
                         <div class="recipe__time">
+                            <div class="time-icon">
+                                <img></img>
+                            </div>
                             <img src="../dist/clock.bdc9bc77.svg" alt="">
                             <span>${recipe.time} min.</span>
                         </div>
@@ -38,8 +41,12 @@ export default function addRecipes (recipes){
             })
             .join('');
             document.getElementById('search-results').innerHTML = htmlString;
-  
 
+            //Ajoute les icones
+            let iconBlock = document.querySelectorAll('.time-icon img');
+            // eslint-disable-next-line no-undef
+            const clockPath = require('../assets/clock.svg');
+            for(let icon of iconBlock) { icon.setAttribute('src', clockPath);}
 
 
         //Display the ingredients for each recipes found

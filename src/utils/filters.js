@@ -3,12 +3,14 @@ import { resultsArray } from "./search";
 import clearPage from "./clearPage";
 import addRecipes from "./addRecipes";
 import removeTag from "./removeTag";
+import updateFilters from "./updateFilters";
 
 export let tagList, filtersArray = [], ingredientFilters = [], applianceFilters = [], ustensilsFilters = [];
 
 export default function filterFunction () {
     let tags = document.querySelectorAll('.dropdown-menu span');
-
+    // eslint-disable-next-line no-unused-vars
+    let filtres = updateFilters();
     let ingredientsArray = [];
     let appareilsArray = [];
     let ustensilsArray = [];
@@ -83,14 +85,12 @@ export default function filterFunction () {
             }
 
 
-            //Filtre les résultats selon les nouvelles listes de filtres
-             //Départ avant l'ajout d'un tag : toutes les listes de filtres sont vides
-
-///////////////////Filtre avec liste unique////////////////////////////////////////////////////////////
+//////////////////////////////Filtre avec méthode every()////////////////////////////////////////////////////////////
             let results = [];
 
                 //Cas 1 : l'utilisateur a utilisé la barre de recherche
                 if(filtersArray.length > 0 && resultsArray.length > 0) {
+                    let filtersArray = updateFilters();
                     for(let recipe of resultsArray) {
                         /**
                          * Fonction pour filtrer les recettes cherchées
@@ -119,6 +119,7 @@ export default function filterFunction () {
 
                     
                 } else if (filtersArray.length > 0 && resultsArray.length == 0) {
+                    let filtersArray = updateFilters();
                     for(let recipe of recipes) {
                         /**
                          * Fonction pour filtrer les recettes
