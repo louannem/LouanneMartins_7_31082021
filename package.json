@@ -19,6 +19,7 @@
   "homepage": "https://github.com/louannem/LouanneMartins_7_31082021#readme",
   "devDependencies": {
     "cssnano": "^4.1.11",
+    "eslint": "^8.0.1",
     "parcel-bundler": "^1.12.5"
   },
   "dependencies": {

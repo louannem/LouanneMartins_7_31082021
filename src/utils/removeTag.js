@@ -43,7 +43,7 @@ export default function removeTag(listName) {
                 //Trouver l'élément dans la liste de filtres
                 for(let j = 0; j < filtersArray.length; j++) {
                     //Identifie le filtre dans la liste de filtre et le supprime
-                    if(listName[i].innerText == filtersArray[j]) { filtersArray.splice(j, 1); console.log(filtersArray) }
+                    if(listName[i].innerText == filtersArray[j]) { filtersArray.splice(j, 1); }
       
                     //Si la liste = 0, on re-met toutes les recettes à partir de l'input
                     if(filtersArray.length == 0 && resultsArray.length > 0) { clearPage(); addRecipes(removeDuplicate(resultsArray, 'id')); ifEmpty(resultsArray);

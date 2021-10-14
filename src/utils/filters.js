@@ -9,8 +9,8 @@ import updateFilters from "./updateFilters";
 export let tagList, filtersArray = [], filterAll =[], trueNumb;
 
 export default function filterFunction () {
+    // eslint-disable-next-line no-unused-vars
     let filtres = updateFilters();
-    console.log(updateFilters(), filtres)
     let tags = document.querySelectorAll('.dropdown-menu span');
 
     let ingredientsArray = [];
@@ -36,7 +36,8 @@ export default function filterFunction () {
             tagList = document.querySelectorAll('#added-tags .added-tag');
             //Adds icon
             let deleteIcon = document.createElement('img');
-            for(let tag of addedTags) { tag.appendChild(deleteIcon)};
+            for(let tag of addedTags) { tag.appendChild(deleteIcon)}
+            // eslint-disable-next-line no-undef
             const iconPath = require('../assets/delete_icon.png');
             deleteIcon.setAttribute('src', iconPath);
             

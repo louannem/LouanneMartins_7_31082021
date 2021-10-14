@@ -1896,8 +1896,6 @@ function removeTag(listName) {
         //Identifie le filtre dans la liste de filtre et le supprime
         if (listName[i].innerText == _filters.filtersArray[j]) {
           _filters.filtersArray.splice(j, 1);
-
-          console.log(_filters.filtersArray);
         } //Si la liste = 0, on re-met toutes les recettes à partir de l'input
 
 
@@ -2042,8 +2040,8 @@ exports.filtersArray = filtersArray;
 exports.tagList = tagList;
 
 function filterFunction() {
+  // eslint-disable-next-line no-unused-vars
   var filtres = (0, _updateFilters.default)();
-  console.log((0, _updateFilters.default)(), filtres);
   var tags = document.querySelectorAll('.dropdown-menu span');
   var ingredientsArray = [];
   var appareilsArray = [];
@@ -2082,14 +2080,13 @@ function filterFunction() {
         for (_iterator.s(); !(_step = _iterator.n()).done;) {
           var tag = _step.value;
           tag.appendChild(deleteIcon);
-        }
+        } // eslint-disable-next-line no-undef
+
       } catch (err) {
         _iterator.e(err);
       } finally {
         _iterator.f();
       }
-
-      ;
 
       var iconPath = require('../assets/delete_icon.png');
 
@@ -2391,7 +2388,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = searchFunction;
-exports.filtres = exports.resultsArray = void 0;
+exports.resultsArray = void 0;
 
 var _recipes = require("../data/recipes");
 
@@ -2404,9 +2401,7 @@ var _clearPage = _interopRequireDefault(require("../utils/clearPage"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 //Liste des recettes recherchées à récupérer et filtrer
-var resultsArray = [],
-    filtres = [];
-exports.filtres = filtres;
+var resultsArray = [];
 exports.resultsArray = resultsArray;
 
 function searchFunction() {
@@ -2431,9 +2426,6 @@ function searchFunction() {
         if (recipeName.includes(searchInput) || _recipes.recipes[i].appliance.includes(searchInput) || _recipes.recipes[i].description.includes(searchInput)) {
           var newRecipes = new _Recipe.Recipe(_recipes.recipes[i]);
           resultsArray.push(newRecipes);
-        } else if (recipeName.includes(searchInput) || _recipes.recipes[i].appliance.includes(searchInput) || _recipes.recipes[i].description.includes(searchInput)) {
-          exports.resultsArray = resultsArray = [];
-          (0, _clearPage.default)();
         }
       }
 
@@ -2466,11 +2458,11 @@ function searchFunction() {
   };
 
   input.addEventListener('input', globalSearch); //Filter each list
+  // eslint-disable-next-line no-unused-vars
 
   var filterList = function filterList(input, listID) {
-    var searchInput, listName, ElementSpan, text;
+    var searchInput, ElementSpan, text;
     searchInput = input.value.toLowerCase();
-    listName = document.getElementById(listID);
     ElementSpan = document.querySelectorAll('.dropdown-menu span');
 
     for (var i = 0; i < ElementSpan.length; i++) {
@@ -2555,7 +2547,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50814" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56809" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -5,7 +5,7 @@ import clearPage from "../utils/clearPage";
 
 
 //Liste des recettes recherchées à récupérer et filtrer
-export let resultsArray = [], filtres = [];
+export let resultsArray = [];
 
 
 export default function searchFunction() {
@@ -31,10 +31,7 @@ export default function searchFunction() {
                 if(recipeName.includes(searchInput) || recipes[i].appliance.includes(searchInput) || recipes[i].description.includes(searchInput)) {
                     let newRecipes = new Recipe(recipes[i]);
                     resultsArray.push(newRecipes);
-                } else if (recipeName.includes(searchInput) || recipes[i].appliance.includes(searchInput) || recipes[i].description.includes(searchInput)){
-                    resultsArray = [];
-                    clearPage();
-                }
+                } 
             } 
             if(resultsArray.length > 0) {
                 //Afficher les recettes ici           
@@ -63,11 +60,11 @@ export default function searchFunction() {
     input.addEventListener('input', globalSearch);
 
      //Filter each list
+     // eslint-disable-next-line no-unused-vars
      let filterList = (input, listID) => {
-        let searchInput, listName, ElementSpan, text;
+        let searchInput, ElementSpan, text;
 
         searchInput = input.value.toLowerCase();
-        listName = document.getElementById(listID);
         ElementSpan = document.querySelectorAll('.dropdown-menu span');
 
         for(let i = 0; i < ElementSpan.length; i++) {
