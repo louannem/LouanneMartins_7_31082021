@@ -7,7 +7,10 @@ import clearPage from "../utils/clearPage";
 import updateFilters from "../utils/updateFilters"
 
 
-//Fonction pour vérifier si une liste est vide
+/**
+* Teste si une liste de recherche est vide ou non et affiche un message en fonction
+* @param {string} arrayName Array à tester
+*/
 let ifEmpty = (arrayName) => {
     let noResult = document.getElementById('no-result');
     if(arrayName.length == 0) { 
@@ -21,7 +24,12 @@ let ifEmpty = (arrayName) => {
 }
 
 
-//Fonction pour supprimer les doublons avec boucle for()
+/**
+* Fonction pour supprimer les tags et re-mettre à jour la recherche
+* @param {String} array Liste à trier 
+* @param {String} key Attribut des objets
+* @returns Retourne la liste mise à jour
+ */
 function removeDuplicate(array, key) {
     let check = {};
     let newArray = [];
@@ -33,7 +41,10 @@ function removeDuplicate(array, key) {
     }
     return newArray;
 }
-
+/**
+ * Fonction pour supprimer les tags et re-mettre à jour la recherche
+ * @param {string} listName Liste à re-filtrer
+ */
 export default function removeTag(listName) {
     //Récupère la liste de tags
         for(let i = 0; i<listName.length; i++) { 

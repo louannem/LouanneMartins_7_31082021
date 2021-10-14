@@ -7,7 +7,9 @@ import updateFilters from "./updateFilters";
 
 
 export let tagList, filtersArray = [], filterAll =[], trueNumb;
-
+/**
+ * Fonction pour filtrer les résultats
+ */
 export default function filterFunction () {
     // eslint-disable-next-line no-unused-vars
     let filtres = updateFilters();
@@ -25,6 +27,9 @@ export default function filterFunction () {
     }
 
     for(let i = 0; i < tags.length; i++) {
+        /**
+         * Fonction pour ajouter un fitlre
+         */
         let addTags = () => {
 
              //Adds the new tag 
@@ -60,21 +65,30 @@ export default function filterFunction () {
                 if(!filtersArray.includes(tagName)) { filtersArray.push(tagName);}
              }
 
-            //Fonction pour vérifier si une liste est vide
+            /**
+            * Teste si une liste de recherche est vide ou non et affiche un message en fonction
+            * @param {string} arrayName Array à tester
+            */
             let ifEmpty = (arrayName) => {
                 let noResult = document.getElementById('no-result');
                 if(arrayName.length == 0) { 
-                    noResult.innerText = "Pas de recette trouvée.";
+                    noResult.innerText = "Aucune recette ne correspond à votre critère... vous pouvez chercher « tarte aux pommes », « poisson », etc.";
                     noResult.style.display = "inline"
-                   } else if (arrayName.length > 0) {
-                       noResult.style.display = "none";
-                   } else {
-                       noResult.display="inline";
-                   }
+                } else if (arrayName.length > 0) {
+                    noResult.style.display = "none";
+                } else {
+                    noResult.display="inline";
+                }  
             }
 
 
-            //Fonction pour supprimer les doublons avec boucle for()
+            
+            /**
+             * Supprime les doublons d'une liste d'object selon un attribut
+             * @param {String} array Liste à trier 
+             * @param {String} key Attribut des objets
+             * @returns Retourne la liste mise à jour
+             */
             function removeDuplicate(array, key) {
                 let check = {};
                 let newArray = [];
@@ -88,10 +102,7 @@ export default function filterFunction () {
             }
             
 
-            //Filtre les résultats selon les nouvelles listes de filtres
-             //Départ avant l'ajout d'un tag : toutes les listes de filtres sont vides
-
-///////////////////Filtre avec liste unique////////////////////////////////////////////////////////////
+//////////////////////////////////////// Début des tris //////////////////////////////////////////////
                 //Cas 1 : l'utilisateur a utilisé la barre de recherche
                
                 if(filtersArray.length > 0 && resultsArray.length > 0) {
@@ -121,7 +132,7 @@ export default function filterFunction () {
                 clearPage(); addRecipes(removeDuplicate(filterAll, 'id')); ifEmpty(filterAll)
                     
                 
-                    //Cas 2 : l'utilisateur choisit d'abord un filtre
+                //Cas 2 : l'utilisateur choisit d'abord un filtre
                 } else if (filtersArray.length > 0 && resultsArray.length == 0) {   
                     let filtersArray = updateFilters();
                     if(filterAll.length == 0) {

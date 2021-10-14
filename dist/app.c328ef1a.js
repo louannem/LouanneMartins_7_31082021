@@ -125,6 +125,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = listExpand;
 
+/**
+ * Fonction pour afficher les listes de dropdowns
+ */
 function listExpand() {
   var inputIngredient = document.getElementById('ingredient-input');
   var boxIngredients = document.getElementById('ingredients-expand');
@@ -132,7 +135,16 @@ function listExpand() {
   var boxAppareil = document.getElementById('appareils-expand');
   var inputUsentiles = document.getElementById('ustensiles-input');
   var parentNode = document.getElementById('ustensiles-search');
-  var boxUstensiles = parentNode.getElementsByTagName('div')[0]; //Fonctions à réutiliser
+  var boxUstensiles = parentNode.getElementsByTagName('div')[0];
+  /**
+   * 
+   * @param {String} paraStyle1 Elément parent avec input
+   * @param {String} paraStyle2 Elément enfant avec liste
+   * @param {Number} size  Taille de la boite ouverte
+   * @param {String} paraClass1 Elément parent
+   * @param {String} paraClass2 Elément enfant
+   * @param {String} classe Nom de la classe à ajouter
+   */
 
   var addingClass = function addingClass(paraStyle1, paraStyle2, size, paraClass1, paraClass2, classe) {
     paraStyle1.style.width = size;
@@ -140,6 +152,16 @@ function listExpand() {
     paraClass1.classList.add('onclick');
     paraClass2.classList.add(classe);
   };
+  /**
+   * 
+   * @param {String} paraStyle1 Elément parent avec input
+   * @param {String} paraStyle2 Elément enfant avec liste
+   * @param {Number} size  Taille de la boite fermée
+   * @param {String} paraClass1 Elément parent
+   * @param {String} paraClass2 Elément enfant
+   * @param {String} classe Nom de la classe à ajouter
+   */
+
 
   var removingClass = function removingClass(paraStyle1, paraStyle2, size, paraClass1, paraClass2, classe) {
     paraStyle1.style.width = size;
@@ -147,11 +169,21 @@ function listExpand() {
     paraClass1.classList.remove('onclick');
     paraClass2.classList.remove(classe);
   };
+  /**
+   * 
+   * @param {String} paraEvent1 Elément actionnant la fonction
+   * @param {String} paraEvent2 Elément actionnant la fonction
+   * @param {String} fonction Nom de la fonction
+   */
+
 
   var callFonction = function callFonction(paraEvent1, paraEvent2, fonction) {
     paraEvent1.addEventListener('click', fonction);
     paraEvent2.addEventListener('click', fonction);
-  }; //Fonctions pour les dropdowns
+  };
+  /**
+   * Fonction pour gérer la recherche dans la liste d'ingérdients
+   */
 
 
   var searchIngredient = function searchIngredient() {
@@ -168,6 +200,9 @@ function listExpand() {
   };
 
   callFonction(inputIngredient, boxIngredients, searchIngredient);
+  /**
+   * Fonction pour gérer la recherche dans la liste d'appareils
+   */
 
   var searchAppareils = function searchAppareils() {
     var searchWrapper = document.getElementById('appareils-search');
@@ -183,6 +218,9 @@ function listExpand() {
   };
 
   callFonction(inputAppareil, boxAppareil, searchAppareils);
+  /**
+   * Fonction pour gérer la recherche dans la liste d'ustensiles
+   */
 
   var searchUstensiles = function searchUstensiles() {
     var searchWrapper = document.getElementById('ustensiles-search');
@@ -201,6 +239,9 @@ function listExpand() {
 
   var dropdownElem = document.querySelectorAll('.dropdown-toggle');
   dropdownElem.forEach(function (element) {
+    /**
+     * Fonction pour fermer les dropdowns quand une autre est ouverte
+     */
     element.addEventListener('click', function () {
       var appareilExp = boxAppareil.getAttribute('aria-expanded'),
           ustExp = boxUstensiles.getAttribute('aria-expanded'),
@@ -1759,6 +1800,9 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+/**
+ * Supprime les recettes affichées pour les actualiser
+ */
 function clearPage() {
   var toRemove = document.querySelectorAll('article');
 
@@ -1785,10 +1829,18 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = updateFilters;
 exports.filtres = void 0;
 var filtres = [];
+/**
+ * Fonction pour mettre à jour la liste de filtres au clic
+ * @returns Retourne la liste de filtres
+ */
+
 exports.filtres = filtres;
 
 function updateFilters() {
   var tags = document.querySelectorAll('.dropdown-menu span');
+  /**
+   * Ajoute un filter dans la liste
+   */
 
   var _loop = function _loop(i) {
     var addedTag = function addedTag() {
@@ -1807,6 +1859,9 @@ function updateFilters() {
       var filtresArray = document.querySelectorAll('#added-tags .added-tag');
 
       var _loop2 = function _loop2(j) {
+        /**
+         * Supprime un filtre dans la liste
+         */
         var removeTag = function removeTag() {
           for (var k = 0; k < filtres.length; k++) {
             if (filtres[k] == filtresArray[j].innerText) {
@@ -1824,6 +1879,10 @@ function updateFilters() {
       }
     })();
   }
+  /**
+   * Supprime les doublons
+   */
+
 
   var uniqueArray = filtres.filter(function (item, pos) {
     return filtres.indexOf(item) == pos;
@@ -1858,7 +1917,10 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-//Fonction pour vérifier si une liste est vide
+/**
+* Teste si une liste de recherche est vide ou non et affiche un message en fonction
+* @param {string} arrayName Array à tester
+*/
 var ifEmpty = function ifEmpty(arrayName) {
   var noResult = document.getElementById('no-result');
 
@@ -1870,7 +1932,13 @@ var ifEmpty = function ifEmpty(arrayName) {
   } else {
     noResult.display = "inline";
   }
-}; //Fonction pour supprimer les doublons avec boucle for()
+};
+/**
+* Fonction pour supprimer les tags et re-mettre à jour la recherche
+* @param {String} array Liste à trier 
+* @param {String} key Attribut des objets
+* @returns Retourne la liste mise à jour
+ */
 
 
 function removeDuplicate(array, key) {
@@ -1886,6 +1954,11 @@ function removeDuplicate(array, key) {
 
   return newArray;
 }
+/**
+ * Fonction pour supprimer les tags et re-mettre à jour la recherche
+ * @param {string} listName Liste à re-filtrer
+ */
+
 
 function removeTag(listName) {
   var _loop = function _loop(i) {
@@ -2034,6 +2107,10 @@ var tagList,
     filtersArray = [],
     filterAll = [],
     trueNumb;
+/**
+ * Fonction pour filtrer les résultats
+ */
+
 exports.trueNumb = trueNumb;
 exports.filterAll = filterAll;
 exports.filtersArray = filtersArray;
@@ -2062,6 +2139,9 @@ function filterFunction() {
   }
 
   var _loop = function _loop(i) {
+    /**
+     * Fonction pour ajouter un fitlre
+     */
     var addTags = function addTags() {
       //Adds the new tag 
       var newTag = document.createElement('span');
@@ -2124,7 +2204,11 @@ function filterFunction() {
           if (!filtersArray.includes(tagName)) {
             filtersArray.push(tagName);
           }
-        } //Fonction pour vérifier si une liste est vide
+        }
+        /**
+        * Teste si une liste de recherche est vide ou non et affiche un message en fonction
+        * @param {string} arrayName Array à tester
+        */
 
       } catch (err) {
         _iterator2.e(err);
@@ -2136,14 +2220,20 @@ function filterFunction() {
         var noResult = document.getElementById('no-result');
 
         if (arrayName.length == 0) {
-          noResult.innerText = "Pas de recette trouvée.";
+          noResult.innerText = "Aucune recette ne correspond à votre critère... vous pouvez chercher « tarte aux pommes », « poisson », etc.";
           noResult.style.display = "inline";
         } else if (arrayName.length > 0) {
           noResult.style.display = "none";
         } else {
           noResult.display = "inline";
         }
-      }; //Fonction pour supprimer les doublons avec boucle for()
+      };
+      /**
+       * Supprime les doublons d'une liste d'object selon un attribut
+       * @param {String} array Liste à trier 
+       * @param {String} key Attribut des objets
+       * @returns Retourne la liste mise à jour
+       */
 
 
       function removeDuplicate(array, key) {
@@ -2158,9 +2248,7 @@ function filterFunction() {
         }
 
         return newArray;
-      } //Filtre les résultats selon les nouvelles listes de filtres
-      //Départ avant l'ajout d'un tag : toutes les listes de filtres sont vides
-      ///////////////////Filtre avec liste unique////////////////////////////////////////////////////////////
+      } //////////////////////////////////////// Début des tris //////////////////////////////////////////////
       //Cas 1 : l'utilisateur a utilisé la barre de recherche
 
 
@@ -2283,7 +2371,9 @@ function filterFunction() {
     _loop(i);
   }
 }
-},{"../data/recipes":"data/recipes.js","./search":"utils/search.js","./clearPage":"utils/clearPage.js","./addRecipes":"utils/addRecipes.js","./removeTag":"utils/removeTag.js","./updateFilters":"utils/updateFilters.js","../assets/delete_icon.png":"assets/delete_icon.png"}],"utils/addRecipes.js":[function(require,module,exports) {
+},{"../data/recipes":"data/recipes.js","./search":"utils/search.js","./clearPage":"utils/clearPage.js","./addRecipes":"utils/addRecipes.js","./removeTag":"utils/removeTag.js","./updateFilters":"utils/updateFilters.js","../assets/delete_icon.png":"assets/delete_icon.png"}],"assets/clock.svg":[function(require,module,exports) {
+module.exports = "/clock.bdc9bc77.svg";
+},{}],"utils/addRecipes.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2305,11 +2395,34 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+/**
+ * Fonction pour afficher les recettes et mettre à jour les listes
+ * @param {variable} recipes Variable contenant l'ensemble des recettes à afficher
+ */
 function addRecipes(recipes) {
   var htmlString = recipes.map(function (recipe) {
-    return "\n                <article class=\"recipe__card\" id=\"recipe-".concat(recipe.id, "\">\n                <div class=\"recipe__image\">\n                    <img src=\"\" alt=\"\">\n                </div>\n                <div class=\"recipe__info\">\n                    <div class=\"recipe__title\">\n                        <h2>").concat(recipe.name, "</h2>\n                        <div class=\"recipe__time\">\n                            <img src=\"\" alt=\"\">\n                            <span>").concat(recipe.time, " min.</span>\n                        </div>\n                    </div>\n                    <div class=\"recipe__meta\">\n                        <div class=\"ingredients\">\n                        <ul id=\"").concat(recipe.id, "\">\n                        </ul>\n                        </div>\n                        <div class=\"instructions\">\n                            <p>").concat(recipe.description, "</p>\n                        </div>\n                    </div>\n                </div>\n            </article>\n            ");
+    return "\n                <article class=\"recipe__card\" id=\"recipe-".concat(recipe.id, "\">\n                <div class=\"recipe__image\">\n                    <img src=\"\" alt=\"\">\n                </div>\n                <div class=\"recipe__info\">\n                    <div class=\"recipe__title\">\n                        <h2>").concat(recipe.name, "</h2>\n                        <div class=\"recipe__time\">\n                            <div class=\"time-icon\">\n                            <img src=\"../assets/clock.svg\"></img>\n                            </div>\n                            <span>").concat(recipe.time, " min.</span>\n                        </div>\n                    </div>\n                    <div class=\"recipe__meta\">\n                        <div class=\"ingredients\">\n                        <ul id=\"").concat(recipe.id, "\">\n                        </ul>\n                        </div>\n                        <div class=\"instructions\">\n                            <p>").concat(recipe.description, "</p>\n                        </div>\n                    </div>\n                </div>\n            </article>\n            ");
   }).join('');
-  document.getElementById('search-results').innerHTML = htmlString; //Display the ingredients for each recipes found
+  document.getElementById('search-results').innerHTML = htmlString; //Ajoute les icones
+
+  var iconBlock = document.querySelectorAll('.time-icon img'); // eslint-disable-next-line no-undef
+
+  var clockPath = require('../assets/clock.svg');
+
+  var _iterator = _createForOfIteratorHelper(iconBlock),
+      _step;
+
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var icon = _step.value;
+      icon.setAttribute('src', clockPath);
+    } //Display the ingredients for each recipes found
+
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
 
   for (var i = 0; i < recipes.length; i++) {
     var ingredientsBlock = document.getElementById(recipes[i].id);
@@ -2335,6 +2448,12 @@ function addRecipes(recipes) {
       ustList.push(recipes[_i].ustensils[k]);
     }
   }
+  /**
+   * Supprime les doublons d'une liste
+   * @param {string} list Liste à filtrer 
+   * @returns Retourne la nouvelle liste filtrée
+  */
+
 
   var removeDupl = function removeDupl(list) {
     return list.filter(function (elem, index, self) {
@@ -2348,19 +2467,24 @@ function addRecipes(recipes) {
 
   var oldLst = document.querySelectorAll('.dropdown-menu  span');
 
-  var _iterator = _createForOfIteratorHelper(oldLst),
-      _step;
+  var _iterator2 = _createForOfIteratorHelper(oldLst),
+      _step2;
 
   try {
-    for (_iterator.s(); !(_step = _iterator.n()).done;) {
-      var list = _step.value;
+    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+      var list = _step2.value;
       list.style.display = "none";
-    } //Réinjecte les listes
+    }
+    /**
+     * Fonction pour mettre à jour les listes des dropdowns
+     * @param {string} list Liste à mettre à jour
+     * @param {string} parentId Identifiant de l'element parent de la liste
+    */
 
   } catch (err) {
-    _iterator.e(err);
+    _iterator2.e(err);
   } finally {
-    _iterator.f();
+    _iterator2.f();
   }
 
   var newList = function newList(list, parentId) {
@@ -2381,7 +2505,7 @@ function addRecipes(recipes) {
 
   (0, _filters.default)();
 }
-},{"../components/Ingredient":"components/Ingredient.js","./filters":"utils/filters.js"}],"utils/search.js":[function(require,module,exports) {
+},{"../components/Ingredient":"components/Ingredient.js","./filters":"utils/filters.js","../assets/clock.svg":"assets/clock.svg"}],"utils/search.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2402,6 +2526,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 //Liste des recettes recherchées à récupérer et filtrer
 var resultsArray = [];
+/**
+ * Fonction pour rechercher les recettes par mot-clé
+ */
+
 exports.resultsArray = resultsArray;
 
 function searchFunction() {
@@ -2414,6 +2542,9 @@ function searchFunction() {
   }
 
   var input = document.getElementById('search-input');
+  /**
+  * Fonction pour rechercher les recettes par mot-clé
+  */
 
   var globalSearch = function globalSearch() {
     var searchInput = input.value.toLowerCase();
@@ -2457,7 +2588,12 @@ function searchFunction() {
     }
   };
 
-  input.addEventListener('input', globalSearch); //Filter each list
+  input.addEventListener('input', globalSearch);
+  /**
+  * Fonction pour fitlrer les listes de dropdown avec les input
+  * @param {string} input Input de la liste
+  * @param {string} listID Liste à trier
+  */
   // eslint-disable-next-line no-unused-vars
 
   var filterList = function filterList(input, listID) {
@@ -2509,8 +2645,6 @@ var _listExpand = _interopRequireDefault(require("./components/listExpand"));
 
 var _search = _interopRequireDefault(require("./utils/search"));
 
-var _updateFilters = _interopRequireDefault(require("./utils/updateFilters"));
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var init = function init() {
@@ -2519,7 +2653,7 @@ var init = function init() {
 };
 
 init();
-},{"./components/listExpand":"components/listExpand.js","./utils/search":"utils/search.js","./utils/updateFilters":"utils/updateFilters.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./components/listExpand":"components/listExpand.js","./utils/search":"utils/search.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -2547,7 +2681,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56809" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59420" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

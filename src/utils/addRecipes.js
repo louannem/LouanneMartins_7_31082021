@@ -2,6 +2,10 @@ import { Ingredient } from "../components/Ingredient";
 import filterFunction from "./filters";
 import { filtersArray } from "./filters";
 
+/**
+ * Fonction pour afficher les recettes et mettre à jour les listes
+ * @param {variable} recipes Variable contenant l'ensemble des recettes à afficher
+ */
 export default function addRecipes (recipes){
         const htmlString = recipes
             .map((recipe) => {
@@ -14,7 +18,9 @@ export default function addRecipes (recipes){
                     <div class="recipe__title">
                         <h2>${recipe.name}</h2>
                         <div class="recipe__time">
-                            <img src="" alt="">
+                            <div class="time-icon">
+                            <img src="../assets/clock.svg"></img>
+                            </div>
                             <span>${recipe.time} min.</span>
                         </div>
                     </div>
@@ -33,6 +39,13 @@ export default function addRecipes (recipes){
             })
             .join('');
             document.getElementById('search-results').innerHTML = htmlString;
+
+            //Ajoute les icones
+            let iconBlock = document.querySelectorAll('.time-icon img');
+            // eslint-disable-next-line no-undef
+            const clockPath = require('../assets/clock.svg');
+            for(let icon of iconBlock) { icon.setAttribute('src', clockPath);}
+
 
 
 
@@ -55,6 +68,11 @@ export default function addRecipes (recipes){
             for(let j = 0; j < recipes[i].ingredients.length; j++) { ingrList.push(recipes[i].ingredients[j].ingredient);}
             for(let k = 0; k < recipes[i].ustensils.length; k++) { ustList.push(recipes[i].ustensils[k]) }
         }
+        /**
+         * Supprime les doublons d'une liste
+         * @param {string} list Liste à filtrer 
+         * @returns Retourne la nouvelle liste filtrée
+        */
         let removeDupl = (list) => {
             return list.filter(function(elem, index, self) {   return index === self.indexOf(elem); })
         }
@@ -64,7 +82,11 @@ export default function addRecipes (recipes){
         let oldLst = document.querySelectorAll('.dropdown-menu  span');
         for(let list of oldLst) { list.style.display = "none"} 
 
-        //Réinjecte les listes
+        /**
+         * Fonction pour mettre à jour les listes des dropdowns
+         * @param {string} list Liste à mettre à jour
+         * @param {string} parentId Identifiant de l'element parent de la liste
+        */
         let newList = (list, parentId) => {
             for(let i = 0; i < 30; i++) {
                 let parentBlock = document.getElementById(parentId);
