@@ -5,7 +5,7 @@ import clearPage from "../utils/clearPage";
 
 
 //Liste des recettes recherchées à récupérer et filtrer
-export let resultsArray = [];
+export let resultsArray = [], filtres = [];
 
 
 export default function searchFunction() {

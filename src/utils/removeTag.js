@@ -3,14 +3,15 @@ import { recipes } from "../data/recipes";
 import { filtersArray} from "./filters";
 import { resultsArray } from "./search";
 import addRecipes from "../utils/addRecipes";
-import clearPage from "../utils/clearPage"
+import clearPage from "../utils/clearPage";
+import updateFilters from "../utils/updateFilters"
 
 
 //Fonction pour vérifier si une liste est vide
 let ifEmpty = (arrayName) => {
     let noResult = document.getElementById('no-result');
     if(arrayName.length == 0) { 
-        noResult.innerText = "Pas de recette trouvée.";
+        noResult.innerText = "Aucune recette ne correspond à votre critère... vous pouvez chercher « tarte aux pommes », « poisson », etc.";
         noResult.style.display = "inline"
        } else if (arrayName.length > 0) {
            noResult.style.display = "none";
@@ -42,7 +43,7 @@ export default function removeTag(listName) {
                 //Trouver l'élément dans la liste de filtres
                 for(let j = 0; j < filtersArray.length; j++) {
                     //Identifie le filtre dans la liste de filtre et le supprime
-                    if(listName[i].innerText == filtersArray[j]) { filtersArray.splice(j, 1);}
+                    if(listName[i].innerText == filtersArray[j]) { filtersArray.splice(j, 1); console.log(filtersArray) }
       
                     //Si la liste = 0, on re-met toutes les recettes à partir de l'input
                     if(filtersArray.length == 0 && resultsArray.length > 0) { clearPage(); addRecipes(removeDuplicate(resultsArray, 'id')); ifEmpty(resultsArray);
@@ -54,6 +55,7 @@ export default function removeTag(listName) {
                      } else if (filtersArray.length > 0 && resultsArray.length > 0) {
                         //Sinon on re-filtre avec la liste 
                         let filterAll = [];
+                        let filtersArray = updateFilters();
                         for(let recipe of resultsArray) { filterAll.push(recipe);  }
                         for(let k = 0; k < filterAll.length; k++) {
                             let trueNumb = 0 ;
@@ -81,6 +83,7 @@ export default function removeTag(listName) {
                     } else if (filtersArray.length > 0 && resultsArray.length == 0) {
                         //On re-filtre avec la liste de filtres et toutes les recettes                                          
                         let filterAll = [];
+                        let filtersArray = updateFilters();
                         for(let i = 0; i < filtersArray.length; i++) {        
                             for(let j = 0; j< recipes.length; j++) {
                                 if(recipes[j].appliance == filtersArray[i]) { filterAll.push(recipes[j])  }
@@ -99,5 +102,5 @@ export default function removeTag(listName) {
                 listName[i].style.display="none";   
                 }
             });
-        }
+        } 
     }

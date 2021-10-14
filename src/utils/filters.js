@@ -3,10 +3,14 @@ import { resultsArray } from "./search";
 import clearPage from "./clearPage";
 import addRecipes from "./addRecipes";
 import removeTag from "./removeTag";
+import updateFilters from "./updateFilters";
 
-export let tagList, filtersArray = [],  ingredientsList = [], applianceList = [], ustensilsList = [], filterAll =[], trueNumb;
+
+export let tagList, filtersArray = [], filterAll =[], trueNumb;
 
 export default function filterFunction () {
+    let filtres = updateFilters();
+    console.log(updateFilters(), filtres)
     let tags = document.querySelectorAll('.dropdown-menu span');
 
     let ingredientsArray = [];
@@ -35,7 +39,7 @@ export default function filterFunction () {
             for(let tag of addedTags) { tag.appendChild(deleteIcon)};
             const iconPath = require('../assets/delete_icon.png');
             deleteIcon.setAttribute('src', iconPath);
-
+            
             //Ajout des classes personnalisées
             for(let i = 0; i < recipes.length; i++) {
                 for(let j = 0; j < recipes[i].ingredients.length; j++) {
@@ -52,9 +56,7 @@ export default function filterFunction () {
             //Ajout des tags dans chaque liste de filtre
             for(let tag of addedTags) {
                 let tagName = tag.innerText;
-                if(!filtersArray.includes(tagName) && ingredientsArray.includes(tagName)) { filtersArray.push(tagName);}
-                if(!filtersArray.includes(tagName) && ustensilsArray.includes(tagName)) { filtersArray.push(tagName); }
-                if(!filtersArray.includes(tagName) && appareilsArray.includes(tagName)) { filtersArray.push(tagName); }
+                if(!filtersArray.includes(tagName)) { filtersArray.push(tagName);}
              }
 
             //Fonction pour vérifier si une liste est vide
@@ -83,6 +85,7 @@ export default function filterFunction () {
                 }
                 return newArray;
             }
+            
 
             //Filtre les résultats selon les nouvelles listes de filtres
              //Départ avant l'ajout d'un tag : toutes les listes de filtres sont vides
@@ -91,6 +94,8 @@ export default function filterFunction () {
                 //Cas 1 : l'utilisateur a utilisé la barre de recherche
                
                 if(filtersArray.length > 0 && resultsArray.length > 0) {
+                    let filtersArray = updateFilters();
+
                     for(let recipe of resultsArray) { filterAll.push(recipe);  }
                     for(let k = 0; k < filterAll.length; k++) {
                         trueNumb = 0 ;
@@ -117,7 +122,7 @@ export default function filterFunction () {
                 
                     //Cas 2 : l'utilisateur choisit d'abord un filtre
                 } else if (filtersArray.length > 0 && resultsArray.length == 0) {   
-                
+                    let filtersArray = updateFilters();
                     if(filterAll.length == 0) {
                         for(let i = 0; i < filtersArray.length; i++) {        
                             for(let j = 0; j< recipes.length; j++) {
@@ -154,8 +159,7 @@ export default function filterFunction () {
                         clearPage(); addRecipes(filterAll); ifEmpty(filterAll);
                     }
                 }
-            
-            removeTag(tagList);
+            removeTag(tagList);            
         }
         tags[i].addEventListener('click', addTags)
     }
