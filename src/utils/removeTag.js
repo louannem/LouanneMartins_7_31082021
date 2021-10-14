@@ -1,9 +1,24 @@
 //Importation des listes générées par les filtres
 import { recipes } from "../data/recipes";
-import { filtersArray,ingredientsList, applianceList, ustensilsList } from "./filters";
+import { filtersArray} from "./filters";
 import { resultsArray } from "./search";
 import addRecipes from "../utils/addRecipes";
 import clearPage from "../utils/clearPage"
+
+
+//Fonction pour vérifier si une liste est vide
+let ifEmpty = (arrayName) => {
+    let noResult = document.getElementById('no-result');
+    if(arrayName.length == 0) { 
+        noResult.innerText = "Pas de recette trouvée.";
+        noResult.style.display = "inline"
+       } else if (arrayName.length > 0) {
+           noResult.style.display = "none";
+       } else {
+           noResult.display="inline";
+       }
+}
+
 
 //Fonction pour supprimer les doublons avec boucle for()
 function removeDuplicate(array, key) {
@@ -30,135 +45,59 @@ export default function removeTag(listName) {
                     if(listName[i].innerText == filtersArray[j]) { filtersArray.splice(j, 1);}
       
                     //Si la liste = 0, on re-met toutes les recettes à partir de l'input
-                    if(filtersArray.length == 0 && resultsArray.length > 0) {
-                        console.log(resultsArray)
-                        clearPage(); addRecipes(removeDuplicate(resultsArray, 'id'));
+                    if(filtersArray.length == 0 && resultsArray.length > 0) { clearPage(); addRecipes(removeDuplicate(resultsArray, 'id')); ifEmpty(resultsArray);
                         
-                        
-                    }  else if(resultsArray.length == 0 && filtersArray.length == 0) {
-                        clearPage(); addRecipes(removeDuplicate(recipes, 'id'));
+                    //Si les filtres et les résultats de recherche sont nuls
+                    }  else if(resultsArray.length == 0 && filtersArray.length == 0) { clearPage(); addRecipes(removeDuplicate(recipes, 'id'));
                     
+                    //Si la liste de filtres > 0 élément et les résultats de recherche > 0
                      } else if (filtersArray.length > 0 && resultsArray.length > 0) {
-                    //Sinon on re-filtre avec la liste 
-                    let filterAll = [];
-                    for(let tag of filtersArray) {     
-                        for(let i = 0; i < resultsArray.length; i++) {
-                            for(let j = 0; j < resultsArray[i].ingredients.length; j++) {
-                                for(let k = 0; k < resultsArray[i].ustensils.length; k ++) {
-                                    
-                                    //Cas 1 : ingrédients > 0, app = 0 & ust = 0
-                                    if(ingredientsList.length > 0 && applianceList.length == 0 && ustensilsList.length == 0) {
-                                        if(resultsArray[i].ingredients[j].ingredient.indexOf(tag) > -1) { 
-                                            filterAll.push(resultsArray[i])
-                                        }
-                                       
-
-                                        //Cas 2 : ing = 0, app > 0, ust = 0
-                                    } else if (ingredientsList.length == 0 && applianceList.length > 0 && ustensilsList.length == 0){
-                                        if(resultsArray[i].appliance.indexOf(tag) > -1) {
-                                            filterAll.push(resultsArray[i])
-                                    }
-                                } else if (ingredientsList.length == 0 && applianceList.length == 0 && ustensilsList.length > 0){
-                                    if(resultsArray[i].ustensils[k].indexOf(tag) > -1) {
-                                        filterAll.push(resultsArray[i])
-                                    }
-                                } else if (ingredientsList.length > 0 && applianceList.length == 0 && ustensilsList.length > 0){
-                                    for(let ustensil of ustensilsList) {
-                                        if(resultsArray[i].ustensils[k].indexOf(ustensil) > -1 && resultsArray[i].ingredients[j].ingredient.indexOf(tag) > -1) {
-                                            filterAll.push(resultsArray[i])
-                                        }
-                                    } 
-                                } else if (ingredientsList.length > 0 && applianceList.length > 0 && ustensilsList.length == 0){
-                                    for(let appliance of applianceList) {
-                                        if(resultsArray[i].appliance.indexOf(appliance) > -1 && resultsArray[i].ingredients[j].ingredient.indexOf(tag) > -1) {
-                                            filterAll.push(resultsArray[i])
-                                        }
-                                    }
-                                } else if (ingredientsList.length == 0 && applianceList.length > 0 && ustensilsList.length > 0){
-                                    for(let appliance of applianceList) {
-                                        if(resultsArray[i].appliance.indexOf(appliance) > -1 && resultsArray[i].ustensils[k].indexOf(tag) > -1) {
-                                            filterAll.push(resultsArray[i])
-                                        }
-                                    }
-                                } else if (ingredientsList.length > 0 && applianceList.length > 0 && ustensilsList.length > 0){
-                                    for(let appliance of applianceList) {
-                                        for (let ingredient of ingredientsList) {
-                                            if(resultsArray[i].appliance.indexOf(appliance) > -1 && resultsArray[i].ustensils[k].indexOf(tag) > -1 && resultsArray[i].ingredients[j].ingredient.indexOf(ingredient)) {
-                                                filterAll.push(resultsArray[i])
-                                            }
-                                        }
-                                    }
-                                }
-                               
-                            }         
-                        }
-                    }
-                }                      
-          console.log(filterAll)
-          clearPage(); addRecipes(removeDuplicate(filterAll, 'id'));
-                    
-                                            
-                    } else if (filtersArray.length > 0 && resultsArray.length == 0) {
-                        //On re-filtre avec la liste de fitlres et toutes les recettes
+                        //Sinon on re-filtre avec la liste 
                         let filterAll = [];
-                        for(let tag of filtersArray) {     
-                            for(let i = 0; i < recipes.length; i++) {
-                                for(let j = 0; j < recipes[i].ingredients.length; j++) {
-                                    for(let k = 0; k < recipes[i].ustensils.length; k ++) {
-                                        
-                                        //Cas 1 : ingrédients > 0, app = 0 & ust = 0
-                                        if(ingredientsList.length > 0 && applianceList.length == 0 && ustensilsList.length == 0) {
-                                            if(recipes[i].ingredients[j].ingredient.indexOf(tag) > -1) {
-                                                filterAll.push(recipes[i])                                                
-                                            }
-                                            //Cas 2 : ing = 0, app > 0, ust = 0
-                                            } else if (ingredientsList.length == 0 && applianceList.length > 0 && ustensilsList.length == 0){
-                                                if(recipes[i].appliance.indexOf(tag) > -1) {
-                                                    filterAll.push(recipes[i])
-                                            }
-                                        } else if (ingredientsList.length == 0 && applianceList.length == 0 && ustensilsList.length > 0){
-                                            if(recipes[i].ustensils[k].indexOf(tag) > -1) {
-                                                filterAll.push(recipes[i])
-                                            }
-                                        } else if (ingredientsList.length > 0 && applianceList.length == 0 && ustensilsList.length > 0){
-                                            for(let ustensil of ustensilsList) {
-                                                if(recipes[i].ustensils[k].indexOf(ustensil) > -1 && recipes[i].ingredients[j].ingredient.indexOf(tag) > -1) {
-                                                    filterAll.push(recipes[i])
-                                                }
-                                            } 
-                                        } else if (ingredientsList.length > 0 && applianceList.length > 0 && ustensilsList.length == 0){
-                                            for(let appliance of applianceList) {
-                                                if(recipes[i].appliance.indexOf(appliance) > -1 && recipes[i].ingredients[j].ingredient.indexOf(tag) > -1) {
-                                                    filterAll.push(recipes[i])
-                                                }
-                                            }
-                                        } else if (ingredientsList.length == 0 && applianceList.length > 0 && ustensilsList.length > 0){
-                                            for(let appliance of applianceList) {
-                                                if(recipes[i].appliance.indexOf(appliance) > -1 && recipes[i].ustensils[k].indexOf(tag) > -1) {
-                                                    filterAll.push(recipes[i])
-                                                }
-                                            }
-                                        } else if (ingredientsList.length > 0 && applianceList.length > 0 && ustensilsList.length > 0){
-                                            for(let appliance of applianceList) {
-                                                for (let ingredient of ingredientsList) {
-                                                    if(recipes[i].appliance.indexOf(appliance) > -1 && recipes[i].ustensils[k].indexOf(tag) > -1 && recipes[i].ingredients[j].ingredient.indexOf(ingredient)) {
-                                                        filterAll.push(recipes[i])
-                                                    }
-                                                }
-                                            }
-                                        }
+                        for(let recipe of resultsArray) { filterAll.push(recipe);  }
+                        for(let k = 0; k < filterAll.length; k++) {
+                            let trueNumb = 0 ;
                                     
-                                    }         
+                            for(let j = 0; j <= filtersArray.length; j++) {
+                                if(filterAll[k].appliance == filtersArray[j]) {  trueNumb++; }
+
+                                for(let i = 0; i < filterAll[k].ingredients.length; i++) {
+                                    if(filterAll[k].ingredients[i].ingredient == filtersArray[j]) { trueNumb++; } 
+                                }
+
+                                for(let l = 0; l < resultsArray[k].ustensils.length; l++) {
+                                    if(filterAll[k].ustensils[l] == filtersArray[j]) { trueNumb++;  }
                                 }
                             }
-                        }                      
-                    console.log(filterAll)
-                    clearPage(); addRecipes(removeDuplicate(filterAll, 'id'));
+                    
+                            if(trueNumb !== filtersArray.length) {  
+                                //A supprimer de la liste
+                                filterAll.splice(k,1); k--;
+                            }                               
+                        }
+                        clearPage(); addRecipes(removeDuplicate(filterAll, 'id')); ifEmpty(filterAll);
+                       
+                    //Si la liste de filtres > 0 mais qu'aucun mot-clé n'a été entré         
+                    } else if (filtersArray.length > 0 && resultsArray.length == 0) {
+                        //On re-filtre avec la liste de filtres et toutes les recettes                                          
+                        let filterAll = [];
+                        for(let i = 0; i < filtersArray.length; i++) {        
+                            for(let j = 0; j< recipes.length; j++) {
+                                if(recipes[j].appliance == filtersArray[i]) { filterAll.push(recipes[j])  }
+
+                                for(let k = 0; k < recipes[j].ingredients.length; k++) {
+                                    if(recipes[j].ingredients[k].ingredient == filtersArray[i]) {  filterAll.push(recipes[j]) }
+                                }
+                                for(let l = 0; l < recipes[j].ustensils.length; l++) {  
+                                    if(recipes[j].ustensils[l] == filtersArray[i]) {  filterAll.push(recipes[j]);    }
+                                }                              
+                            }
+                        }
+                        clearPage(); addRecipes(removeDuplicate(filterAll, 'id')); ifEmpty(filterAll);
                     }
-                        
-                }
                 //Supprime le tag cliqué
                 listName[i].style.display="none";   
+                }
             });
         }
     }

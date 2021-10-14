@@ -4,7 +4,7 @@ import clearPage from "./clearPage";
 import addRecipes from "./addRecipes";
 import removeTag from "./removeTag";
 
-export let tagList, filtersArray = [],  ingredientsList = [], applianceList = [], ustensilsList = [], filterAll =[], trueNumb, newA;
+export let tagList, filtersArray = [],  ingredientsList = [], applianceList = [], ustensilsList = [], filterAll =[], trueNumb;
 
 export default function filterFunction () {
     let tags = document.querySelectorAll('.dropdown-menu span');
@@ -52,9 +52,9 @@ export default function filterFunction () {
             //Ajout des tags dans chaque liste de filtre
             for(let tag of addedTags) {
                 let tagName = tag.innerText;
-                if(!filtersArray.includes(tagName) && ingredientsArray.includes(tagName)) { filtersArray.push(tagName); ingredientsList.push(tagName); }
-                if(!filtersArray.includes(tagName) && ustensilsArray.includes(tagName)) { filtersArray.push(tagName); ustensilsList.push(tagName)}
-                if(!filtersArray.includes(tagName) && appareilsArray.includes(tagName)) { filtersArray.push(tagName); applianceList.push(tagName)}
+                if(!filtersArray.includes(tagName) && ingredientsArray.includes(tagName)) { filtersArray.push(tagName);}
+                if(!filtersArray.includes(tagName) && ustensilsArray.includes(tagName)) { filtersArray.push(tagName); }
+                if(!filtersArray.includes(tagName) && appareilsArray.includes(tagName)) { filtersArray.push(tagName); }
              }
 
             //Fonction pour vérifier si une liste est vide
@@ -89,36 +89,30 @@ export default function filterFunction () {
 
 ///////////////////Filtre avec liste unique////////////////////////////////////////////////////////////
                 //Cas 1 : l'utilisateur a utilisé la barre de recherche
-                
                
                 if(filtersArray.length > 0 && resultsArray.length > 0) {
-                    let filterAll = [];
-
-                    for(let k = 0; k < resultsArray.length; k++) {
+                    for(let recipe of resultsArray) { filterAll.push(recipe);  }
+                    for(let k = 0; k < filterAll.length; k++) {
                         trueNumb = 0 ;
+                                
+                        for(let j = 0; j <= filtersArray.length; j++) {
+                            if(filterAll[k].appliance == filtersArray[j]) {  trueNumb++; }
 
-                        for(let j = 0; j <= resultsArray.length; j++) {
-                            if(resultsArray[k].appliance == filtersArray[j]) {  trueNumb++; }
-
-                            for(let i = 0; i < resultsArray[k].ingredients.length; i++) {
-                                if(resultsArray[k].ingredients[i].ingredient == filtersArray[j]) { trueNumb++; } 
+                            for(let i = 0; i < filterAll[k].ingredients.length; i++) {
+                                if(filterAll[k].ingredients[i].ingredient == filtersArray[j]) { trueNumb++; } 
                             }
 
                             for(let l = 0; l < resultsArray[k].ustensils.length; l++) {
-                                if(resultsArray[k].ustensils[l] == filtersArray[j]) { trueNumb++;  }
+                                if(filterAll[k].ustensils[l] == filtersArray[j]) { trueNumb++;  }
                             }
                         }
                     
                         if(trueNumb !== filtersArray.length) {  
                             //A supprimer de la liste
-                            resultsArray.splice(k,1); k--;
-                            console.log(removeDuplicate(resultsArray, 'id'))
-                            }                               
-                        }
-                    clearPage(); addRecipes(removeDuplicate(resultsArray, 'id'));
-                
-                    
-                            
+                            filterAll.splice(k,1); k--;
+                        }                               
+                    }
+                clearPage(); addRecipes(removeDuplicate(filterAll, 'id')); ifEmpty(filterAll)
                     
                 
                     //Cas 2 : l'utilisateur choisit d'abord un filtre
@@ -137,9 +131,7 @@ export default function filterFunction () {
                                 }                              
                             }
                         }
-                        
-                       
-                        clearPage(); addRecipes(filterAll);
+                       clearPage(); addRecipes(filterAll); ifEmpty(filterAll);
 
                         } else if (filterAll.length > 0) {
                             for(let k = 0; k < filterAll.length; k++) {
@@ -157,13 +149,10 @@ export default function filterFunction () {
                                     }
                                 }
                             
-                                if(trueNumb !== filtersArray.length) {  
-                                    //A supprimer de la liste
-                                    filterAll.splice(k,1); k--;
-                                    }                               
-                                }
-                            clearPage(); addRecipes(filterAll);
-                        }
+                                if(trueNumb !== filtersArray.length) {   filterAll.splice(k,1); k--; }                               
+                            }
+                        clearPage(); addRecipes(filterAll); ifEmpty(filterAll);
+                    }
                 }
             
             removeTag(tagList);
