@@ -2326,7 +2326,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = filterFunction;
-exports.newA = exports.trueNumb = exports.array = exports.ustensilsList = exports.applianceList = exports.ingredientsList = exports.filtersArray = exports.tagList = void 0;
+exports.newA = exports.trueNumb = exports.filterAll = exports.ustensilsList = exports.applianceList = exports.ingredientsList = exports.filtersArray = exports.tagList = void 0;
 
 var _recipes = require("../data/recipes");
 
@@ -2351,12 +2351,12 @@ var tagList,
     ingredientsList = [],
     applianceList = [],
     ustensilsList = [],
-    array = [],
+    filterAll = [],
     trueNumb,
     newA;
 exports.newA = newA;
 exports.trueNumb = trueNumb;
-exports.array = array;
+exports.filterAll = filterAll;
 exports.ustensilsList = ustensilsList;
 exports.applianceList = applianceList;
 exports.ingredientsList = ingredientsList;
@@ -2400,9 +2400,8 @@ function filterFunction() {
 
       try {
         for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var _tag2 = _step.value;
-
-          _tag2.appendChild(deleteIcon);
+          var tag = _step.value;
+          tag.appendChild(deleteIcon);
         }
       } catch (err) {
         _iterator.e(err);
@@ -2442,8 +2441,8 @@ function filterFunction() {
 
       try {
         for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-          var _tag3 = _step2.value;
-          var tagName = _tag3.innerText;
+          var _tag = _step2.value;
+          var tagName = _tag.innerText;
 
           if (!filtersArray.includes(tagName) && ingredientsArray.includes(tagName)) {
             filtersArray.push(tagName);
@@ -2500,294 +2499,96 @@ function filterFunction() {
 
 
       if (filtersArray.length > 0 && _search.resultsArray.length > 0) {
-        var filterAll = [];
+        var _filterAll = [];
 
-        var _iterator3 = _createForOfIteratorHelper(filtersArray),
-            _step3;
+        for (var _k4 = 0; _k4 < _search.resultsArray.length; _k4++) {
+          exports.trueNumb = trueNumb = 0;
 
-        try {
-          for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
-            var tag = _step3.value;
+          for (var _j2 = 0; _j2 <= _search.resultsArray.length; _j2++) {
+            if (_search.resultsArray[_k4].appliance == filtersArray[_j2]) {
+              exports.trueNumb = trueNumb = trueNumb + 1;
+            }
 
-            for (var _i3 = 0; _i3 < _search.resultsArray.length; _i3++) {
-              for (var _j2 = 0; _j2 < _search.resultsArray[_i3].ingredients.length; _j2++) {
-                for (var _k4 = 0; _k4 < _search.resultsArray[_i3].ustensils.length; _k4++) {
-                  //Cas 1 : ingrédients > 0, app = 0 & ust = 0
-                  if (ingredientsList.length > 0 && applianceList.length == 0 && ustensilsList.length == 0) {
-                    if (_search.resultsArray[_i3].ingredients[_j2].ingredient.indexOf(tag) > -1) {
-                      filterAll.push(_search.resultsArray[_i3]);
-                    } //Cas é : ing = 0, app > 0, ust = 0
+            for (var _i3 = 0; _i3 < _search.resultsArray[_k4].ingredients.length; _i3++) {
+              if (_search.resultsArray[_k4].ingredients[_i3].ingredient == filtersArray[_j2]) {
+                exports.trueNumb = trueNumb = trueNumb + 1;
+              }
+            }
 
-                  } else if (ingredientsList.length == 0 && applianceList.length > 0 && ustensilsList.length == 0) {
-                    if (_search.resultsArray[_i3].appliance.indexOf(tag) > -1) {
-                      filterAll.push(_search.resultsArray[_i3]);
-                    }
-                  } else if (ingredientsList.length == 0 && applianceList.length == 0 && ustensilsList.length > 0) {
-                    if (_search.resultsArray[_i3].ustensils[_k4].indexOf(tag) > -1) {
-                      filterAll.push(_search.resultsArray[_i3]);
-                    }
-                  } else if (ingredientsList.length > 0 && applianceList.length == 0 && ustensilsList.length > 0) {
-                    var _iterator4 = _createForOfIteratorHelper(ustensilsList),
-                        _step4;
-
-                    try {
-                      for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
-                        var ustensil = _step4.value;
-
-                        if (_search.resultsArray[_i3].ustensils[_k4].indexOf(ustensil) > -1 && _search.resultsArray[_i3].ingredients[_j2].ingredient.indexOf(tag) > -1) {
-                          filterAll.push(_search.resultsArray[_i3]);
-                        }
-                      }
-                    } catch (err) {
-                      _iterator4.e(err);
-                    } finally {
-                      _iterator4.f();
-                    }
-                  } else if (ingredientsList.length > 0 && applianceList.length > 0 && ustensilsList.length == 0) {
-                    var _iterator5 = _createForOfIteratorHelper(applianceList),
-                        _step5;
-
-                    try {
-                      for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
-                        var appliance = _step5.value;
-
-                        if (_search.resultsArray[_i3].appliance.indexOf(appliance) > -1 && _search.resultsArray[_i3].ingredients[_j2].ingredient.indexOf(tag) > -1) {
-                          filterAll.push(_search.resultsArray[_i3]);
-                        }
-                      }
-                    } catch (err) {
-                      _iterator5.e(err);
-                    } finally {
-                      _iterator5.f();
-                    }
-                  } else if (ingredientsList.length == 0 && applianceList.length > 0 && ustensilsList.length > 0) {
-                    var _iterator6 = _createForOfIteratorHelper(applianceList),
-                        _step6;
-
-                    try {
-                      for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
-                        var _appliance = _step6.value;
-
-                        if (_search.resultsArray[_i3].appliance.indexOf(_appliance) > -1 && _search.resultsArray[_i3].ustensils[_k4].indexOf(tag) > -1) {
-                          filterAll.push(_search.resultsArray[_i3]);
-                        }
-                      }
-                    } catch (err) {
-                      _iterator6.e(err);
-                    } finally {
-                      _iterator6.f();
-                    }
-                  } else if (ingredientsList.length > 0 && applianceList.length > 0 && ustensilsList.length > 0) {
-                    var _iterator7 = _createForOfIteratorHelper(applianceList),
-                        _step7;
-
-                    try {
-                      for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {
-                        var _appliance2 = _step7.value;
-
-                        var _iterator8 = _createForOfIteratorHelper(ingredientsList),
-                            _step8;
-
-                        try {
-                          for (_iterator8.s(); !(_step8 = _iterator8.n()).done;) {
-                            var ingredient = _step8.value;
-
-                            if (_search.resultsArray[_i3].appliance.indexOf(_appliance2) > -1 && _search.resultsArray[_i3].ustensils[_k4].indexOf(tag) > -1 && _search.resultsArray[_i3].ingredients[_j2].ingredient.indexOf(ingredient)) {
-                              filterAll.push(_search.resultsArray[_i3]);
-                            }
-                          }
-                        } catch (err) {
-                          _iterator8.e(err);
-                        } finally {
-                          _iterator8.f();
-                        }
-                      }
-                    } catch (err) {
-                      _iterator7.e(err);
-                    } finally {
-                      _iterator7.f();
-                    }
-                  }
-                }
+            for (var _l = 0; _l < _search.resultsArray[_k4].ustensils.length; _l++) {
+              if (_search.resultsArray[_k4].ustensils[_l] == filtersArray[_j2]) {
+                exports.trueNumb = trueNumb = trueNumb + 1;
               }
             }
           }
-        } catch (err) {
-          _iterator3.e(err);
-        } finally {
-          _iterator3.f();
+
+          if (trueNumb !== filtersArray.length) {
+            //A supprimer de la liste
+            _search.resultsArray.splice(_k4, 1);
+
+            _k4--;
+            console.log(removeDuplicate(_search.resultsArray, 'id'));
+          }
         }
 
         (0, _clearPage.default)();
-        (0, _addRecipes.default)(removeDuplicate(filterAll, 'id'));
-        ifEmpty(filterAll); //Cas 2 : l'utilisateur choisit d'abord un filtre
+        (0, _addRecipes.default)(removeDuplicate(_search.resultsArray, 'id')); //Cas 2 : l'utilisateur choisit d'abord un filtre
       } else if (filtersArray.length > 0 && _search.resultsArray.length == 0) {
-        var _filterAll = [],
-            check = false;
-
-        if (array.length == 0) {
+        if (filterAll.length == 0) {
           for (var _i4 = 0; _i4 < filtersArray.length; _i4++) {
             for (var _j3 = 0; _j3 < _recipes.recipes.length; _j3++) {
+              if (_recipes.recipes[_j3].appliance == filtersArray[_i4]) {
+                filterAll.push(_recipes.recipes[_j3]);
+              }
+
               for (var _k5 = 0; _k5 < _recipes.recipes[_j3].ingredients.length; _k5++) {
                 if (_recipes.recipes[_j3].ingredients[_k5].ingredient == filtersArray[_i4]) {
-                  check = true;
-                  array.push(_recipes.recipes[_j3]);
+                  filterAll.push(_recipes.recipes[_j3]);
+                }
+              }
+
+              for (var _l2 = 0; _l2 < _recipes.recipes[_j3].ustensils.length; _l2++) {
+                if (_recipes.recipes[_j3].ustensils[_l2] == filtersArray[_i4]) {
+                  filterAll.push(_recipes.recipes[_j3]);
                 }
               }
             }
           }
-        } else if (array.length > 0) {
-          for (var _k6 = 0; _k6 < array.length; _k6++) {
+
+          (0, _clearPage.default)();
+          (0, _addRecipes.default)(filterAll);
+        } else if (filterAll.length > 0) {
+          for (var _k6 = 0; _k6 < filterAll.length; _k6++) {
             exports.trueNumb = trueNumb = 0;
 
-            for (var _i5 = 0; _i5 < array[_k6].ingredients.length; _i5++) {
-              for (var _j4 = 0; _j4 <= filtersArray.length; _j4++) {
-                if (array[_k6].ingredients[_i5].ingredient.includes(filtersArray[_j4])) {
+            for (var _j4 = 0; _j4 <= filtersArray.length; _j4++) {
+              if (filterAll[_k6].appliance == filtersArray[_j4]) {
+                exports.trueNumb = trueNumb = trueNumb + 1;
+              }
+
+              for (var _i5 = 0; _i5 < filterAll[_k6].ingredients.length; _i5++) {
+                if (filterAll[_k6].ingredients[_i5].ingredient == filtersArray[_j4]) {
                   exports.trueNumb = trueNumb = trueNumb + 1;
-                  console.log(array[_k6]);
-                  break;
+                }
+              }
+
+              for (var _l3 = 0; _l3 < filterAll[_k6].ustensils.length; _l3++) {
+                if (filterAll[_k6].ustensils[_l3] == filtersArray[_j4]) {
+                  exports.trueNumb = trueNumb = trueNumb + 1;
                 }
               }
             }
 
             if (trueNumb !== filtersArray.length) {
               //A supprimer de la liste
-              console.log(array[_k6], _k6);
-              array.splice(_k6, 1);
+              filterAll.splice(_k6, 1);
               _k6--;
             }
           }
 
-          console.log(array);
+          (0, _clearPage.default)();
+          (0, _addRecipes.default)(filterAll);
         }
-
-        var _iterator9 = _createForOfIteratorHelper(filtersArray),
-            _step9;
-
-        try {
-          for (_iterator9.s(); !(_step9 = _iterator9.n()).done;) {
-            var _tag = _step9.value;
-
-            for (var _i6 = 0; _i6 < _recipes.recipes.length; _i6++) {
-              for (var _j5 = 0; _j5 < _recipes.recipes[_i6].ingredients.length; _j5++) {
-                for (var _k7 = 0; _k7 < _recipes.recipes[_i6].ustensils.length; _k7++) {
-                  //Cas 1 : ingrédients > 0, app = 0 & ust = 0
-                  if (ingredientsList.length > 0 && applianceList.length == 0 && ustensilsList.length == 0) {
-                    for (var _l = 0; _l < ingredientsList.length; _l++) {
-                      if (_recipes.recipes[_i6].ingredients[_j5].ingredient == ingredientsList[_l]) {
-                        check = true;
-
-                        if (_l == ingredientsList.length - 1) {
-                          _filterAll.push(_recipes.recipes[_i6]);
-                        }
-
-                        break;
-                      }
-                    } //Cas 2 : ing = 0, app > 0, ust = 0
-
-                  } else if (ingredientsList.length == 0 && applianceList.length > 0 && ustensilsList.length == 0) {
-                    if (_recipes.recipes[_i6].appliance.indexOf(last) > -1) {
-                      _filterAll.push(_recipes.recipes[_i6]);
-                    }
-                  } else if (ingredientsList.length == 0 && applianceList.length == 0 && ustensilsList.length > 0) {
-                    if (_recipes.recipes[_i6].ustensils[_k7].indexOf(last) > -1) {
-                      _filterAll.push(_recipes.recipes[_i6]);
-                    }
-                  } else if (ingredientsList.length > 0 && applianceList.length == 0 && ustensilsList.length > 0) {
-                    var _iterator10 = _createForOfIteratorHelper(ustensilsList),
-                        _step10;
-
-                    try {
-                      for (_iterator10.s(); !(_step10 = _iterator10.n()).done;) {
-                        var _ustensil = _step10.value;
-
-                        if (_recipes.recipes[_i6].ustensils[_k7].indexOf(_ustensil) > -1 && _recipes.recipes[_i6].ingredients[_j5].ingredient.indexOf(_tag) > -1) {
-                          _filterAll.push(_recipes.recipes[_i6]);
-                        }
-                      }
-                    } catch (err) {
-                      _iterator10.e(err);
-                    } finally {
-                      _iterator10.f();
-                    }
-                  } else if (ingredientsList.length > 0 && applianceList.length > 0 && ustensilsList.length == 0) {
-                    var _iterator11 = _createForOfIteratorHelper(applianceList),
-                        _step11;
-
-                    try {
-                      for (_iterator11.s(); !(_step11 = _iterator11.n()).done;) {
-                        var _appliance3 = _step11.value;
-
-                        if (_recipes.recipes[_i6].appliance.indexOf(_appliance3) > -1 && _recipes.recipes[_i6].ingredients[_j5].ingredient.indexOf(_tag) > -1) {
-                          _filterAll.push(_recipes.recipes[_i6]);
-                        }
-                      }
-                    } catch (err) {
-                      _iterator11.e(err);
-                    } finally {
-                      _iterator11.f();
-                    }
-                  } else if (ingredientsList.length == 0 && applianceList.length > 0 && ustensilsList.length > 0) {
-                    var _iterator12 = _createForOfIteratorHelper(applianceList),
-                        _step12;
-
-                    try {
-                      for (_iterator12.s(); !(_step12 = _iterator12.n()).done;) {
-                        var _appliance4 = _step12.value;
-
-                        if (_recipes.recipes[_i6].appliance.indexOf(_appliance4) > -1 && _recipes.recipes[_i6].ustensils[_k7].indexOf(_tag) > -1) {
-                          _filterAll.push(_recipes.recipes[_i6]);
-                        }
-                      }
-                    } catch (err) {
-                      _iterator12.e(err);
-                    } finally {
-                      _iterator12.f();
-                    }
-                  } else if (ingredientsList.length > 0 && applianceList.length > 0 && ustensilsList.length > 0) {
-                    var _iterator13 = _createForOfIteratorHelper(applianceList),
-                        _step13;
-
-                    try {
-                      for (_iterator13.s(); !(_step13 = _iterator13.n()).done;) {
-                        var _appliance5 = _step13.value;
-
-                        var _iterator14 = _createForOfIteratorHelper(ingredientsList),
-                            _step14;
-
-                        try {
-                          for (_iterator14.s(); !(_step14 = _iterator14.n()).done;) {
-                            var _ingredient = _step14.value;
-
-                            if (_recipes.recipes[_i6].appliance.indexOf(_appliance5) > -1 && _recipes.recipes[_i6].ustensils[_k7].indexOf(_tag) > -1 && _recipes.recipes[_i6].ingredients[_j5].ingredient.indexOf(_ingredient)) {
-                              _filterAll.push(_recipes.recipes[_i6]);
-                            }
-                          }
-                        } catch (err) {
-                          _iterator14.e(err);
-                        } finally {
-                          _iterator14.f();
-                        }
-                      }
-                    } catch (err) {
-                      _iterator13.e(err);
-                    } finally {
-                      _iterator13.f();
-                    }
-                  }
-                }
-              }
-            }
-          }
-        } catch (err) {
-          _iterator9.e(err);
-        } finally {
-          _iterator9.f();
-        }
-
-        (0, _clearPage.default)();
-        (0, _addRecipes.default)(removeDuplicate(_filterAll, 'id'));
-        ifEmpty(_filterAll);
       }
 
       (0, _removeTag.default)(tagList);
@@ -2875,7 +2676,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64581" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62254" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
