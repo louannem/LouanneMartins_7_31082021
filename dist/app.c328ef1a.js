@@ -126,7 +126,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = listExpand;
 
 /**
- * Fonction pour afficher les listes de dropdowns
+ * Fonction pour afficher les listes dropdowns
  */
 function listExpand() {
   var inputIngredient = document.getElementById('ingredient-input');
@@ -134,8 +134,7 @@ function listExpand() {
   var inputAppareil = document.getElementById('appareils-input');
   var boxAppareil = document.getElementById('appareils-expand');
   var inputUsentiles = document.getElementById('ustensiles-input');
-  var parentNode = document.getElementById('ustensiles-search');
-  var boxUstensiles = parentNode.getElementsByTagName('div')[0];
+  var boxUstensiles = document.getElementById('ustensiles-expand');
   /**
    * 
    * @param {String} paraStyle1 Elément parent avec input
@@ -146,10 +145,9 @@ function listExpand() {
    * @param {String} classe Nom de la classe à ajouter
    */
 
-  var addingClass = function addingClass(paraStyle1, paraStyle2, size, paraClass1, paraClass2, classe) {
+  var addingClass = function addingClass(paraStyle1, paraStyle2, size, paraClass2, classe) {
     paraStyle1.style.width = size;
     paraStyle2.style.width = size;
-    paraClass1.classList.add('onclick');
     paraClass2.classList.add(classe);
   };
   /**
@@ -163,10 +161,9 @@ function listExpand() {
    */
 
 
-  var removingClass = function removingClass(paraStyle1, paraStyle2, size, paraClass1, paraClass2, classe) {
+  var removingClass = function removingClass(paraStyle1, paraStyle2, size, paraClass2, classe) {
     paraStyle1.style.width = size;
     paraStyle2.style.width = size;
-    paraClass1.classList.remove('onclick');
     paraClass2.classList.remove(classe);
   };
   /**
@@ -177,12 +174,20 @@ function listExpand() {
    */
 
 
-  var callFonction = function callFonction(paraEvent1, paraEvent2, fonction) {
-    paraEvent1.addEventListener('click', fonction);
+  var callFonction = function callFonction(paraEvent2, fonction) {
     paraEvent2.addEventListener('click', fonction);
   };
   /**
-   * Fonction pour gérer la recherche dans la liste d'ingérdients
+   * Bloque l'exécution d'une fonction pour les input
+   * @param {String} e 
+   */
+
+
+  var stopEvent = function stopEvent(e) {
+    e.stopImmediatePropagation();
+  };
+  /**
+   * Fonction pour gérer la recherche dans la liste d'ingrédients
    */
 
 
@@ -191,15 +196,17 @@ function listExpand() {
     var listWrapper = document.getElementById('ingredients-list');
 
     if (searchWrapper.classList.contains('show')) {
-      removingClass(searchWrapper, listWrapper, "170px", inputIngredient, listWrapper, "grid-list");
+      inputIngredient.removeEventListener('click', stopEvent);
+      removingClass(searchWrapper, listWrapper, "170px", listWrapper, "grid-list");
       inputIngredient.setAttribute('placeholder', 'Ingrédient');
     } else {
-      addingClass(searchWrapper, listWrapper, "500px", inputIngredient, listWrapper, "grid-list");
+      inputIngredient.addEventListener('click', stopEvent);
       inputIngredient.setAttribute('placeholder', 'Rechercher un ingrédient');
+      addingClass(searchWrapper, listWrapper, "500px", listWrapper, "grid-list");
     }
   };
 
-  callFonction(inputIngredient, boxIngredients, searchIngredient);
+  callFonction(boxIngredients, searchIngredient);
   /**
    * Fonction pour gérer la recherche dans la liste d'appareils
    */
@@ -209,15 +216,17 @@ function listExpand() {
     var listWrapper = document.getElementById('appareils-list');
 
     if (searchWrapper.classList.contains('show')) {
-      removingClass(searchWrapper, listWrapper, "170px", inputAppareil, listWrapper, "grid-list-appareils");
+      inputAppareil.removeEventListener('click', stopEvent);
+      removingClass(searchWrapper, listWrapper, "170px", listWrapper, "grid-list-appareils");
       inputAppareil.setAttribute('placeholder', 'Appareils');
     } else {
+      inputAppareil.addEventListener('click', stopEvent);
       inputAppareil.setAttribute('placeholder', 'Rechercher un appareil');
-      addingClass(searchWrapper, listWrapper, "500px", inputAppareil, listWrapper, "grid-list-appareils");
+      addingClass(searchWrapper, listWrapper, "500px", listWrapper, "grid-list-appareils");
     }
   };
 
-  callFonction(inputAppareil, boxAppareil, searchAppareils);
+  callFonction(boxAppareil, searchAppareils);
   /**
    * Fonction pour gérer la recherche dans la liste d'ustensiles
    */
@@ -227,16 +236,17 @@ function listExpand() {
     var listWrapper = document.getElementById('ustensiles-list');
 
     if (searchWrapper.classList.contains('show')) {
-      removingClass(searchWrapper, listWrapper, "170px", inputUsentiles, listWrapper, "grid-list");
+      inputUsentiles.removeEventListener('click', stopEvent);
+      removingClass(searchWrapper, listWrapper, "170px", listWrapper, "grid-list");
       inputUsentiles.setAttribute('placeholder', 'Ustensiles');
     } else {
-      addingClass(searchWrapper, listWrapper, "500px", inputUsentiles, listWrapper, "grid-list");
+      inputUsentiles.addEventListener('click', stopEvent);
+      addingClass(searchWrapper, listWrapper, "500px", listWrapper, "grid-list");
       inputUsentiles.setAttribute('placeholder', 'Rechercher un ustensile');
     }
   };
 
-  callFonction(inputUsentiles, boxUstensiles, searchUstensiles); //Closes the others dropdowns if another one is open
-
+  callFonction(boxUstensiles, searchUstensiles);
   var dropdownElem = document.querySelectorAll('.dropdown-toggle');
   dropdownElem.forEach(function (element) {
     /**
@@ -1639,44 +1649,6 @@ var recipes = [{
   "ustensils": ["rouleau à patisserie", "fouet"]
 }];
 exports.recipes = recipes;
-},{}],"components/Recipe.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Recipe = void 0;
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var Recipe = /*#__PURE__*/function () {
-  function Recipe(object) {
-    _classCallCheck(this, Recipe);
-
-    this.name = object.name;
-    this.time = object.time;
-    this.description = object.description;
-    this.id = object.id;
-    this.ingredients = object.ingredients;
-    this.appliance = object.appliance;
-    this.ustensils = object.ustensils;
-  }
-
-  _createClass(Recipe, [{
-    key: "diplayRecipe",
-    value: function diplayRecipe() {
-      return "\n        <article class=\"recipe__card\" id=\"recipe-".concat(this.id, "\">\n                <div class=\"recipe__image\">\n                    <img src=\"\" alt=\"\">\n                </div>\n                <div class=\"recipe__info\">\n                    <div class=\"recipe__title\">\n                        <h2>").concat(this.name, "</h2>\n                        <div class=\"recipe__time\">\n                            <img src=\"\" alt=\"\">\n                            <span>").concat(this.time, " min.</span>\n                        </div>\n                    </div>\n                    <div class=\"recipe__meta\">\n                        <div class=\"ingredients\">\n                           <ul id=\"").concat(this.id, "\">\n                           </ul>\n                        </div>\n                        <div class=\"instructions\">\n                            <p>").concat(this.description, "</p>\n                        </div>\n                    </div>\n                </div>\n            </article>\n        ");
-    }
-  }]);
-
-  return Recipe;
-}();
-
-exports.Recipe = Recipe;
 },{}],"components/Ingredient.js":[function(require,module,exports) {
 "use strict";
 
@@ -2283,7 +2255,7 @@ function filterFunction() {
               }
             }
 
-            for (var _l = 0; _l < _search.resultsArray[_k4].ustensils.length; _l++) {
+            for (var _l = 0; _l < filterAll[_k4].ustensils.length; _l++) {
               if (filterAll[_k4].ustensils[_l] == _filtersArray[_j2]) {
                 exports.trueNumb = trueNumb = trueNumb + 1;
               }
@@ -2566,8 +2538,6 @@ exports.resultsArray = void 0;
 
 var _recipes = require("../data/recipes");
 
-var _Recipe = require("../components/Recipe");
-
 var _addRecipes = _interopRequireDefault(require("../utils/addRecipes"));
 
 var _clearPage = _interopRequireDefault(require("../utils/clearPage"));
@@ -2640,7 +2610,7 @@ function searchFunction() {
 
   input.addEventListener('input', globalSearch);
 }
-},{"../data/recipes":"data/recipes.js","../components/Recipe":"components/Recipe.js","../utils/addRecipes":"utils/addRecipes.js","../utils/clearPage":"utils/clearPage.js"}],"app.js":[function(require,module,exports) {
+},{"../data/recipes":"data/recipes.js","../utils/addRecipes":"utils/addRecipes.js","../utils/clearPage":"utils/clearPage.js"}],"app.js":[function(require,module,exports) {
 "use strict";
 
 var _listExpand = _interopRequireDefault(require("./components/listExpand"));
@@ -2683,7 +2653,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54013" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57771" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -119,7 +119,7 @@ export default function filterFunction () {
                                 if(filterAll[k].ingredients[i].ingredient == filtersArray[j]) { trueNumb++; } 
                             }
 
-                            for(let l = 0; l < resultsArray[k].ustensils.length; l++) {
+                            for(let l = 0; l < filterAll[k].ustensils.length; l++) {
                                 if(filterAll[k].ustensils[l] == filtersArray[j]) { trueNumb++;  }
                             }
                         }

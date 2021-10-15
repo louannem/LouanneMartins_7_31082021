@@ -1,5 +1,4 @@
 import { recipes } from "../data/recipes";
-import { Recipe } from "../components/Recipe";
 import addRecipes from "../utils/addRecipes";
 import clearPage from "../utils/clearPage";
 
