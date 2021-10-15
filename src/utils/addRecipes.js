@@ -80,7 +80,7 @@ export default function addRecipes (recipes){
 
         //Supprime les anciennes listes
         let oldLst = document.querySelectorAll('.dropdown-menu  span');
-        for(let list of oldLst) { list.style.display = "none"} 
+        for(let list of oldLst) { list.remove()} 
 
         /**
          * Fonction pour mettre à jour les listes des dropdowns
@@ -93,11 +93,62 @@ export default function addRecipes (recipes){
                 let spanWrapper = document.createElement('span');
                 parentBlock.appendChild(spanWrapper);
                 spanWrapper.innerText += list[i];
+                
                 if(spanWrapper.innerText == "undefined" || filtersArray.includes(spanWrapper.innerText)) { spanWrapper.style.display="none"}
             }
         }
         newList(ingrDupl, 'ingredients-list') ; newList(appDupl, 'appareils-list', newList(ustDupl, 'ustensiles-list'));
-        //Ré-applique la fonction de filtre
-        filterFunction();
+
+
+            /**
+        * Fonction pour fitlrer les listes de dropdown avec les input
+        * @param {string} input Input de la liste
+        * @param {string} listID Liste à trier
+        */
+        // eslint-disable-next-line no-unused-vars
+        let filterList = (input, listID) => {
+            let searchInput, ElementSpan, text;
+
+            searchInput = input.value.toLowerCase();
+            ElementSpan = document.querySelectorAll('.dropdown-menu span');            
+                       
+            for(let i = 0; i < ElementSpan.length; i++) {
+                text = ElementSpan[i].innerText.toLowerCase() || ElementSpan[i].textContent.toLowerCase();
+                if(text.includes(searchInput) && searchInput.length > 0) {
+                    ElementSpan[i].style.display="";
+                    
+        
+                } else if(!text.includes(searchInput) && searchInput.length > 0) { ElementSpan[i].style.display="none"} 
+                else if(searchInput.length == 0) { ElementSpan[i].style.display=""}
+                
+                if(text == "undefined") { ElementSpan[i].style.display="none"}
+                }
+            }
+
+
+            let ingredientInput = document.getElementById('ingredient-input');
+            let appareilsInput = document.getElementById('appareils-input');
+            let ustensilesInput = document.getElementById('ustensiles-input');
+
+
+            let ingredientsSearch = () => {
+                filterList(ingredientInput, 'ingredients-list');
+            }
+            ingredientInput.addEventListener('input', ingredientsSearch);
+
+
+            let appareilsSearch = () => {
+                filterList(appareilsInput, 'appareils-list');
+            }
+            appareilsInput.addEventListener('input', appareilsSearch);
+
+            let ustensilesSearch = () => {         
+                filterList(ustensilesInput, 'ustensiles-list');
+            }
+            ustensilesInput.addEventListener('input', ustensilesSearch);
+
+
+            //Ré-applique la fonction de filtre
+            filterFunction();
 
 }

@@ -2473,7 +2473,7 @@ function addRecipes(recipes) {
   try {
     for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
       var list = _step2.value;
-      list.style.display = "none";
+      list.remove();
     }
     /**
      * Fonction pour mettre à jour les listes des dropdowns
@@ -2501,7 +2501,57 @@ function addRecipes(recipes) {
   };
 
   newList(ingrDupl, 'ingredients-list');
-  newList(appDupl, 'appareils-list', newList(ustDupl, 'ustensiles-list')); //Ré-applique la fonction de filtre
+  newList(appDupl, 'appareils-list', newList(ustDupl, 'ustensiles-list'));
+  /**
+  * Fonction pour fitlrer les listes de dropdown avec les input
+  * @param {string} input Input de la liste
+  * @param {string} listID Liste à trier
+  */
+  // eslint-disable-next-line no-unused-vars
+
+  var filterList = function filterList(input, listID) {
+    var searchInput, ElementSpan, text;
+    searchInput = input.value.toLowerCase();
+    ElementSpan = document.querySelectorAll('.dropdown-menu span');
+
+    for (var _i3 = 0; _i3 < ElementSpan.length; _i3++) {
+      text = ElementSpan[_i3].innerText.toLowerCase() || ElementSpan[_i3].textContent.toLowerCase();
+
+      if (text.includes(searchInput) && searchInput.length > 0) {
+        ElementSpan[_i3].style.display = "";
+      } else if (!text.includes(searchInput) && searchInput.length > 0) {
+        ElementSpan[_i3].style.display = "none";
+      } else if (searchInput.length == 0) {
+        ElementSpan[_i3].style.display = "";
+      }
+
+      if (text == "undefined") {
+        ElementSpan[_i3].style.display = "none";
+      }
+    }
+  };
+
+  var ingredientInput = document.getElementById('ingredient-input');
+  var appareilsInput = document.getElementById('appareils-input');
+  var ustensilesInput = document.getElementById('ustensiles-input');
+
+  var ingredientsSearch = function ingredientsSearch() {
+    filterList(ingredientInput, 'ingredients-list');
+  };
+
+  ingredientInput.addEventListener('input', ingredientsSearch);
+
+  var appareilsSearch = function appareilsSearch() {
+    filterList(appareilsInput, 'appareils-list');
+  };
+
+  appareilsInput.addEventListener('input', appareilsSearch);
+
+  var ustensilesSearch = function ustensilesSearch() {
+    filterList(ustensilesInput, 'ustensiles-list');
+  };
+
+  ustensilesInput.addEventListener('input', ustensilesSearch); //Ré-applique la fonction de filtre
 
   (0, _filters.default)();
 }
@@ -2555,8 +2605,8 @@ function searchFunction() {
 
 
         if (recipeName.includes(searchInput) || _recipes.recipes[i].appliance.includes(searchInput) || _recipes.recipes[i].description.includes(searchInput)) {
-          var newRecipes = new _Recipe.Recipe(_recipes.recipes[i]);
-          resultsArray.push(newRecipes);
+          //let newRecipes = new Recipe(recipes[i]);
+          resultsArray.push(_recipes.recipes[i]);
         }
       }
 
@@ -2589,54 +2639,6 @@ function searchFunction() {
   };
 
   input.addEventListener('input', globalSearch);
-  /**
-  * Fonction pour fitlrer les listes de dropdown avec les input
-  * @param {string} input Input de la liste
-  * @param {string} listID Liste à trier
-  */
-  // eslint-disable-next-line no-unused-vars
-
-  var filterList = function filterList(input, listID) {
-    var searchInput, ElementSpan, text;
-    searchInput = input.value.toLowerCase();
-    ElementSpan = document.querySelectorAll('.dropdown-menu span');
-
-    for (var i = 0; i < ElementSpan.length; i++) {
-      text = ElementSpan[i].innerText.toLowerCase() || ElementSpan[i].textContent.toLowerCase();
-
-      if (text.indexOf(searchInput) > -1) {
-        ElementSpan[i].style.display = "";
-      } else {
-        ElementSpan[i].style.display = "none";
-      }
-
-      if (text == "undefined") {
-        ElementSpan[i].style.display = "none";
-      }
-    }
-  };
-
-  var ingredientInput = document.getElementById('ingredient-input');
-  var appareilsInput = document.getElementById('appareils-input');
-  var ustensilesInput = document.getElementById('ustensiles-input');
-
-  var ingredientsSearch = function ingredientsSearch() {
-    filterList(ingredientInput, 'ingredients-list');
-  };
-
-  ingredientInput.addEventListener('input', ingredientsSearch);
-
-  var appareilsSearch = function appareilsSearch() {
-    filterList(appareilsInput, 'appareils-list');
-  };
-
-  appareilsInput.addEventListener('input', appareilsSearch);
-
-  var ustensilesSearch = function ustensilesSearch() {
-    filterList(ustensilesInput, 'ustensiles-list');
-  };
-
-  ustensilesInput.addEventListener('input', ustensilesSearch);
 }
 },{"../data/recipes":"data/recipes.js","../components/Recipe":"components/Recipe.js","../utils/addRecipes":"utils/addRecipes.js","../utils/clearPage":"utils/clearPage.js"}],"app.js":[function(require,module,exports) {
 "use strict";
@@ -2681,7 +2683,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59420" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54013" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
