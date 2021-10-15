@@ -7,7 +7,7 @@ import clearPage from "../utils/clearPage";
 export let resultsArray = [];
 
 /**
- * Fonction pour rechercher les recettes par mot-clé
+ * Fonction pour rechercher les recettes par mot-clé à partir de 3 caractères
  */
 export default function searchFunction() {
 
