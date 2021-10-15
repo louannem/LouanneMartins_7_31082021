@@ -7,8 +7,7 @@ export default function listExpand() {
     let inputAppareil = document.getElementById('appareils-input');
     let boxAppareil = document.getElementById('appareils-expand');
     let inputUsentiles = document.getElementById('ustensiles-input');
-    let parentNode = document.getElementById('ustensiles-search');
-    let boxUstensiles = parentNode.getElementsByTagName('div')[0];
+    let boxUstensiles = document.getElementById('ustensiles-expand');
     
     /**
      * 
@@ -48,9 +47,8 @@ export default function listExpand() {
      * @param {String} fonction Nom de la fonction
      */
 
-    let callFonction = (paraEvent1,paraEvent2, fonction) => {
+    let callFonction = (paraEvent2, fonction) => {
         paraEvent2.addEventListener('click', fonction);
-        //paraEvent1.addEventListener('click', fonction);
     }
 
     /**
@@ -80,7 +78,7 @@ export default function listExpand() {
         }
        
     }
-   callFonction(inputIngredient,boxIngredients,searchIngredient);
+   callFonction(boxIngredients,searchIngredient);
 
 
 
@@ -102,7 +100,7 @@ export default function listExpand() {
             addingClass(searchWrapper, listWrapper, "500px",listWrapper, "grid-list-appareils");
         }
     }
-    callFonction(inputAppareil,boxAppareil,searchAppareils)
+    callFonction(boxAppareil,searchAppareils)
 
 
 
@@ -123,7 +121,7 @@ export default function listExpand() {
             inputUsentiles.setAttribute('placeholder', 'Rechercher un ustensile');
         }
     }
-    callFonction(inputUsentiles, boxUstensiles, searchUstensiles);
+    callFonction(boxUstensiles, searchUstensiles);
 
  
     let dropdownElem = document.querySelectorAll('.dropdown-toggle');
