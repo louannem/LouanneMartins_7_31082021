@@ -5,6 +5,7 @@ Projet 7 - OpenClassroom
 Projet consultable à l'adresse suivante :
 https://louannem.github.io/LouanneMartins_7_31082021/dist/search.html
 
+Pour ouvrir ce projet : lancer la commande [npm run dev] depuis le terminal. Parcel ouvrira un serveur local.
 
 Algorithme de recherche en Javascript.
 - Branche algorithme-1 : développé avec une boucle for()
