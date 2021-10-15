@@ -130,11 +130,12 @@ article .recipe__image { height: 160px; width: 100%; background-color: #C7BEBE; 
     line-height: 22px;
     font-weight: 400;
     margin: 0;
+    width: 60%;
 }
 
-.recipe__time { display: flex; align-items: center; min-width: 70px;}
-.recipe__time img { margin : 0px 5px}
-.time-icon { display: flex;}
+.recipe__time { display: flex; align-items: center; min-width: 25%;}
+.time-icon img { margin : 0px 5px; display: flex;}
+.recipe__time span { width: 70%; text-align: right;}
 
 .recipe__meta { display: flex; font-family: Lato; font-size: 12px; margin-top: 20px;}
 .recipe__meta > div { width: 50%; padding: 1px;}

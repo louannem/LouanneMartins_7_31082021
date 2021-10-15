@@ -22,7 +22,6 @@ export default function addRecipes (recipes){
                             <div class="time-icon">
                                 <img></img>
                             </div>
-                            <img src="../dist/clock.bdc9bc77.svg" alt="">
                             <span>${recipe.time} min.</span>
                         </div>
                     </div>

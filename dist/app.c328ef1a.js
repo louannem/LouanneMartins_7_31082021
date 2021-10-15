@@ -125,6 +125,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = listExpand;
 
+/**
+ * Fonction pour afficher les listes dropdowns
+ */
 function listExpand() {
   var inputIngredient = document.getElementById('ingredient-input');
   var boxIngredients = document.getElementById('ingredients-expand');
@@ -132,26 +135,61 @@ function listExpand() {
   var boxAppareil = document.getElementById('appareils-expand');
   var inputUsentiles = document.getElementById('ustensiles-input');
   var parentNode = document.getElementById('ustensiles-search');
-  var boxUstensiles = parentNode.getElementsByTagName('div')[0]; //Fonctions à réutiliser
+  var boxUstensiles = parentNode.getElementsByTagName('div')[0];
+  /**
+   * 
+   * @param {String} paraStyle1 Elément parent avec input
+   * @param {String} paraStyle2 Elément enfant avec liste
+   * @param {Number} size  Taille de la boite ouverte
+   * @param {String} paraClass1 Elément parent
+   * @param {String} paraClass2 Elément enfant
+   * @param {String} classe Nom de la classe à ajouter
+   */
 
-  var addingClass = function addingClass(paraStyle1, paraStyle2, size, paraClass1, paraClass2, classe) {
+  var addingClass = function addingClass(paraStyle1, paraStyle2, size, paraClass2, classe) {
     paraStyle1.style.width = size;
     paraStyle2.style.width = size;
-    paraClass1.classList.add('onclick');
     paraClass2.classList.add(classe);
   };
+  /**
+   * 
+   * @param {String} paraStyle1 Elément parent avec input
+   * @param {String} paraStyle2 Elément enfant avec liste
+   * @param {Number} size  Taille de la boite fermée
+   * @param {String} paraClass1 Elément parent
+   * @param {String} paraClass2 Elément enfant
+   * @param {String} classe Nom de la classe à ajouter
+   */
 
-  var removingClass = function removingClass(paraStyle1, paraStyle2, size, paraClass1, paraClass2, classe) {
+
+  var removingClass = function removingClass(paraStyle1, paraStyle2, size, paraClass2, classe) {
     paraStyle1.style.width = size;
     paraStyle2.style.width = size;
-    paraClass1.classList.remove('onclick');
     paraClass2.classList.remove(classe);
   };
+  /**
+   * 
+   * @param {String} paraEvent1 Elément actionnant la fonction
+   * @param {String} paraEvent2 Elément actionnant la fonction
+   * @param {String} fonction Nom de la fonction
+   */
+
 
   var callFonction = function callFonction(paraEvent1, paraEvent2, fonction) {
-    paraEvent1.addEventListener('click', fonction);
-    paraEvent2.addEventListener('click', fonction);
-  }; //Fonctions pour les dropdowns
+    paraEvent2.addEventListener('click', fonction); //paraEvent1.addEventListener('click', fonction);
+  };
+  /**
+   * Bloque l'exécution d'une fonction pour les input
+   * @param {String} e 
+   */
+
+
+  var stopEvent = function stopEvent(e) {
+    e.stopImmediatePropagation();
+  };
+  /**
+   * Fonction pour gérer la recherche dans la liste d'ingrédients
+   */
 
 
   var searchIngredient = function searchIngredient() {
@@ -159,48 +197,62 @@ function listExpand() {
     var listWrapper = document.getElementById('ingredients-list');
 
     if (searchWrapper.classList.contains('show')) {
-      removingClass(searchWrapper, listWrapper, "170px", inputIngredient, listWrapper, "grid-list");
+      inputIngredient.removeEventListener('click', stopEvent);
+      removingClass(searchWrapper, listWrapper, "170px", listWrapper, "grid-list");
       inputIngredient.setAttribute('placeholder', 'Ingrédient');
     } else {
-      addingClass(searchWrapper, listWrapper, "500px", inputIngredient, listWrapper, "grid-list");
+      inputIngredient.addEventListener('click', stopEvent);
       inputIngredient.setAttribute('placeholder', 'Rechercher un ingrédient');
+      addingClass(searchWrapper, listWrapper, "500px", listWrapper, "grid-list");
     }
   };
 
   callFonction(inputIngredient, boxIngredients, searchIngredient);
+  /**
+   * Fonction pour gérer la recherche dans la liste d'appareils
+   */
 
   var searchAppareils = function searchAppareils() {
     var searchWrapper = document.getElementById('appareils-search');
     var listWrapper = document.getElementById('appareils-list');
 
     if (searchWrapper.classList.contains('show')) {
-      removingClass(searchWrapper, listWrapper, "170px", inputAppareil, listWrapper, "grid-list-appareils");
+      inputAppareil.removeEventListener('click', stopEvent);
+      removingClass(searchWrapper, listWrapper, "170px", listWrapper, "grid-list-appareils");
       inputAppareil.setAttribute('placeholder', 'Appareils');
     } else {
+      inputAppareil.addEventListener('click', stopEvent);
       inputAppareil.setAttribute('placeholder', 'Rechercher un appareil');
-      addingClass(searchWrapper, listWrapper, "500px", inputAppareil, listWrapper, "grid-list-appareils");
+      addingClass(searchWrapper, listWrapper, "500px", listWrapper, "grid-list-appareils");
     }
   };
 
   callFonction(inputAppareil, boxAppareil, searchAppareils);
+  /**
+   * Fonction pour gérer la recherche dans la liste d'ustensiles
+   */
 
   var searchUstensiles = function searchUstensiles() {
     var searchWrapper = document.getElementById('ustensiles-search');
     var listWrapper = document.getElementById('ustensiles-list');
 
     if (searchWrapper.classList.contains('show')) {
-      removingClass(searchWrapper, listWrapper, "170px", inputUsentiles, listWrapper, "grid-list");
+      inputUsentiles.removeEventListener('click', stopEvent);
+      removingClass(searchWrapper, listWrapper, "170px", listWrapper, "grid-list");
       inputUsentiles.setAttribute('placeholder', 'Ustensiles');
     } else {
-      addingClass(searchWrapper, listWrapper, "500px", inputUsentiles, listWrapper, "grid-list");
+      inputUsentiles.addEventListener('click', stopEvent);
+      addingClass(searchWrapper, listWrapper, "500px", listWrapper, "grid-list");
       inputUsentiles.setAttribute('placeholder', 'Rechercher un ustensile');
     }
   };
 
-  callFonction(inputUsentiles, boxUstensiles, searchUstensiles); //Closes the others dropdowns if another one is open
-
+  callFonction(inputUsentiles, boxUstensiles, searchUstensiles);
   var dropdownElem = document.querySelectorAll('.dropdown-toggle');
   dropdownElem.forEach(function (element) {
+    /**
+     * Fonction pour fermer les dropdowns quand une autre est ouverte
+     */
     element.addEventListener('click', function () {
       var appareilExp = boxAppareil.getAttribute('aria-expanded'),
           ustExp = boxUstensiles.getAttribute('aria-expanded'),
@@ -2126,9 +2178,7 @@ function filterFunction() {
         } else {
           noResult.display = "inline";
         }
-      }; //Filtre les résultats selon les nouvelles listes de filtres
-      //Départ avant l'ajout d'un tag : toutes les listes de filtres sont vides
-      ///////////////////Filtre avec liste unique////////////////////////////////////////////////////////////
+      }; //////////////////////////////Filtre avec méthode every()////////////////////////////////////////////////////////////
 
 
       var results = []; //Cas 1 : l'utilisateur a utilisé la barre de recherche
@@ -2258,7 +2308,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
  */
 function addRecipes(recipes) {
   var htmlString = recipes.map(function (recipe) {
-    return "\n                <article class=\"recipe__card\" id=\"recipe-".concat(recipe.id, "\">\n                <div class=\"recipe__image\">\n                    <img src=\"\" alt=\"\">\n                </div>\n                <div class=\"recipe__info\">\n                    <div class=\"recipe__title\">\n                        <h2>").concat(recipe.name, "</h2>\n                        <div class=\"recipe__time\">\n                            <div class=\"time-icon\">\n                                <img></img>\n                            </div>\n                            <img src=\"../dist/clock.bdc9bc77.svg\" alt=\"\">\n                            <span>").concat(recipe.time, " min.</span>\n                        </div>\n                    </div>\n                    <div class=\"recipe__meta\">\n                        <div class=\"ingredients\">\n                        <ul id=\"").concat(recipe.id, "\">\n                        </ul>\n                        </div>\n                        <div class=\"instructions\">\n                            <p>").concat(recipe.description, "</p>\n                        </div>\n                    </div>\n                </div>\n            </article>\n            ");
+    return "\n                <article class=\"recipe__card\" id=\"recipe-".concat(recipe.id, "\">\n                <div class=\"recipe__image\">\n                    <img src=\"\" alt=\"\">\n                </div>\n                <div class=\"recipe__info\">\n                    <div class=\"recipe__title\">\n                        <h2>").concat(recipe.name, "</h2>\n                        <div class=\"recipe__time\">\n                            <div class=\"time-icon\">\n                                <img></img>\n                            </div>\n                            <span>").concat(recipe.time, " min.</span>\n                        </div>\n                    </div>\n                    <div class=\"recipe__meta\">\n                        <div class=\"ingredients\">\n                        <ul id=\"").concat(recipe.id, "\">\n                        </ul>\n                        </div>\n                        <div class=\"instructions\">\n                            <p>").concat(recipe.description, "</p>\n                        </div>\n                    </div>\n                </div>\n            </article>\n            ");
   }).join('');
   document.getElementById('search-results').innerHTML = htmlString; //Ajoute les icones
 
@@ -2523,7 +2573,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59565" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49939" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

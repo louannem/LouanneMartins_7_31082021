@@ -19,10 +19,9 @@ export default function listExpand() {
      * @param {String} paraClass2 Elément enfant
      * @param {String} classe Nom de la classe à ajouter
      */
-    let addingClass = (paraStyle1, paraStyle2,size,paraClass1,paraClass2,classe) => {
+    let addingClass = (paraStyle1, paraStyle2,size,paraClass2,classe) => {
         paraStyle1.style.width=size;
         paraStyle2.style.width=size;
-        paraClass1.classList.add('onclick');
         paraClass2.classList.add(classe);
     }
     
@@ -35,12 +34,12 @@ export default function listExpand() {
      * @param {String} paraClass2 Elément enfant
      * @param {String} classe Nom de la classe à ajouter
      */
-    let removingClass = (paraStyle1, paraStyle2,size,paraClass1,paraClass2,classe) => {
+    let removingClass = (paraStyle1, paraStyle2,size,paraClass2,classe) => {
         paraStyle1.style.width=size;
         paraStyle2.style.width=size;
-        paraClass1.classList.remove('onclick');
         paraClass2.classList.remove(classe);
     }
+
 
     /**
      * 
@@ -48,29 +47,41 @@ export default function listExpand() {
      * @param {String} paraEvent2 Elément actionnant la fonction
      * @param {String} fonction Nom de la fonction
      */
+
     let callFonction = (paraEvent1,paraEvent2, fonction) => {
-        paraEvent1.addEventListener('click', fonction);
         paraEvent2.addEventListener('click', fonction);
+        //paraEvent1.addEventListener('click', fonction);
     }
+
+    /**
+     * Bloque l'exécution d'une fonction pour les input
+     * @param {String} e 
+     */
+    let stopEvent = (e) => { e.stopImmediatePropagation(); }
 
 
     /**
      * Fonction pour gérer la recherche dans la liste d'ingrédients
      */
     let searchIngredient = () => {
+        
         let searchWrapper = document.getElementById('ingredients-search');
         let listWrapper = document.getElementById('ingredients-list');
 
-        if(searchWrapper.classList.contains('show')) {
-            removingClass(searchWrapper, listWrapper, "170px",inputIngredient,listWrapper, "grid-list");            
+        if(searchWrapper.classList.contains('show')) { 
+            inputIngredient.removeEventListener('click', stopEvent)
+            removingClass(searchWrapper, listWrapper, "170px",listWrapper, "grid-list");      
             inputIngredient.setAttribute('placeholder', 'Ingrédient');
 
         } else { 
-            addingClass(searchWrapper, listWrapper, "500px",inputIngredient,listWrapper, "grid-list")
+            inputIngredient.addEventListener('click', stopEvent); 
             inputIngredient.setAttribute('placeholder', 'Rechercher un ingrédient');
+            addingClass(searchWrapper, listWrapper, "500px",listWrapper, "grid-list");    
         }
+       
     }
-   callFonction(inputIngredient,boxIngredients,searchIngredient)
+   callFonction(inputIngredient,boxIngredients,searchIngredient);
+
 
 
 
@@ -80,12 +91,15 @@ export default function listExpand() {
     let searchAppareils = () => {
         let searchWrapper = document.getElementById('appareils-search');
         let listWrapper = document.getElementById('appareils-list');
+
         if(searchWrapper.classList.contains('show')) {
-            removingClass(searchWrapper, listWrapper, "170px",inputAppareil,listWrapper, "grid-list-appareils");
+            inputAppareil.removeEventListener('click', stopEvent)
+            removingClass(searchWrapper, listWrapper, "170px",listWrapper, "grid-list-appareils");
             inputAppareil.setAttribute('placeholder', 'Appareils');
         } else { 
+            inputAppareil.addEventListener('click', stopEvent);
             inputAppareil.setAttribute('placeholder', 'Rechercher un appareil');
-            addingClass(searchWrapper, listWrapper, "500px",inputAppareil,listWrapper, "grid-list-appareils");
+            addingClass(searchWrapper, listWrapper, "500px",listWrapper, "grid-list-appareils");
         }
     }
     callFonction(inputAppareil,boxAppareil,searchAppareils)
@@ -100,10 +114,12 @@ export default function listExpand() {
         let listWrapper = document.getElementById('ustensiles-list');
 
         if(searchWrapper.classList.contains('show')) {
-            removingClass(searchWrapper, listWrapper, "170px",inputUsentiles,listWrapper, "grid-list");
+            inputUsentiles.removeEventListener('click', stopEvent)
+            removingClass(searchWrapper, listWrapper, "170px",listWrapper, "grid-list");
             inputUsentiles.setAttribute('placeholder', 'Ustensiles');
         } else { 
-            addingClass(searchWrapper, listWrapper, "500px",inputUsentiles,listWrapper, "grid-list");
+            inputUsentiles.addEventListener('click', stopEvent)
+            addingClass(searchWrapper, listWrapper, "500px",listWrapper, "grid-list");
             inputUsentiles.setAttribute('placeholder', 'Rechercher un ustensile');
         }
     }
