@@ -135,39 +135,28 @@ export default function filterFunction () {
                 //Cas 2 : l'utilisateur choisit d'abord un filtre
                 } else if (filtersArray.length > 0 && resultsArray.length == 0) {   
                     let filtersArray = updateFilters();
-                    if(filterAll.length == 0) {
-                        for(let i = 0; i < filtersArray.length; i++) {        
-                            for(let j = 0; j< recipes.length; j++) {
-                                if(recipes[j].appliance == filtersArray[i]) { filterAll.push(recipes[j])  }
+                    let filterAll = [];
 
-                                for(let k = 0; k < recipes[j].ingredients.length; k++) {
-                                    if(recipes[j].ingredients[k].ingredient == filtersArray[i]) {  filterAll.push(recipes[j]) }
-                                }
-                                for(let l = 0; l < recipes[j].ustensils.length; l++) {  
-                                    if(recipes[j].ustensils[l] == filtersArray[i]) {  filterAll.push(recipes[j]);    }
-                                }                              
+                    for(let recipe of recipes) { filterAll.push(recipe);  }
+                    for(let k = 0; k < filterAll.length; k++) {
+                        trueNumb = 0 ;
+                                
+                        for(let j = 0; j <= filtersArray.length; j++) {
+                            if(filterAll[k].appliance == filtersArray[j]) {  trueNumb++; }
+
+                            for(let i = 0; i < filterAll[k].ingredients.length; i++) {
+                                if(filterAll[k].ingredients[i].ingredient == filtersArray[j]) { trueNumb++; } 
+                            }
+
+                            for(let l = 0; l < filterAll[k].ustensils.length; l++) {
+                                if(filterAll[k].ustensils[l] == filtersArray[j]) { trueNumb++;  }
                             }
                         }
-                       clearPage(); addRecipes(filterAll); ifEmpty(filterAll);
-
-                        } else if (filterAll.length > 0) {
-                            for(let k = 0; k < filterAll.length; k++) {
-                                trueNumb = 0 ;
-
-                                for(let j = 0; j <= filtersArray.length; j++) {
-                                    if(filterAll[k].appliance == filtersArray[j]) {  trueNumb++; }
-
-                                    for(let i = 0; i < filterAll[k].ingredients.length; i++) {
-                                        if(filterAll[k].ingredients[i].ingredient == filtersArray[j]) { trueNumb++; } 
-                                    }
-
-                                    for(let l = 0; l < filterAll[k].ustensils.length; l++) {
-                                        if(filterAll[k].ustensils[l] == filtersArray[j]) { trueNumb++;  }
-                                    }
-                                }
-                            
-                                if(trueNumb !== filtersArray.length) {   filterAll.splice(k,1); k--; }                               
-                            }
+                    
+                        if(trueNumb !== filtersArray.length) {  
+                            //A supprimer de la liste
+                            filterAll.splice(k,1); k--;
+                        }                               
                         clearPage(); addRecipes(filterAll); ifEmpty(filterAll);
                     }
                 }

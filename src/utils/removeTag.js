@@ -1,6 +1,6 @@
 //Importation des listes générées par les filtres
 import { recipes } from "../data/recipes";
-import { filtersArray} from "./filters";
+import {filtersArray} from "./filters";
 import { resultsArray } from "./search";
 import addRecipes from "../utils/addRecipes";
 import clearPage from "../utils/clearPage";
@@ -54,13 +54,12 @@ export default function removeTag(listName) {
                 //Trouver l'élément dans la liste de filtres
                 for(let j = 0; j < filtersArray.length; j++) {
                     //Identifie le filtre dans la liste de filtre et le supprime
-                    if(listName[i].innerText == filtersArray[j]) { filtersArray.splice(j, 1); }
-      
+                    let filtersArray = updateFilters();
                     //Si la liste = 0, on re-met toutes les recettes à partir de l'input
                     if(filtersArray.length == 0 && resultsArray.length > 0) { clearPage(); addRecipes(removeDuplicate(resultsArray, 'id')); ifEmpty(resultsArray);
                         
                     //Si les filtres et les résultats de recherche sont nuls
-                    }  else if(resultsArray.length == 0 && filtersArray.length == 0) { clearPage(); addRecipes(removeDuplicate(recipes, 'id'));
+                    }  else if(filtersArray.length == 0 && resultsArray.length == 0) { clearPage(); addRecipes(removeDuplicate(recipes, 'id'));
                     
                     //Si la liste de filtres > 0 élément et les résultats de recherche > 0
                      } else if (filtersArray.length > 0 && resultsArray.length > 0) {
@@ -92,15 +91,16 @@ export default function removeTag(listName) {
                        
                     //Si la liste de filtres > 0 mais qu'aucun mot-clé n'a été entré         
                     } else if (filtersArray.length > 0 && resultsArray.length == 0) {
-                        //On re-filtre avec la liste de filtres et toutes les recettes                                          
+                        //On re-filtre avec la liste de filtres et toutes les recettes                                         
                         let filterAll = [];
                         let filtersArray = updateFilters();
                         for(let i = 0; i < filtersArray.length; i++) {        
                             for(let j = 0; j< recipes.length; j++) {
-                                if(recipes[j].appliance == filtersArray[i]) { filterAll.push(recipes[j])  }
+                                
+                                if(recipes[j].appliance == filtersArray[i]) { filterAll.push(recipes[j]) ;  }
 
                                 for(let k = 0; k < recipes[j].ingredients.length; k++) {
-                                    if(recipes[j].ingredients[k].ingredient == filtersArray[i]) {  filterAll.push(recipes[j]) }
+                                    if(recipes[j].ingredients[k].ingredient == filtersArray[i]) {  filterAll.push(recipes[j]) ; }
                                 }
                                 for(let l = 0; l < recipes[j].ustensils.length; l++) {  
                                     if(recipes[j].ustensils[l] == filtersArray[i]) {  filterAll.push(recipes[j]);    }
@@ -108,6 +108,7 @@ export default function removeTag(listName) {
                             }
                         }
                         clearPage(); addRecipes(removeDuplicate(filterAll, 'id')); ifEmpty(filterAll);
+
                     }
                 //Supprime le tag cliqué
                 listName[i].style.display="none";   

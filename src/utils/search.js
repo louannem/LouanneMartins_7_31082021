@@ -55,9 +55,9 @@ export default function searchFunction() {
             }
             //Si l'utilisateur supprime les caractères, on remet toute les recettes
         } else if (searchInput.length < 3) {
-                clearPage();
-                addRecipes(recipes);
-                document.getElementById('no-result').style.display = "none";
+            resultsArray = [];
+            clearPage(); addRecipes(recipes);
+            document.getElementById('no-result').style.display = "none";
         }
     }
     input.addEventListener('input', globalSearch);
