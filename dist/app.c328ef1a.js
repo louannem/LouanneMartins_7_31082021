@@ -295,7 +295,7 @@ var recipes = [{
     "unit": "cuillères à soupe"
   }, {
     "ingredient": "Sucre",
-    "quantite": 30,
+    "quantity": 30,
     "unit": "grammes"
   }, {
     "ingredient": "Glaçons"
@@ -320,7 +320,7 @@ var recipes = [{
     "quantity": 2
   }, {
     "ingredient": "Carotte",
-    "quantite": 1
+    "quantity": 1
   }, {
     "ingredient": "Citron Vert",
     "quantity": 5
@@ -417,7 +417,7 @@ var recipes = [{
   }, {
     "ingredient": "Moutarde de Dijon",
     "quantity": 1,
-    "unite": "cuillères à soupe"
+    "unit": "cuillères à soupe"
   }],
   "time": 45,
   "description": "Etaler la pâte feuilleté aux dimensions du moule, étaler la moutarde sur la pâte feuilleté, ajouter le thon. Découper les tomates en rondelles et les poser sur le poisson, ajouter un peu de crème fraiche sur toute la tarte et recouvrez de gruyère râpé. Cuire au four 30 minutes",
@@ -2645,7 +2645,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52708" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49711" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
