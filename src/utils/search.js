@@ -32,8 +32,13 @@ export default function searchFunction() {
                 let recipeName = recipes[i].name.toLowerCase();
                 //La recherche comprend le nom de la recette, les appareils et la description
                 if(recipeName.includes(searchInput) || recipes[i].appliance.includes(searchInput) || recipes[i].description.includes(searchInput)) {
-                    //let newRecipes = new Recipe(recipes[i]);
                     resultsArray.push(recipes[i]);
+
+                    for(let j = 0; j < resultsArray.length; j++) {
+                        if(!resultsArray[j].name.toLowerCase().includes(searchInput) && !resultsArray[j].appliance.includes(searchInput) && !resultsArray[j].description.includes(searchInput)) {
+                            resultsArray.splice(j, 1);
+                        }
+                    }
                 } 
             } 
             if(resultsArray.length > 0) {

@@ -2566,8 +2566,13 @@ function searchFunction() {
 
 
         if (recipeName.includes(searchInput) || _recipes.recipes[i].appliance.includes(searchInput) || _recipes.recipes[i].description.includes(searchInput)) {
-          //let newRecipes = new Recipe(recipes[i]);
           resultsArray.push(_recipes.recipes[i]);
+
+          for (var j = 0; j < resultsArray.length; j++) {
+            if (!resultsArray[j].name.toLowerCase().includes(searchInput) && !resultsArray[j].appliance.includes(searchInput) && !resultsArray[j].description.includes(searchInput)) {
+              resultsArray.splice(j, 1);
+            }
+          }
         }
       }
 
@@ -2645,7 +2650,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49711" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53403" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
