@@ -37,8 +37,8 @@ export default function searchFunction() {
             if(resultsArray.length > 0) {
                 //Afficher les recettes ici
                 clearPage(); 
-                    document.getElementById('no-result').style.display = "none";
-                    addRecipes(resultsArray);
+                document.getElementById('no-result').style.display = "none";
+                addRecipes(resultsArray);
     
             } else if (resultsArray.length == 0){
                 //Afficher qu'aucune recette n'a été trouvée
